@@ -1,0 +1,17 @@
+C:\workspaces\GamePredictor\GP.Engines.RemoteDataEngine\bin\Debug\GP.Engines.RemoteDataEngine.dll
+C:\workspaces\GamePredictor\GP.Engines.RemoteDataEngine\bin\Debug\GP.Engines.RemoteDataEngine.pdb
+C:\workspaces\GamePredictor\GP.Engines.RemoteDataEngine\bin\Debug\GP.Accessors.RemoteAccessor.dll
+C:\workspaces\GamePredictor\GP.Engines.RemoteDataEngine\bin\Debug\GP.Shared.Common.dll
+C:\workspaces\GamePredictor\GP.Engines.RemoteDataEngine\bin\Debug\Selenium.WebDriverBackedSelenium.dll
+C:\workspaces\GamePredictor\GP.Engines.RemoteDataEngine\bin\Debug\ThoughtWorks.Selenium.Core.dll
+C:\workspaces\GamePredictor\GP.Engines.RemoteDataEngine\bin\Debug\WebDriver.dll
+C:\workspaces\GamePredictor\GP.Engines.RemoteDataEngine\bin\Debug\WebDriver.Support.dll
+C:\workspaces\GamePredictor\GP.Engines.RemoteDataEngine\bin\Debug\GP.Accessors.RemoteAccessor.pdb
+C:\workspaces\GamePredictor\GP.Engines.RemoteDataEngine\bin\Debug\GP.Shared.Common.pdb
+C:\workspaces\GamePredictor\GP.Engines.RemoteDataEngine\bin\Debug\Selenium.WebDriverBackedSelenium.pdb
+C:\workspaces\GamePredictor\GP.Engines.RemoteDataEngine\bin\Debug\ThoughtWorks.Selenium.Core.pdb
+C:\workspaces\GamePredictor\GP.Engines.RemoteDataEngine\bin\Debug\WebDriver.pdb
+C:\workspaces\GamePredictor\GP.Engines.RemoteDataEngine\bin\Debug\WebDriver.Support.pdb
+C:\workspaces\GamePredictor\GP.Engines.RemoteDataEngine\obj\Debug\RemoteDataEngine.csprojResolveAssemblyReference.cache
+C:\workspaces\GamePredictor\GP.Engines.RemoteDataEngine\obj\Debug\GP.Engines.RemoteDataEngine.dll
+C:\workspaces\GamePredictor\GP.Engines.RemoteDataEngine\obj\Debug\GP.Engines.RemoteDataEngine.pdb

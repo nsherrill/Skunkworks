@@ -1,0 +1,45 @@
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\GP.Managers.DataRetrievalManager.dll
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\GP.Managers.DataRetrievalManager.pdb
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\GP.Engines.DataRetrievalEngine.dll
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\GP.Shared.Common.dll
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\GP.Accessors.DatabaseAccessor.dll
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\GP.Accessors.RemoteBaseballDataAccessor.dll
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\GP.Engines.DataRetrievalEngine.pdb
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\GP.Shared.Common.pdb
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\GP.Accessors.DatabaseAccessor.pdb
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\GP.Accessors.RemoteBaseballDataAccessor.pdb
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Managers.DataRetrievalManager\obj\Debug\DataRetrievalManager.csprojResolveAssemblyReference.cache
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Managers.DataRetrievalManager\obj\Debug\GP.Managers.DataRetrievalManager.dll
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Managers.DataRetrievalManager\obj\Debug\GP.Managers.DataRetrievalManager.pdb
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\GP.Accessors.RemoteAccessor.dll
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\GP.Accessors.RemoteAccessor.pdb
+C:\workspaces\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\GP.Managers.DataRetrievalManager.dll
+C:\workspaces\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\GP.Managers.DataRetrievalManager.pdb
+C:\workspaces\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\GP.Engines.DataRetrievalEngine.dll
+C:\workspaces\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\GP.Shared.Common.dll
+C:\workspaces\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\GP.Accessors.DatabaseAccessor.dll
+C:\workspaces\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\GP.Accessors.RemoteBaseballDataAccessor.dll
+C:\workspaces\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\GP.Accessors.RemoteAccessor.dll
+C:\workspaces\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\GP.Engines.DataRetrievalEngine.pdb
+C:\workspaces\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\GP.Shared.Common.pdb
+C:\workspaces\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\GP.Accessors.DatabaseAccessor.pdb
+C:\workspaces\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\GP.Accessors.RemoteBaseballDataAccessor.pdb
+C:\workspaces\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\GP.Accessors.RemoteAccessor.pdb
+C:\workspaces\GamePredictor\GP.Managers.DataRetrievalManager\obj\Debug\DataRetrievalManager.csprojResolveAssemblyReference.cache
+C:\workspaces\GamePredictor\GP.Managers.DataRetrievalManager\obj\Debug\GP.Managers.DataRetrievalManager.dll
+C:\workspaces\GamePredictor\GP.Managers.DataRetrievalManager\obj\Debug\GP.Managers.DataRetrievalManager.pdb
+C:\workspaces\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\GP.Accessors.RemoteLeagueAccessor.dll
+C:\workspaces\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\Newtonsoft.Json.dll
+C:\workspaces\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\GP.Accessors.RemoteLeagueAccessor.pdb
+C:\workspaces\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\WebDriver.dll
+C:\workspaces\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\WebDriver.pdb
+C:\workspaces\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\GP.Engines.RemoteDataEngine.dll
+C:\workspaces\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\Selenium.WebDriverBackedSelenium.dll
+C:\workspaces\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\ThoughtWorks.Selenium.Core.dll
+C:\workspaces\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\WebDriver.Support.dll
+C:\workspaces\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\GP.Engines.RemoteDataEngine.pdb
+C:\workspaces\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\Selenium.WebDriverBackedSelenium.pdb
+C:\workspaces\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\ThoughtWorks.Selenium.Core.pdb
+C:\workspaces\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\WebDriver.Support.pdb
+C:\workspaces\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\GP.Engines.RankingsGeneratorEngine.dll
+C:\workspaces\GamePredictor\GP.Managers.DataRetrievalManager\bin\Debug\GP.Engines.RankingsGeneratorEngine.pdb

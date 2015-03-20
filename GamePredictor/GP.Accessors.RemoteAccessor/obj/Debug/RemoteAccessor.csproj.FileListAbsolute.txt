@@ -1,0 +1,13 @@
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Accessors.RemoteAccessor\bin\Debug\GP.Accessors.RemoteAccessor.dll
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Accessors.RemoteAccessor\bin\Debug\GP.Accessors.RemoteAccessor.pdb
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Accessors.RemoteAccessor\obj\Debug\RemoteAccessor.csprojResolveAssemblyReference.cache
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Accessors.RemoteAccessor\obj\Debug\GP.Accessors.RemoteAccessor.dll
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Accessors.RemoteAccessor\obj\Debug\GP.Accessors.RemoteAccessor.pdb
+C:\workspaces\GamePredictor\GP.Accessors.RemoteAccessor\bin\Debug\GP.Accessors.RemoteAccessor.dll
+C:\workspaces\GamePredictor\GP.Accessors.RemoteAccessor\bin\Debug\GP.Accessors.RemoteAccessor.pdb
+C:\workspaces\GamePredictor\GP.Accessors.RemoteAccessor\obj\Debug\RemoteAccessor.csprojResolveAssemblyReference.cache
+C:\workspaces\GamePredictor\GP.Accessors.RemoteAccessor\obj\Debug\GP.Accessors.RemoteAccessor.dll
+C:\workspaces\GamePredictor\GP.Accessors.RemoteAccessor\obj\Debug\GP.Accessors.RemoteAccessor.pdb
+C:\workspaces\GamePredictor\GP.Accessors.RemoteAccessor\bin\Debug\Newtonsoft.Json.dll
+C:\workspaces\GamePredictor\GP.Accessors.RemoteAccessor\bin\Debug\System.Net.Http.Formatting.dll
+C:\workspaces\GamePredictor\GP.Accessors.RemoteAccessor\bin\Debug\System.Net.Http.Formatting.xml

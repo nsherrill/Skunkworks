@@ -1,0 +1,18 @@
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Shared.Common\bin\Debug\GP.Shared.Common.dll
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Shared.Common\bin\Debug\GP.Shared.Common.pdb
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Shared.Common\obj\Debug\Common.csprojResolveAssemblyReference.cache
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Shared.Common\obj\Debug\GP.Shared.Common.dll
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Shared.Common\obj\Debug\GP.Shared.Common.pdb
+C:\workspaces\GamePredictor\GP.Shared.Common\bin\Debug\GP.Shared.Common.dll
+C:\workspaces\GamePredictor\GP.Shared.Common\bin\Debug\GP.Shared.Common.pdb
+C:\workspaces\GamePredictor\GP.Shared.Common\obj\Debug\Common.csprojResolveAssemblyReference.cache
+C:\workspaces\GamePredictor\GP.Shared.Common\obj\Debug\GP.Shared.Common.dll
+C:\workspaces\GamePredictor\GP.Shared.Common\obj\Debug\GP.Shared.Common.pdb
+C:\workspaces\GamePredictor\GP.Shared.Common\bin\Debug\Selenium.WebDriverBackedSelenium.dll
+C:\workspaces\GamePredictor\GP.Shared.Common\bin\Debug\ThoughtWorks.Selenium.Core.dll
+C:\workspaces\GamePredictor\GP.Shared.Common\bin\Debug\WebDriver.dll
+C:\workspaces\GamePredictor\GP.Shared.Common\bin\Debug\WebDriver.Support.dll
+C:\workspaces\GamePredictor\GP.Shared.Common\bin\Debug\Selenium.WebDriverBackedSelenium.pdb
+C:\workspaces\GamePredictor\GP.Shared.Common\bin\Debug\ThoughtWorks.Selenium.Core.pdb
+C:\workspaces\GamePredictor\GP.Shared.Common\bin\Debug\WebDriver.pdb
+C:\workspaces\GamePredictor\GP.Shared.Common\bin\Debug\WebDriver.Support.pdb

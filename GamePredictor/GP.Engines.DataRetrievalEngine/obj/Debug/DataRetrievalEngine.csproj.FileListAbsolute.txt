@@ -1,0 +1,37 @@
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Engines.DataRetrievalEngine\bin\Debug\GP.Engines.DataRetrievalEngine.dll
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Engines.DataRetrievalEngine\bin\Debug\GP.Engines.DataRetrievalEngine.pdb
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Engines.DataRetrievalEngine\bin\Debug\GP.Accessors.DatabaseAccessor.dll
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Engines.DataRetrievalEngine\bin\Debug\GP.Accessors.RemoteBaseballDataAccessor.dll
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Engines.DataRetrievalEngine\bin\Debug\GP.Shared.Common.dll
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Engines.DataRetrievalEngine\bin\Debug\GP.Accessors.DatabaseAccessor.pdb
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Engines.DataRetrievalEngine\bin\Debug\GP.Accessors.RemoteBaseballDataAccessor.pdb
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Engines.DataRetrievalEngine\bin\Debug\GP.Shared.Common.pdb
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Engines.DataRetrievalEngine\obj\Debug\DataRetrievalEngine.csprojResolveAssemblyReference.cache
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Engines.DataRetrievalEngine\obj\Debug\GP.Engines.DataRetrievalEngine.dll
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Engines.DataRetrievalEngine\obj\Debug\GP.Engines.DataRetrievalEngine.pdb
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Engines.DataRetrievalEngine\bin\Debug\GP.Accessors.RemoteAccessor.dll
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Engines.DataRetrievalEngine\bin\Debug\GP.Accessors.RemoteAccessor.pdb
+C:\workspaces\GamePredictor\GP.Engines.DataRetrievalEngine\bin\Debug\GP.Engines.DataRetrievalEngine.dll
+C:\workspaces\GamePredictor\GP.Engines.DataRetrievalEngine\bin\Debug\GP.Engines.DataRetrievalEngine.pdb
+C:\workspaces\GamePredictor\GP.Engines.DataRetrievalEngine\bin\Debug\GP.Accessors.DatabaseAccessor.dll
+C:\workspaces\GamePredictor\GP.Engines.DataRetrievalEngine\bin\Debug\GP.Accessors.RemoteBaseballDataAccessor.dll
+C:\workspaces\GamePredictor\GP.Engines.DataRetrievalEngine\bin\Debug\GP.Shared.Common.dll
+C:\workspaces\GamePredictor\GP.Engines.DataRetrievalEngine\bin\Debug\GP.Accessors.RemoteAccessor.dll
+C:\workspaces\GamePredictor\GP.Engines.DataRetrievalEngine\bin\Debug\GP.Accessors.DatabaseAccessor.pdb
+C:\workspaces\GamePredictor\GP.Engines.DataRetrievalEngine\bin\Debug\GP.Accessors.RemoteBaseballDataAccessor.pdb
+C:\workspaces\GamePredictor\GP.Engines.DataRetrievalEngine\bin\Debug\GP.Shared.Common.pdb
+C:\workspaces\GamePredictor\GP.Engines.DataRetrievalEngine\bin\Debug\GP.Accessors.RemoteAccessor.pdb
+C:\workspaces\GamePredictor\GP.Engines.DataRetrievalEngine\obj\Debug\DataRetrievalEngine.csprojResolveAssemblyReference.cache
+C:\workspaces\GamePredictor\GP.Engines.DataRetrievalEngine\obj\Debug\GP.Engines.DataRetrievalEngine.dll
+C:\workspaces\GamePredictor\GP.Engines.DataRetrievalEngine\obj\Debug\GP.Engines.DataRetrievalEngine.pdb
+C:\workspaces\GamePredictor\GP.Engines.DataRetrievalEngine\bin\Debug\GP.Accessors.RemoteLeagueAccessor.dll
+C:\workspaces\GamePredictor\GP.Engines.DataRetrievalEngine\bin\Debug\Newtonsoft.Json.dll
+C:\workspaces\GamePredictor\GP.Engines.DataRetrievalEngine\bin\Debug\GP.Accessors.RemoteLeagueAccessor.pdb
+C:\workspaces\GamePredictor\GP.Engines.DataRetrievalEngine\bin\Debug\WebDriver.dll
+C:\workspaces\GamePredictor\GP.Engines.DataRetrievalEngine\bin\Debug\WebDriver.pdb
+C:\workspaces\GamePredictor\GP.Engines.DataRetrievalEngine\bin\Debug\Selenium.WebDriverBackedSelenium.dll
+C:\workspaces\GamePredictor\GP.Engines.DataRetrievalEngine\bin\Debug\ThoughtWorks.Selenium.Core.dll
+C:\workspaces\GamePredictor\GP.Engines.DataRetrievalEngine\bin\Debug\WebDriver.Support.dll
+C:\workspaces\GamePredictor\GP.Engines.DataRetrievalEngine\bin\Debug\Selenium.WebDriverBackedSelenium.pdb
+C:\workspaces\GamePredictor\GP.Engines.DataRetrievalEngine\bin\Debug\ThoughtWorks.Selenium.Core.pdb
+C:\workspaces\GamePredictor\GP.Engines.DataRetrievalEngine\bin\Debug\WebDriver.Support.pdb

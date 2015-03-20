@@ -1,0 +1,16 @@
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Accessors.DatabaseAccessor\obj\Debug\DatabaseAccessor.csprojResolveAssemblyReference.cache
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Accessors.DatabaseAccessor\bin\Debug\GP.Accessors.DatabaseAccessor.dll
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Accessors.DatabaseAccessor\bin\Debug\GP.Accessors.DatabaseAccessor.pdb
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Accessors.DatabaseAccessor\bin\Debug\GP.Shared.Common.dll
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Accessors.DatabaseAccessor\bin\Debug\GP.Shared.Common.pdb
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Accessors.DatabaseAccessor\obj\Debug\GP.Accessors.DatabaseAccessor.dll
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Accessors.DatabaseAccessor\obj\Debug\GP.Accessors.DatabaseAccessor.pdb
+C:\workspaces\GamePredictor\GP.Accessors.DatabaseAccessor\bin\Debug\GP.Accessors.DatabaseAccessor.dll
+C:\workspaces\GamePredictor\GP.Accessors.DatabaseAccessor\bin\Debug\GP.Accessors.DatabaseAccessor.pdb
+C:\workspaces\GamePredictor\GP.Accessors.DatabaseAccessor\bin\Debug\GP.Shared.Common.dll
+C:\workspaces\GamePredictor\GP.Accessors.DatabaseAccessor\bin\Debug\GP.Shared.Common.pdb
+C:\workspaces\GamePredictor\GP.Accessors.DatabaseAccessor\obj\Debug\DatabaseAccessor.csprojResolveAssemblyReference.cache
+C:\workspaces\GamePredictor\GP.Accessors.DatabaseAccessor\obj\Debug\GP.Accessors.DatabaseAccessor.dll
+C:\workspaces\GamePredictor\GP.Accessors.DatabaseAccessor\obj\Debug\GP.Accessors.DatabaseAccessor.pdb
+C:\workspaces\GamePredictor\GP.Accessors.DatabaseAccessor\bin\Debug\WebDriver.dll
+C:\workspaces\GamePredictor\GP.Accessors.DatabaseAccessor\bin\Debug\WebDriver.pdb

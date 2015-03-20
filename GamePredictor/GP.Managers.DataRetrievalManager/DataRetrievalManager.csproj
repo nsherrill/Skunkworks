@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C0551D5B-CB18-4D32-86AF-26B7FFCD4CBE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GP.Managers.DataRetrievalManager</RootNamespace>
+    <AssemblyName>GP.Managers.DataRetrievalManager</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Selenium.WebDriverBackedSelenium">
+      <HintPath>..\DLLs\Selenium.WebDriverBackedSelenium.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="ThoughtWorks.Selenium.Core">
+      <HintPath>..\DLLs\ThoughtWorks.Selenium.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="WebDriver, Version=2.43.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DLLs\WebDriver.dll</HintPath>
+    </Reference>
+    <Reference Include="WebDriver.Support">
+      <HintPath>..\DLLs\WebDriver.Support.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataRetrievalMgr.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GP.Accessors.DatabaseAccessor\DatabaseAccessor.csproj">
+      <Project>{0530b245-b4fd-4ba8-aff3-58ae2ba3d1b5}</Project>
+      <Name>DatabaseAccessor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GP.Accessors.RemoteLeagueAccessor\RemoteLeagueAccessor.csproj">
+      <Project>{ef371cc2-8c9a-4d6d-8d77-faa237a522a4}</Project>
+      <Name>RemoteLeagueAccessor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GP.Engines.DataRetrievalEngine\DataRetrievalEngine.csproj">
+      <Project>{1f0f61a9-146c-4712-bbe0-6d6e87cc4276}</Project>
+      <Name>DataRetrievalEngine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GP.Engines.RankingsGeneratorEngine\RankingsGeneratorEngine.csproj">
+      <Project>{833201a2-12d1-442c-95cc-e98e0178864a}</Project>
+      <Name>RankingsGeneratorEngine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GP.Engines.RemoteDataEngine\RemoteDataEngine.csproj">
+      <Project>{db47aea5-82db-4a4d-bc62-f54a6c4195ad}</Project>
+      <Name>RemoteDataEngine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GP.Shared.Common\Common.csproj">
+      <Project>{d8a1082e-9ccd-4fae-a95f-292882a180ff}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

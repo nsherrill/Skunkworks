@@ -1,0 +1,20 @@
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Accessors.RemoteBaseballDataAccessor\obj\Debug\RemoteBaseballDataAccessor.csprojResolveAssemblyReference.cache
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Accessors.RemoteBaseballDataAccessor\bin\Debug\GP.Accessors.RemoteBaseballDataAccessor.dll
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Accessors.RemoteBaseballDataAccessor\bin\Debug\GP.Accessors.RemoteBaseballDataAccessor.pdb
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Accessors.RemoteBaseballDataAccessor\bin\Debug\GP.Shared.Common.dll
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Accessors.RemoteBaseballDataAccessor\bin\Debug\GP.Shared.Common.pdb
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Accessors.RemoteBaseballDataAccessor\obj\Debug\GP.Accessors.RemoteBaseballDataAccessor.dll
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Accessors.RemoteBaseballDataAccessor\obj\Debug\GP.Accessors.RemoteBaseballDataAccessor.pdb
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Accessors.RemoteBaseballDataAccessor\bin\Debug\GP.Accessors.RemoteAccessor.dll
+c:\users\nsherrill\documents\visual studio 2013\Projects\GamePredictor\GP.Accessors.RemoteBaseballDataAccessor\bin\Debug\GP.Accessors.RemoteAccessor.pdb
+C:\workspaces\GamePredictor\GP.Accessors.RemoteBaseballDataAccessor\bin\Debug\GP.Accessors.RemoteBaseballDataAccessor.dll
+C:\workspaces\GamePredictor\GP.Accessors.RemoteBaseballDataAccessor\bin\Debug\GP.Accessors.RemoteBaseballDataAccessor.pdb
+C:\workspaces\GamePredictor\GP.Accessors.RemoteBaseballDataAccessor\bin\Debug\GP.Accessors.RemoteAccessor.dll
+C:\workspaces\GamePredictor\GP.Accessors.RemoteBaseballDataAccessor\bin\Debug\GP.Shared.Common.dll
+C:\workspaces\GamePredictor\GP.Accessors.RemoteBaseballDataAccessor\bin\Debug\GP.Accessors.RemoteAccessor.pdb
+C:\workspaces\GamePredictor\GP.Accessors.RemoteBaseballDataAccessor\bin\Debug\GP.Shared.Common.pdb
+C:\workspaces\GamePredictor\GP.Accessors.RemoteBaseballDataAccessor\obj\Debug\RemoteBaseballDataAccessor.csprojResolveAssemblyReference.cache
+C:\workspaces\GamePredictor\GP.Accessors.RemoteBaseballDataAccessor\obj\Debug\GP.Accessors.RemoteBaseballDataAccessor.dll
+C:\workspaces\GamePredictor\GP.Accessors.RemoteBaseballDataAccessor\obj\Debug\GP.Accessors.RemoteBaseballDataAccessor.pdb
+C:\workspaces\GamePredictor\GP.Accessors.RemoteBaseballDataAccessor\bin\Debug\WebDriver.dll
+C:\workspaces\GamePredictor\GP.Accessors.RemoteBaseballDataAccessor\bin\Debug\WebDriver.pdb

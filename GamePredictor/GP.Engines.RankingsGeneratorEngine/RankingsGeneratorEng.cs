@@ -104,7 +104,7 @@ namespace GP.Engines.RankingsGeneratorEngine
 
                 remainingSpots = interestedLeague.RemainingRosterSpots();
             }
-
+            isnt filling out a full league yet...;
             return results;
         }
 

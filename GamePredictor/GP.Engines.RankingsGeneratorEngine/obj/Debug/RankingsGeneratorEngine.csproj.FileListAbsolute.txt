@@ -7,3 +7,12 @@ C:\workspaces\GamePredictor\GP.Engines.RankingsGeneratorEngine\bin\Debug\WebDriv
 C:\workspaces\GamePredictor\GP.Engines.RankingsGeneratorEngine\obj\Debug\RankingsGeneratorEngine.csprojResolveAssemblyReference.cache
 C:\workspaces\GamePredictor\GP.Engines.RankingsGeneratorEngine\obj\Debug\GP.Engines.RankingsGeneratorEngine.dll
 C:\workspaces\GamePredictor\GP.Engines.RankingsGeneratorEngine\obj\Debug\GP.Engines.RankingsGeneratorEngine.pdb
+C:\Code\Skunkworks\GamePredictor\GP.Engines.RankingsGeneratorEngine\bin\Debug\GP.Engines.RankingsGeneratorEngine.dll
+C:\Code\Skunkworks\GamePredictor\GP.Engines.RankingsGeneratorEngine\bin\Debug\GP.Engines.RankingsGeneratorEngine.pdb
+C:\Code\Skunkworks\GamePredictor\GP.Engines.RankingsGeneratorEngine\bin\Debug\GP.Shared.Common.dll
+C:\Code\Skunkworks\GamePredictor\GP.Engines.RankingsGeneratorEngine\bin\Debug\WebDriver.dll
+C:\Code\Skunkworks\GamePredictor\GP.Engines.RankingsGeneratorEngine\bin\Debug\GP.Shared.Common.pdb
+C:\Code\Skunkworks\GamePredictor\GP.Engines.RankingsGeneratorEngine\bin\Debug\WebDriver.pdb
+C:\Code\Skunkworks\GamePredictor\GP.Engines.RankingsGeneratorEngine\obj\Debug\RankingsGeneratorEngine.csprojResolveAssemblyReference.cache
+C:\Code\Skunkworks\GamePredictor\GP.Engines.RankingsGeneratorEngine\obj\Debug\GP.Engines.RankingsGeneratorEngine.dll
+C:\Code\Skunkworks\GamePredictor\GP.Engines.RankingsGeneratorEngine\obj\Debug\GP.Engines.RankingsGeneratorEngine.pdb

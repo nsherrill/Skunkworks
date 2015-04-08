@@ -47,6 +47,7 @@ namespace GP.Accessors.DatabaseAccessor
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = sql;
+                    cmd.CommandTimeout = 300;
 
                     if (paramArr != null
                         && paramArr.Length > 0)

@@ -12,6 +12,8 @@ namespace GP.Shared.Common
         public static double MinimumBuyIn { get { return GetConfigDouble("MinimumBuyIn", 0d); } }
         public static double MaximumBuyIn { get { return GetConfigDouble("MaximumBuyIn", 0d); } }
 
+        public static string ChromeDriverDLLDirectory { get { return GetConfigObject("ChromeDriverDLLDirectory", @"C:\Code\Skunkworks\GamePredictor\DLLs").ToString(); } }
+
         public static string DBConnectionString { get { return GetConnectionString("DBConnection"); } }
 
         public static string GetConnectionString(string key)

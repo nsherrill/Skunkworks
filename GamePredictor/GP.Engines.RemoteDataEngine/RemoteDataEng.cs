@@ -21,7 +21,8 @@ namespace GP.Engines.RemoteDataEngine
         public GPChromeDriver GenerateDriver()
         {
             Console.WriteLine("Getting remote driver " + DateTime.Now.ToString());
-            var driver = new GPChromeDriver(@"C:\workspaces\GamePredictor\DLLs");
+            var dirDriver = ConfigHelper.ChromeDriverDLLDirectory;
+            var driver = new GPChromeDriver(dirDriver);
             try
             {
                 driver.Navigate().GoToUrl(LOGINPAGE);
@@ -37,6 +38,7 @@ namespace GP.Engines.RemoteDataEngine
             }
             catch
             {
+                driver = null;
             }
 
             return driver;

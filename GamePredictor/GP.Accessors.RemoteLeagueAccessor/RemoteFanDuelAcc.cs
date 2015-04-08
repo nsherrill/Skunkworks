@@ -17,6 +17,12 @@ namespace GP.Accessors.RemoteLeagueAccessor
         FantasyLeagueEntry[] GetAllLeagues(GPChromeDriver chromeDriver);
         FantasyPlayer[] GetAllPlayers(GPChromeDriver driver, string foreignLeagueId, string url);
         FantasyRosterDefinition GetRoster(GPChromeDriver driver, string foreignLeagueId, string url);
+
+        void NavigateToLeague(GPChromeDriver cachedDriver, FantasyLeagueEntry interestedLeague);
+
+        void AddPlayerToRoster(GPChromeDriver cachedDriver, string foreignLeagueId, FantasyPlayerRanking fantasyPlayerRanking);
+
+        void ConfirmEntry(GPChromeDriver cachedDriver, string foreignLeagueId);
     }
 
     public class RemoteFanDuelAcc : IRemoteFanDuelAcc
@@ -251,6 +257,62 @@ namespace GP.Accessors.RemoteLeagueAccessor
             return null;
         }
 
+        public void NavigateToLeague(GPChromeDriver cachedDriver, FantasyLeagueEntry interestedLeague)
+        {
+            //cachedDriver.Url = string.Format(FOREIGNSITE_LEAGUE, interestedLeague.ForeignId);
+            cachedDriver.Url = interestedLeague.Url;
+            cachedDriver.Navigate();
+
+            /*<input type="checkbox" id="probablePlayersOnlyCheckbox" class="probablePlayersOnlyCheckbox" checked="">
+             */
+            var probableCheck = cachedDriver.FindElementById("probablePlayersOnlyCheckbox");
+            probableCheck.Click();
+        }
+
+        public void AddPlayerToRoster(GPChromeDriver cachedDriver, string foreignLeagueId, FantasyPlayerRanking fantasyPlayerRanking)
+        {
+            //ensure it's within view
+            //<input type="search" results="10" autosave="fd-player-search" incremental="" placeholder="Find a player..." id="player-search">
+
+            var textboxElement = cachedDriver.FindElementById("player-search");
+            textboxElement.SendKeys(fantasyPlayerRanking.Name);
+
+            System.Threading.Thread.Sleep(2000);
+            /*<tr id="playerListPlayerId_6234" data-role="player" data-position="P" data-fixture="95394" data-probable="" class="pR  fixtureId_95394 teamId_609 probablePitcher  news-old">
+									<td class="player-position">P</td>
+									<td class="player-name"><div onclick="sSts('6234_12026')">Jordan Zimmermann<span class="player-badge player-badge-probable-pitcher">P</span></div></td>
+									<td class="player-fppg">11.8</td>
+									<td class="player-played">32</td>
+									<td class="player-fixture">NYM@<b>WAS</b></td>
+									<td class="player-salary">$9,900</td>
+									<td class="player-add">
+										<a data-role="add" id="add-button" data-player-id="6234" class="button tiny text player-add-button"><i class="icon"></i></a>
+										<a data-role="remove" id="remove-button" data-player-id="6234" class="button tiny text player-remove-button"><i class="icon">␡</i></a>
+									</td>
+								</tr>             
+             */
+
+            string tableId = string.Format("playerListPlayerId_{0}", fantasyPlayerRanking.ForeignId);
+            var tableElement = cachedDriver.FindElementsById(tableId);
+            var addButton = tableElement.First().FindElement(By.Id("add-button"));
+
+            addButton.Click();
+
+            /*
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < fantasyPlayerRanking.Name.Length + 10; i++)
+                sb.Append("\b");
+            textboxElement.SendKeys(sb.ToString());
+            */
+        }
+
+        public void ConfirmEntry(GPChromeDriver cachedDriver, string foreignLeagueId)
+        {
+            /*<input id="enterButton" type="submit" class="button jumbo primary" value="Enter" data-nav-warning="off">
+             */
+            var enterButton = cachedDriver.FindElementById("enterButton");
+            enterButton.Click();
+        }
 
 
 

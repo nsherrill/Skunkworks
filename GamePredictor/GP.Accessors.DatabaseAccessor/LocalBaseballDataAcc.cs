@@ -31,6 +31,8 @@ namespace GP.Accessors.DatabaseAccessor
         FantasyPlayerRanking[] GetPlayerRankings(string leagueForeignId);
 
         RankingsConfiguration GetRankingsConfiguration();
+
+        DateTime GetMaxAvailableDataDate();
     }
 
     public class LocalBaseballDataAcc : ILocalBaseballDataAcc
@@ -834,6 +836,23 @@ select * from dbo.FantasyPlayers where foreignleagueid in ({FANTASY_LEAGUEIDS});
 
             return result;
         }
+
+        public DateTime GetMaxAvailableDataDate()
+        {
+            string sql = @"
+    SELECT top 1 [date] 
+      FROM [GamePredictor].[dbo].[GameEvents]
+      order by [date] desc";
+
+            List<ValuePair> paramList = new List<ValuePair>();
+
+            List<List<object>> resultReader = dbAcc.ExecuteQuery(sql, paramList.ToArray(), (rdr, index) =>
+            {
+                return (DateTime)rdr[0];
+            });
+
+            return (DateTime)resultReader[0][0];
+        }
         #endregion
 
         #region fantasy player writer privates
@@ -1309,6 +1328,5 @@ select * from dbo.FantasyPlayers where foreignleagueid in ({FANTASY_LEAGUEIDS});
             return sql;
         }
         #endregion
-
     }
 }

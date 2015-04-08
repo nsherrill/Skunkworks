@@ -22,6 +22,10 @@ namespace GP.Engines.DataRetrievalEngine
         FantasyPlayer[] GetPlayersForLeague(GPChromeDriver cachedDriver, string leagueForeignId, string url);
 
         void GetandWriteLeagueRoster(GPChromeDriver cachedDriver, FantasyLeagueEntry interestedLeague);
+
+        DateTime GetMaxAvailableDataDate();
+
+        bool RegisterForLeague(GPChromeDriver cachedDriver, FantasyLeagueEntry interestedLeague, FantasyRoster roster);
     }
 
     public class BaseballDataRetrieverEng : IBaseballDataRetrieverEng
@@ -155,6 +159,35 @@ namespace GP.Engines.DataRetrievalEngine
                 interestedLeague.Starting1B = result.Starting1B;
                 interestedLeague.Starting2B = result.Starting2B;
                 interestedLeague.Starting3B = result.Starting3B;
+            }
+        }
+
+        public DateTime GetMaxAvailableDataDate()
+        {
+            DateTime result = localBaseballAcc.GetMaxAvailableDataDate();
+
+            return result;
+        }
+
+        public bool RegisterForLeague(GPChromeDriver cachedDriver, FantasyLeagueEntry interestedLeague, FantasyRoster roster)
+        {
+            try
+            {
+                fanDuelAcc.NavigateToLeague(cachedDriver, interestedLeague);
+
+                for (int i = 0; i < roster.PlayersToSelect.Length; i++)
+                {
+                    fanDuelAcc.AddPlayerToRoster(cachedDriver, interestedLeague.ForeignId, roster.PlayersToSelect[i]);
+                }
+                //fanDuelAcc.RegisterForLeague(interestedLeague);
+
+                fanDuelAcc.ConfirmEntry(cachedDriver, interestedLeague.ForeignId);
+                
+                return true;
+            }
+            catch(Exception e)
+            {
+                return false;
             }
         }
     }

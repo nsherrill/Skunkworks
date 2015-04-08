@@ -32,7 +32,8 @@ namespace GP.Managers.DataRetrievalManager
 
         public void GetBaseballData()
         {
-            DateTime date = DateTime.Parse("3/17/2015");
+            DateTime date = dataEng.GetMaxAvailableDataDate();
+            //DateTime date = DateTime.Parse("3/17/2015");
             while (date < DateTime.Now)//for (int i = 0; i < 2; i++)
             {
                 MassData data = dataEng.EnsureLocalDataForDate(date);
@@ -67,18 +68,28 @@ namespace GP.Managers.DataRetrievalManager
                 RankingsConfiguration config = localBaseballDataAcc.GetRankingsConfiguration();
 
                 //foreach (var interestedLeague in allInterestedLeagues)
-                for (int i = 0; i < allInterestedLeagues.Length; i++)
+                for (int i = 0; i < allInterestedLeagues.Length
+                    && i < 1
+                    ; i++)
                 {
-                    var interestedLeague = allInterestedLeagues[i];
+                    try
+                    {
+                        var interestedLeague = allInterestedLeagues[i];
 
-                    FantasyPlayer[] players = dataEng.GetPlayersForLeague(cachedDriver, interestedLeague.ForeignId, interestedLeague.Url);
+                        FantasyPlayer[] players = dataEng.GetPlayersForLeague(cachedDriver, interestedLeague.ForeignId, interestedLeague.Url);
 
-                    dataEng.GetandWriteLeagueRoster(cachedDriver, interestedLeague);
+                        dataEng.GetandWriteLeagueRoster(cachedDriver, interestedLeague);
 
-                    FantasyPlayerRanking[] playerOptions = localBaseballDataAcc.GetPlayerRankings(interestedLeague.ForeignId);
+                        FantasyPlayerRanking[] playerOptions = localBaseballDataAcc.GetPlayerRankings(interestedLeague.ForeignId);
 
-                    var configType = config.GetConfigType(i, allInterestedLeagues.Length);
-                    var roster = rankingsGeneratorEng.GenerateRoster(interestedLeague, playerOptions, configType);
+                        var configType = config.GetConfigType(i, allInterestedLeagues.Length);
+                        var roster = rankingsGeneratorEng.GenerateRoster(interestedLeague, playerOptions, configType);
+
+                        bool result = dataEng.RegisterForLeague(cachedDriver, interestedLeague, roster);
+                    }
+                    catch (Exception e)
+                    {
+                    }
                 }
             }
             catch

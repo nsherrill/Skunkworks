@@ -41,6 +41,7 @@ namespace GP.Engines.RankingsGeneratorEngine
         {
             List<FantasyPlayerRanking> results = new List<FantasyPlayerRanking>();
 
+            double currentSalary = 0;
             if (interestedLeague.StartingP > 0)
             {
                 var allPitchers = playerOptions.Where(p => p.Position == BaseballPosition.pos_P).Where(p => p.Hits > 100);
@@ -50,17 +51,32 @@ namespace GP.Engines.RankingsGeneratorEngine
                 var selectedPitcher = allPitchers.Where(p => p.AVG / p.ERA == maxPitchCalc).FirstOrDefault();
                 results.Add(selectedPitcher);
                 interestedLeague.StartingP--;
+                currentSalary += selectedPitcher.Value;
             }
 
             List<BaseballPosition> remainingSpots = interestedLeague.RemainingRosterSpots();
             while (results.Count < remainingSpots.Count)
-            {
-                var bestRemaining = playerOptions.Where(p => remainingSpots.Contains(p.Position)).Where(p => p.Hits > 100);
+            {                
+                var bestRemaining = playerOptions
+                    .Where(p => remainingSpots
+                        .Contains(p.Position)
+                        && p.Hits > 100
+                        && !results.Select(r => r.ForeignId).Contains(p.ForeignId)
+                        && p.Value < (interestedLeague.SalaryCap - currentSalary));
                 if (bestRemaining.Count() == 0)
-                    bestRemaining = playerOptions.Where(p => remainingSpots.Contains(p.Position));
+                    bestRemaining = playerOptions
+                        .Where(p => remainingSpots.Contains(p.Position)
+                        && !results.Select(r => r.ForeignId).Contains(p.ForeignId)
+                        && p.Value < (interestedLeague.SalaryCap - currentSalary));
                 var maxCalc = bestRemaining.Select(p => p.AVG / p.ERA).Max();
-                var selected = bestRemaining.Where(p => remainingSpots.Contains(p.Position) && p.AVG / p.ERA == maxCalc).FirstOrDefault();
+                var selected = bestRemaining
+                    .Where(p => remainingSpots.Contains(p.Position) 
+                        && p.AVG / p.ERA == maxCalc
+                        && !results.Select(r => r.ForeignId).Contains(p.ForeignId)
+                        && p.Value < (interestedLeague.SalaryCap - currentSalary))
+                    .FirstOrDefault();
                 results.Add(selected);
+                currentSalary += selected.Value;
                 switch (selected.Position)
                 {
                     case BaseballPosition.pos_1B:
@@ -110,8 +126,8 @@ namespace GP.Engines.RankingsGeneratorEngine
             List<BaseballPosition> remainingSpots = interestedLeague.RemainingRosterSpots();
             while (results.Count < remainingSpots.Count)
             {
-                var bestRemaining = playerOptions.Where(p => remainingSpots.Contains(p.Position) 
-                    && (results.Sum(r=>r.Value) + p.Value < interestedLeague.SalaryCap)).Where(p => p.Hits > 100);
+                var bestRemaining = playerOptions.Where(p => remainingSpots.Contains(p.Position)
+                    && (results.Sum(r => r.Value) + p.Value < interestedLeague.SalaryCap)).Where(p => p.Hits > 100);
                 if (bestRemaining.Count() == 0)
                     bestRemaining = playerOptions.Where(p => remainingSpots.Contains(p.Position));
                 var maxCalc = bestRemaining.Select(p => p.AVG / p.ERA).Max();

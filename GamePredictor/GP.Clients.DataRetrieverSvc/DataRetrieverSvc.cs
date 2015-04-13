@@ -21,7 +21,7 @@ namespace GP.Clients.DataRetrieverSvc
 
         protected override void OnStart(string[] args)
         {
-            ConsoleStart();
+            ConsoleStart(args);
         }
 
         protected override void OnStop()
@@ -29,14 +29,36 @@ namespace GP.Clients.DataRetrieverSvc
             ConsoleStop();
         }
 
-        internal void ConsoleStart()
+        internal void ConsoleStart(string[] args)
         {
-            dataRetrieverMgr.GetBaseballData();
-            dataRetrieverMgr.RetrieveFutureGames();
-            dataRetrieverMgr.SignUpForLeagues();
+            bool pullHistoricalData = true;
+            bool pullFutureGames = true;
+            bool signUpForLeagues = true;
 
+            if (args != null
+                && args.Length > 0)
+            {
+                foreach (var arg in args)
+                    if (!string.IsNullOrEmpty(arg))
+                        switch (arg.ToLower())
+                        {
+                            case "-justpull":
+                                signUpForLeagues = false;
+                                break;
+                            default:
+                                throw new NotImplementedException("Argument unknown: " + arg);
+                        }
+            }
 
-            //new DataRetrievalMgr().TEST_DESERIALIZE();
+            if (pullHistoricalData)
+                dataRetrieverMgr.GetBaseballData();
+
+            if (pullFutureGames)
+                dataRetrieverMgr.RetrieveFutureGames();
+
+            if (signUpForLeagues)
+                dataRetrieverMgr.SignUpForLeagues();
+
         }
 
         internal void ConsoleStop()

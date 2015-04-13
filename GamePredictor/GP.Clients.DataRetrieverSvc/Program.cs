@@ -20,7 +20,9 @@ namespace GP.Clients.DataRetrieverSvc
                 && args[0].Equals("console", StringComparison.InvariantCultureIgnoreCase))
             {
                 var dataRetriverSvc = new DataRetrieverSvc();
-                dataRetriverSvc.ConsoleStart();
+                var list = args.ToList();
+                list.RemoveAt(0);
+                dataRetriverSvc.ConsoleStart(list.ToArray());
                 Console.WriteLine("Press enter to end service");
                 Console.ReadLine();
                 dataRetriverSvc.ConsoleStop();

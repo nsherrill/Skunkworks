@@ -19,5 +19,7 @@ namespace GP.Shared.Common
         public double AVG { get; set; }
 
         public double ERA { get; set; }
+
+        public bool IsHome { get; set; }
     }
 }

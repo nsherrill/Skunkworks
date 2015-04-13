@@ -16,32 +16,85 @@ namespace GP.Engines.RankingsGeneratorEngine
     {
         public FantasyRoster GenerateRoster(FantasyLeagueEntry interestedLeague, FantasyPlayerRanking[] playerOptions, ConfigType configType)
         {
-            List<FantasyPlayerRanking> players;// = new List<FantasyPlayerRanking>();
-            switch (configType)
+            try
             {
-                case ConfigType.Conservative:
-                    players = GenerateRoster_Conservative(interestedLeague, playerOptions);
-                    break;
-                case ConfigType.Aggressive:
-                    players = GenerateRoster_Aggressive(interestedLeague, playerOptions);
-                    break;
-                default:
-                    throw new NotImplementedException();
-            }
+                List<FantasyPlayerRanking> players = new List<FantasyPlayerRanking>();
 
-            FantasyRoster result = new FantasyRoster()
+                var options = playerOptions.ToList();
+                int playerCount = options.Count;
+                double initialSalary = interestedLeague.SalaryCap;
+
+                for (int i = 0; i < playerCount; i++)
+                {
+                    FantasyPlayerRanking nextPlayer;
+                    switch (configType)
+                    {
+                        case ConfigType.Conservative:
+                            nextPlayer = DetermineNextPlayer_Conservative(interestedLeague, options.ToArray());
+                            break;
+                        case ConfigType.Aggressive:
+                            nextPlayer = DetermineNextPlayer_Aggressive(interestedLeague, options.ToArray());
+                            break;
+                        default:
+                            throw new NotImplementedException();
+                    }
+
+                    switch (nextPlayer.Position)
+                    {
+                        case BaseballPosition.pos_1B:
+                            interestedLeague.Starting1B--;
+                            break;
+                        case BaseballPosition.pos_2B:
+                            interestedLeague.Starting2B--;
+                            break;
+                        case BaseballPosition.pos_3B:
+                            interestedLeague.Starting3B--;
+                            break;
+                        case BaseballPosition.pos_SS:
+                            interestedLeague.StartingSS--;
+                            break;
+                        case BaseballPosition.pos_OF:
+                            interestedLeague.StartingOF--;
+                            break;
+                        case BaseballPosition.pos_C:
+                            interestedLeague.StartingC--;
+                            break;
+                        case BaseballPosition.pos_P:
+                            interestedLeague.StartingP--;
+                            break;
+                    }
+
+                    interestedLeague.SalaryCap -= nextPlayer.Value;
+                    var index = options.Select(o => o.ForeignId).ToList().IndexOf(nextPlayer.ForeignId);
+                    options.RemoveAt(index);
+                    index = options.Select(o => o.ForeignId).ToList().IndexOf(nextPlayer.ForeignId);
+                    while (index >= 0)
+                    {
+                        options.RemoveAt(index);
+                        index = options.Select(o => o.ForeignId).ToList().IndexOf(nextPlayer.ForeignId);
+                    }
+                }
+
+                interestedLeague.SalaryCap = initialSalary;
+
+                FantasyRoster result = new FantasyRoster()
+                {
+                    ForeignLeagueId = long.Parse(interestedLeague.ForeignId),
+                    PlayersToSelect = players.ToArray()
+                };
+                return result;
+            }
+            catch (Exception e)
             {
-                ForeignLeagueId = long.Parse(interestedLeague.ForeignId),
-                PlayersToSelect = players.ToArray()
-            };
-            return result;
+                return null;
+            }
         }
 
-        private List<FantasyPlayerRanking> GenerateRoster_Conservative(FantasyLeagueEntry interestedLeague, FantasyPlayerRanking[] playerOptions)
+        private FantasyPlayerRanking DetermineNextPlayer_Aggressive(FantasyLeagueEntry interestedLeague, FantasyPlayerRanking[] playerOptions)
         {
-            List<FantasyPlayerRanking> results = new List<FantasyPlayerRanking>();
 
-            double currentSalary = 0;
+            FantasyPlayerRanking selected = null;
+
             if (interestedLeague.StartingP > 0)
             {
                 var allPitchers = playerOptions.Where(p => p.Position == BaseballPosition.pos_P).Where(p => p.Hits > 100);
@@ -49,119 +102,56 @@ namespace GP.Engines.RankingsGeneratorEngine
                     allPitchers = playerOptions.Where(p => p.Position == BaseballPosition.pos_P);
                 var maxPitchCalc = allPitchers.Select(p => p.AVG / p.ERA).Max();
                 var selectedPitcher = allPitchers.Where(p => p.AVG / p.ERA == maxPitchCalc).FirstOrDefault();
-                results.Add(selectedPitcher);
+                selected = selectedPitcher;
                 interestedLeague.StartingP--;
-                currentSalary += selectedPitcher.Value;
             }
-
-            List<BaseballPosition> remainingSpots = interestedLeague.RemainingRosterSpots();
-            while (results.Count < remainingSpots.Count)
-            {                
+            else
+            {
+                List<BaseballPosition> remainingSpots = interestedLeague.RemainingRosterSpots();
                 var bestRemaining = playerOptions
                     .Where(p => remainingSpots
                         .Contains(p.Position)
                         && p.Hits > 100
-                        && !results.Select(r => r.ForeignId).Contains(p.ForeignId)
-                        && p.Value < (interestedLeague.SalaryCap - currentSalary));
+                        && p.Value < interestedLeague.SalaryCap);
                 if (bestRemaining.Count() == 0)
                     bestRemaining = playerOptions
                         .Where(p => remainingSpots.Contains(p.Position)
-                        && !results.Select(r => r.ForeignId).Contains(p.ForeignId)
-                        && p.Value < (interestedLeague.SalaryCap - currentSalary));
-                var maxCalc = bestRemaining.Select(p => p.AVG / p.ERA).Max();
-                var selected = bestRemaining
-                    .Where(p => remainingSpots.Contains(p.Position) 
-                        && p.AVG / p.ERA == maxCalc
-                        && !results.Select(r => r.ForeignId).Contains(p.ForeignId)
-                        && p.Value < (interestedLeague.SalaryCap - currentSalary))
-                    .FirstOrDefault();
-                results.Add(selected);
-                currentSalary += selected.Value;
-                switch (selected.Position)
-                {
-                    case BaseballPosition.pos_1B:
-                        interestedLeague.Starting1B--;
-                        break;
-                    case BaseballPosition.pos_2B:
-                        interestedLeague.Starting2B--;
-                        break;
-                    case BaseballPosition.pos_3B:
-                        interestedLeague.Starting3B--;
-                        break;
-                    case BaseballPosition.pos_SS:
-                        interestedLeague.StartingSS--;
-                        break;
-                    case BaseballPosition.pos_OF:
-                        interestedLeague.StartingOF--;
-                        break;
-                    case BaseballPosition.pos_C:
-                        interestedLeague.StartingC--;
-                        break;
-                    case BaseballPosition.pos_P:
-                        interestedLeague.StartingP--;
-                        break;
-                }
+                        && p.Value < interestedLeague.SalaryCap);
 
-                remainingSpots = interestedLeague.RemainingRosterSpots();
+                var maxCalc = bestRemaining.Select(p => p.AVG / p.ERA).Max();
+                selected = bestRemaining
+                    .Where(p => remainingSpots.Contains(p.Position)
+                        && p.AVG / p.ERA == maxCalc
+                        && p.Value < interestedLeague.SalaryCap)
+                    .FirstOrDefault();
             }
-            isnt filling out a full league yet...;
-            return results;
+
+            return selected;
         }
 
-        private List<FantasyPlayerRanking> GenerateRoster_Aggressive(FantasyLeagueEntry interestedLeague, FantasyPlayerRanking[] playerOptions)
+        private FantasyPlayerRanking DetermineNextPlayer_Conservative(FantasyLeagueEntry interestedLeague, FantasyPlayerRanking[] playerOptions)
         {
-            List<FantasyPlayerRanking> results = new List<FantasyPlayerRanking>();
-
-            if (interestedLeague.StartingP > 0)
-            {
-                var allPitchers = playerOptions.Where(p => p.Position == BaseballPosition.pos_P).Where(p => p.Hits > 100);
-                if (allPitchers.Count() == 0)
-                    allPitchers = playerOptions.Where(p => p.Position == BaseballPosition.pos_P);
-                var maxPitchCalc = allPitchers.Select(p => p.AVG / p.ERA).Max();
-                var selectedPitcher = allPitchers.Where(p => p.AVG / p.ERA == maxPitchCalc).FirstOrDefault();
-                results.Add(selectedPitcher);
-                interestedLeague.StartingP--;
-            }
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+            FantasyPlayerRanking selected = null;
 
             List<BaseballPosition> remainingSpots = interestedLeague.RemainingRosterSpots();
-            while (results.Count < remainingSpots.Count)
+            var bestRemaining = playerOptions
+                .Where(p => remainingSpots
+                    .Contains(p.Position)
+                    && p.Hits > 100
+                    && p.Value < interestedLeague.SalaryCap);
+            if (bestRemaining.Count() == 0)
+                bestRemaining = playerOptions
+                    .Where(p => remainingSpots.Contains(p.Position)
+                        && p.Value < interestedLeague.SalaryCap);
+            if (bestRemaining.Count() == 0)
             {
-                var bestRemaining = playerOptions.Where(p => remainingSpots.Contains(p.Position)
-                    && (results.Sum(r => r.Value) + p.Value < interestedLeague.SalaryCap)).Where(p => p.Hits > 100);
-                if (bestRemaining.Count() == 0)
-                    bestRemaining = playerOptions.Where(p => remainingSpots.Contains(p.Position));
-                var maxCalc = bestRemaining.Select(p => p.AVG / p.ERA).Max();
-                var selected = bestRemaining.Where(p => remainingSpots.Contains(p.Position) && p.AVG / p.ERA == maxCalc).FirstOrDefault();
-                results.Add(selected);
-                switch (selected.Position)
-                {
-                    case BaseballPosition.pos_1B:
-                        interestedLeague.Starting1B--;
-                        break;
-                    case BaseballPosition.pos_2B:
-                        interestedLeague.Starting2B--;
-                        break;
-                    case BaseballPosition.pos_3B:
-                        interestedLeague.Starting3B--;
-                        break;
-                    case BaseballPosition.pos_SS:
-                        interestedLeague.StartingSS--;
-                        break;
-                    case BaseballPosition.pos_OF:
-                        interestedLeague.StartingOF--;
-                        break;
-                    case BaseballPosition.pos_C:
-                        interestedLeague.StartingC--;
-                        break;
-                    case BaseballPosition.pos_P:
-                        interestedLeague.StartingP--;
-                        break;
-                }
-
-                remainingSpots = interestedLeague.RemainingRosterSpots();
             }
+            selected = bestRemaining.OrderByDescending(p => p.AVG / p.ERA).First();
+            sw.Stop();
 
-            return results;
+            return selected;
         }
     }
 }

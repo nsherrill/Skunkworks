@@ -64,18 +64,25 @@ namespace GP.Accessors.RemoteBaseballDataAccessor
 
         public MassData FindAllGamesDataFromContents(string pageContents)
         {
-            string[] gameIds = RegexHelper.GetAllRegex(@"""(\d*)-gamebox""", pageContents, 1);
             List<GameEvent> allGames = new List<GameEvent>();
-
-            foreach (var gameId in gameIds)
+            //string[] gameIds = RegexHelper.GetAllRegex(@"""(\d*)-gamebox""", pageContents, 1);
+            int startIndex = pageContents.IndexOf("boxscore");
+            if (startIndex > 0)
             {
-                string gameUrl = string.Format(FORMATTER_INDIVIDUALGAMEURL, gameId);
-                string gamePageContent = remoteAcc.GetPageContent(gameUrl);
-                GameEvent newGame = FindGameDataFromContents(gameId, gamePageContent);
-                if (newGame != null)
-                    allGames.Add(newGame);
-                else
-                    break;
+                string shortenedContents = pageContents.Substring(startIndex);
+                string[] gameIds = RegexHelper.GetAllRegex(@"http://espn\.go\.com/mlb/boxscore\?gameId=(\d*)""", shortenedContents, 1);
+
+
+                foreach (var gameId in gameIds)
+                {
+                    string gameUrl = string.Format(FORMATTER_INDIVIDUALGAMEURL, gameId);
+                    string gamePageContent = remoteAcc.GetPageContent(gameUrl);
+                    GameEvent newGame = FindGameDataFromContents(gameId, gamePageContent);
+                    if (newGame != null)
+                        allGames.Add(newGame);
+                    else
+                        break;
+                }
             }
 
             MassData result = new MassData()
@@ -93,6 +100,26 @@ namespace GP.Accessors.RemoteBaseballDataAccessor
                 string team1 = RegexHelper.GetRegex(@"<title>(.+?) vs\. (.+?) - Box Score - ", gamePageContent, 1);
                 string team2 = RegexHelper.GetRegex(@"<title>(.+?) vs\. (.+?) - Box Score - ", gamePageContent, 2);
 
+                string substringContent = gamePageContent.Substring(gamePageContent.IndexOf("<span class=\"title\">Conversation</span>"));
+                string[] teamHittingTables = RegexHelper.GetAllRegex(@"(.*? *\d+ +\d+ +\d+ +\d+)", substringContent, 1);
+                //string[] homeTeamHittingTables = RegexHelper.GetAllRegex(@"\d+ +\d+ +\d+ +\d+(.*? *?\d+ +\d+ +\d+ +\d+) *$", substringContent, 1);
+
+                string[][] cleanTables = CleanTables(teamHittingTables);
+                // string[][] cleanHomeTables = CleanTables(homeTeamHittingTables);
+
+                List<PlayerEventStats> allPlayerStats = new List<PlayerEventStats>();
+                string[] headers = { "hitters", "AB", "R", "H", "BI" };
+
+                for (int i = 0; i < cleanTables.Length; i++)
+                {
+                    var teamToUse = i % 2 == 0 ? team1 : team2;
+                    PlayerEventStats playerData = dataParser.ParsePlayerEventStats(gameId, teamToUse, cleanTables[i], headers);
+                    allPlayerStats.Add(playerData);
+                }
+
+
+
+                /*
                 string[] dataTables = RegexHelper.GetAllRegex(@"<table border=""0"" width=""100%"" class=""mod-data mlb-box"">(.+?)</table>", gamePageContent);
                 List<PlayerEventStats> allPlayerStats = new List<PlayerEventStats>();
 
@@ -120,6 +147,7 @@ namespace GP.Accessors.RemoteBaseballDataAccessor
                         allPlayerStats.Add(playerData);
                     }
                 }
+                */
 
                 List<Team> teams = new List<Team>();
                 teams.Add(new Team()
@@ -238,6 +266,41 @@ namespace GP.Accessors.RemoteBaseballDataAccessor
             {
                 return null;
             }
+        }
+
+        private string[][] CleanTables(string[] source)
+        {
+            List<string[]> result = new List<string[]>();
+            for (int i = 0; i < source.Length - 1; i++) // ignore bottom row
+            {
+                string name = "";
+                bool notName = false;
+                List<string> data = new List<string>();
+                foreach (var col in source[i].Split(' '))
+                    if (!string.IsNullOrWhiteSpace(col))
+                    {
+                        long templong;
+                        if (!long.TryParse(col, out templong)
+                            && !notName)
+                        {
+                            if (name.Length > 0)
+                                name += ' ';
+                            name += col;
+                        }
+                        else
+                        {
+                            if (!notName)
+                                data.Add(name);
+                            notName = true;
+                            data.Add(col);
+                        }
+                    }
+                if (name.Equals("totals", StringComparison.InvariantCultureIgnoreCase))
+                    break;
+                result.Add(data.ToArray());
+            }
+
+            return result.ToArray();
         }
 
         public FutureGameEvent[] FindFutureGamesForDate(DateTime desiredDate)

@@ -9,19 +9,19 @@ namespace GP.Accessors.RemoteBaseballDataAccessor
 {
     public interface IRemoteBaseballDataParser
     {
-        PlayerEventStats ParsePlayerEventStats(string gameId, string teamId, List<string> data, List<string> headers);
+        PlayerEventStats ParsePlayerEventStats(string gameId, string teamId, string[] data, string[] headers);
     }
 
     public class RemoteBaseballDataParser : IRemoteBaseballDataParser
     {
-        public PlayerEventStats ParsePlayerEventStats(string gameIdStr, string teamIdStr, List<string> data, List<string> headers)
+        public PlayerEventStats ParsePlayerEventStats(string gameIdStr, string teamIdStr, string[] data, string[] headers)
         {
             List<ValuePair> resultData = new List<ValuePair>();
             string name = string.Empty;
             string foreignPlayerIdStr = string.Empty;
             PlayerDataType dataType = PlayerDataType.Unknown;
 
-            for (int i = 0; i < data.Count && i < headers.Count; i++)
+            for (int i = 0; i < data.Length && i < headers.Length; i++)
             {
                 if (headers[i].Equals("hitters", StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -95,6 +95,7 @@ namespace GP.Accessors.RemoteBaseballDataAccessor
                 }
             }
 
+            // need to get foreign player id
             int foreignPlayerId = int.Parse(foreignPlayerIdStr);
             int gameId = int.Parse(gameIdStr);
             PlayerEventStats result = new PlayerEventStats()

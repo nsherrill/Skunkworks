@@ -136,6 +136,7 @@ namespace GP.Accessors.RemoteLeagueAccessor
         {
             driver.Url = url;
             driver.Navigate();
+
             var allTxt = driver.PageSource;
             allTxt = allTxt.Substring(allTxt.IndexOf("FD.playerpicker.allPlayersFullData = ") + "FD.playerpicker.allPlayersFullData = ".Length);
             allTxt = allTxt.Substring(0, allTxt.IndexOf("FD.playerpicker.teamIdToFixtureCompactString =")).Trim();

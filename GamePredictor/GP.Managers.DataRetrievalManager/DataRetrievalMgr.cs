@@ -18,6 +18,8 @@ namespace GP.Managers.DataRetrievalManager
 
         void RetrieveFutureGames();
 
+        void RetrieveCurrentLeagues();
+
         void SignUpForLeagues();
     }
 
@@ -27,6 +29,7 @@ namespace GP.Managers.DataRetrievalManager
         IRemoteDataEng remoteDataEng = new RemoteDataEng();
         ILocalBaseballDataAcc localBaseballDataAcc = new LocalBaseballDataAcc();
         IRankingsGeneratorEng rankingsGeneratorEng = new RankingsGeneratorEng();
+        ILocalBaseballDataAcc localBaseballAcc = new LocalBaseballDataAcc();
 
         private GPChromeDriver cachedDriver { get; set; }
 
@@ -53,6 +56,16 @@ namespace GP.Managers.DataRetrievalManager
                 games.AddRange(tempGames2);
         }
 
+        public void RetrieveCurrentLeagues()
+        {
+            if (cachedDriver == null
+                || !cachedDriver.HasLoggedIn)
+            {
+                cachedDriver = remoteDataEng.GenerateDriver();
+            }
+            dataEng.PullAvailableLeagues(cachedDriver);
+        }
+
         public void SignUpForLeagues()
         {
             try
@@ -63,7 +76,9 @@ namespace GP.Managers.DataRetrievalManager
                     cachedDriver = remoteDataEng.GenerateDriver();
                 }
 
-                var allInterestedLeagues = dataEng.GetAvailableLeagues(cachedDriver);
+                double minDollar = ConfigHelper.MinimumBuyIn;
+                double maxDollar = ConfigHelper.MaximumBuyIn;
+                var allInterestedLeagues = localBaseballAcc.UpdateFutureFantasyLeagueInterest(minDollar, maxDollar);
 
                 RankingsConfiguration config = localBaseballDataAcc.GetRankingsConfiguration();
 

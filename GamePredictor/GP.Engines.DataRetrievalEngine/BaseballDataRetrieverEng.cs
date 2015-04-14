@@ -17,7 +17,7 @@ namespace GP.Engines.DataRetrievalEngine
 
         FutureGameEvent[] GetFutureGamesData(DateTime dateTime);
 
-        FantasyLeagueEntry[] GetAvailableLeagues(GPChromeDriver chromeDriver);
+        void PullAvailableLeagues(GPChromeDriver chromeDriver);
 
         FantasyPlayer[] GetPlayersForLeague(GPChromeDriver cachedDriver, string leagueForeignId, string url);
 
@@ -79,7 +79,7 @@ namespace GP.Engines.DataRetrievalEngine
         }
 
         private DateTime lastLeagueRetrievalDate = DateTime.MinValue;
-        public FantasyLeagueEntry[] GetAvailableLeagues(GPChromeDriver chromeDriver)
+        public void PullAvailableLeagues(GPChromeDriver chromeDriver)
         {
             Console.WriteLine("Getting remote fantasy leagues on " + DateTime.Now.ToString());
             //get remotely
@@ -109,12 +109,6 @@ namespace GP.Engines.DataRetrievalEngine
                 }
                 localBaseballAcc.WriteFantasyLeagues(temp.ToArray());
             }
-
-            double minDollar = ConfigHelper.MinimumBuyIn;
-            double maxDollar = ConfigHelper.MaximumBuyIn;
-            var interestedResults = localBaseballAcc.UpdateFutureFantasyLeagueInterest(minDollar, maxDollar);
-
-            return interestedResults;
         }
 
         public FantasyPlayer[] GetPlayersForLeague(GPChromeDriver cachedDriver, string leagueForeignId, string url)

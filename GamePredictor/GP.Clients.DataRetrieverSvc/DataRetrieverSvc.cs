@@ -33,6 +33,7 @@ namespace GP.Clients.DataRetrieverSvc
         {
             bool pullHistoricalData = true;
             bool pullFutureGames = true;
+            bool pullCurrentLeagues = true;
             bool signUpForLeagues = true;
 
             if (args != null
@@ -42,9 +43,22 @@ namespace GP.Clients.DataRetrieverSvc
                     if (!string.IsNullOrEmpty(arg))
                         switch (arg.ToLower())
                         {
-                            case "-justpull":
+                            case "-nopullhistory":
+                                pullHistoricalData = false;
+                                break;
+
+                            case "-nopullgames":
+                                pullFutureGames = false;
+                                break;
+
+                            case "-nopullleagues":
+                                pullCurrentLeagues = false;
+                                break;
+
+                            case "-nosignup":
                                 signUpForLeagues = false;
                                 break;
+
                             default:
                                 throw new NotImplementedException("Argument unknown: " + arg);
                         }
@@ -55,6 +69,9 @@ namespace GP.Clients.DataRetrieverSvc
 
             if (pullFutureGames)
                 dataRetrieverMgr.RetrieveFutureGames();
+
+            if (pullCurrentLeagues)
+                dataRetrieverMgr.RetrieveCurrentLeagues();
 
             if (signUpForLeagues)
                 dataRetrieverMgr.SignUpForLeagues();

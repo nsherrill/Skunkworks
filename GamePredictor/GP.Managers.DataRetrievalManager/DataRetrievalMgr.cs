@@ -20,7 +20,7 @@ namespace GP.Managers.DataRetrievalManager
 
         void RetrieveCurrentLeagues();
 
-        void SignUpForLeagues();
+        void SignUpForLeagues(long leagueCap = -1);
     }
 
     public class DataRetrievalMgr : IDataRetrievalMgr
@@ -66,7 +66,7 @@ namespace GP.Managers.DataRetrievalManager
             dataEng.PullAvailableLeagues(cachedDriver);
         }
 
-        public void SignUpForLeagues()
+        public void SignUpForLeagues(long leagueCap = -1)
         {
             try
             {
@@ -83,9 +83,10 @@ namespace GP.Managers.DataRetrievalManager
                 RankingsConfiguration config = localBaseballDataAcc.GetRankingsConfiguration();
 
                 //foreach (var interestedLeague in allInterestedLeagues)
-                for (int i = 0; i < allInterestedLeagues.Length
-                    && i < 1
-                    ; i++)
+                for (int i = 0; 
+                    i < allInterestedLeagues.Length
+                        && (i < leagueCap || leagueCap < 0);
+                    i++)
                 {
                     try
                     {

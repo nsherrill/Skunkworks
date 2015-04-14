@@ -35,11 +35,16 @@ namespace GP.Clients.DataRetrieverSvc
             bool pullFutureGames = true;
             bool pullCurrentLeagues = true;
             bool signUpForLeagues = true;
+            long leagueCap = -1;
 
             if (args != null
                 && args.Length > 0)
             {
-                foreach (var arg in args)
+                //foreach (var arg in args)
+                for (int i = 0; i < args.Length; i++)
+                {
+                    var arg = args[i];
+
                     if (!string.IsNullOrEmpty(arg))
                         switch (arg.ToLower())
                         {
@@ -59,9 +64,15 @@ namespace GP.Clients.DataRetrieverSvc
                                 signUpForLeagues = false;
                                 break;
 
+                            case "-capleagues":
+                                leagueCap = long.Parse(args[i + 1]);
+                                i++;
+                                break;
+
                             default:
                                 throw new NotImplementedException("Argument unknown: " + arg);
                         }
+                }
             }
 
             if (pullHistoricalData)
@@ -74,7 +85,7 @@ namespace GP.Clients.DataRetrieverSvc
                 dataRetrieverMgr.RetrieveCurrentLeagues();
 
             if (signUpForLeagues)
-                dataRetrieverMgr.SignUpForLeagues();
+                dataRetrieverMgr.SignUpForLeagues(leagueCap);
 
         }
 

@@ -18,3 +18,14 @@ C:\workspaces\GamePredictor\GP.Accessors.RemoteBaseballDataAccessor\obj\Debug\GP
 C:\workspaces\GamePredictor\GP.Accessors.RemoteBaseballDataAccessor\obj\Debug\GP.Accessors.RemoteBaseballDataAccessor.pdb
 C:\workspaces\GamePredictor\GP.Accessors.RemoteBaseballDataAccessor\bin\Debug\WebDriver.dll
 C:\workspaces\GamePredictor\GP.Accessors.RemoteBaseballDataAccessor\bin\Debug\WebDriver.pdb
+C:\Code\Skunkworks\GamePredictor\GP.Accessors.RemoteBaseballDataAccessor\bin\Debug\GP.Accessors.RemoteBaseballDataAccessor.dll
+C:\Code\Skunkworks\GamePredictor\GP.Accessors.RemoteBaseballDataAccessor\bin\Debug\GP.Accessors.RemoteBaseballDataAccessor.pdb
+C:\Code\Skunkworks\GamePredictor\GP.Accessors.RemoteBaseballDataAccessor\bin\Debug\GP.Accessors.RemoteAccessor.dll
+C:\Code\Skunkworks\GamePredictor\GP.Accessors.RemoteBaseballDataAccessor\bin\Debug\GP.Shared.Common.dll
+C:\Code\Skunkworks\GamePredictor\GP.Accessors.RemoteBaseballDataAccessor\bin\Debug\WebDriver.dll
+C:\Code\Skunkworks\GamePredictor\GP.Accessors.RemoteBaseballDataAccessor\bin\Debug\GP.Accessors.RemoteAccessor.pdb
+C:\Code\Skunkworks\GamePredictor\GP.Accessors.RemoteBaseballDataAccessor\bin\Debug\GP.Shared.Common.pdb
+C:\Code\Skunkworks\GamePredictor\GP.Accessors.RemoteBaseballDataAccessor\bin\Debug\WebDriver.pdb
+C:\Code\Skunkworks\GamePredictor\GP.Accessors.RemoteBaseballDataAccessor\obj\Debug\RemoteBaseballDataAccessor.csprojResolveAssemblyReference.cache
+C:\Code\Skunkworks\GamePredictor\GP.Accessors.RemoteBaseballDataAccessor\obj\Debug\GP.Accessors.RemoteBaseballDataAccessor.dll
+C:\Code\Skunkworks\GamePredictor\GP.Accessors.RemoteBaseballDataAccessor\obj\Debug\GP.Accessors.RemoteBaseballDataAccessor.pdb

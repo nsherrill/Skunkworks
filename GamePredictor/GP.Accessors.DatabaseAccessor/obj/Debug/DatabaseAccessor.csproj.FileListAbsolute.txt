@@ -14,12 +14,3 @@ C:\workspaces\GamePredictor\GP.Accessors.DatabaseAccessor\obj\Debug\GP.Accessors
 C:\workspaces\GamePredictor\GP.Accessors.DatabaseAccessor\obj\Debug\GP.Accessors.DatabaseAccessor.pdb
 C:\workspaces\GamePredictor\GP.Accessors.DatabaseAccessor\bin\Debug\WebDriver.dll
 C:\workspaces\GamePredictor\GP.Accessors.DatabaseAccessor\bin\Debug\WebDriver.pdb
-C:\Code\Skunkworks\GamePredictor\GP.Accessors.DatabaseAccessor\bin\Debug\GP.Accessors.DatabaseAccessor.dll
-C:\Code\Skunkworks\GamePredictor\GP.Accessors.DatabaseAccessor\bin\Debug\GP.Accessors.DatabaseAccessor.pdb
-C:\Code\Skunkworks\GamePredictor\GP.Accessors.DatabaseAccessor\bin\Debug\GP.Shared.Common.dll
-C:\Code\Skunkworks\GamePredictor\GP.Accessors.DatabaseAccessor\bin\Debug\WebDriver.dll
-C:\Code\Skunkworks\GamePredictor\GP.Accessors.DatabaseAccessor\bin\Debug\GP.Shared.Common.pdb
-C:\Code\Skunkworks\GamePredictor\GP.Accessors.DatabaseAccessor\bin\Debug\WebDriver.pdb
-C:\Code\Skunkworks\GamePredictor\GP.Accessors.DatabaseAccessor\obj\Debug\DatabaseAccessor.csprojResolveAssemblyReference.cache
-C:\Code\Skunkworks\GamePredictor\GP.Accessors.DatabaseAccessor\obj\Debug\GP.Accessors.DatabaseAccessor.dll
-C:\Code\Skunkworks\GamePredictor\GP.Accessors.DatabaseAccessor\obj\Debug\GP.Accessors.DatabaseAccessor.pdb

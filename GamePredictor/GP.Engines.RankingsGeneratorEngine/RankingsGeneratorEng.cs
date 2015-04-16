@@ -39,30 +39,17 @@ namespace GP.Engines.RankingsGeneratorEngine
                             throw new NotImplementedException();
                     }
 
-                    switch (nextPlayer.Position)
+                    if (nextPlayer == null)
                     {
-                        case BaseballPosition.pos_1B:
-                            interestedLeague.Starting1B--;
-                            break;
-                        case BaseballPosition.pos_2B:
-                            interestedLeague.Starting2B--;
-                            break;
-                        case BaseballPosition.pos_3B:
-                            interestedLeague.Starting3B--;
-                            break;
-                        case BaseballPosition.pos_SS:
-                            interestedLeague.StartingSS--;
-                            break;
-                        case BaseballPosition.pos_OF:
-                            interestedLeague.StartingOF--;
-                            break;
-                        case BaseballPosition.pos_C:
-                            interestedLeague.StartingC--;
-                            break;
-                        case BaseballPosition.pos_P:
-                            interestedLeague.StartingP--;
-                            break;
+                        AdjustLeaguesPositionCount(interestedLeague, players[players.Count - 1].Position, 1);
+                        players.RemoveAt(players.Count - 1);
+                        i--;
+                        continue;
                     }
+
+                    AdjustLeaguesPositionCount(interestedLeague, nextPlayer.Position, -1);
+
+                    players.Add(nextPlayer);
 
                     interestedLeague.SalaryCap -= nextPlayer.Value;
                     var index = options.Select(o => o.ForeignId).ToList().IndexOf(nextPlayer.ForeignId);
@@ -87,6 +74,36 @@ namespace GP.Engines.RankingsGeneratorEngine
             catch (Exception e)
             {
                 return null;
+            }
+        }
+
+        private void AdjustLeaguesPositionCount(FantasyLeagueEntry interestedLeague, BaseballPosition position, int changeCount)
+        {
+            switch (position)
+            {
+                case BaseballPosition.pos_1B:
+                    interestedLeague.Starting1B += changeCount;
+                    break;
+                case BaseballPosition.pos_2B:
+                    interestedLeague.Starting2B += changeCount;
+                    break;
+                case BaseballPosition.pos_3B:
+                    interestedLeague.Starting3B += changeCount;
+                    break;
+                case BaseballPosition.pos_SS:
+                    interestedLeague.StartingSS += changeCount;
+                    break;
+                case BaseballPosition.pos_OF:
+                    interestedLeague.StartingOF += changeCount;
+                    break;
+                case BaseballPosition.pos_C:
+                    interestedLeague.StartingC += changeCount;
+                    break;
+                case BaseballPosition.pos_P:
+                    interestedLeague.StartingP += changeCount;
+                    break;
+                default:
+                    throw new NotSupportedException("Position isn't yet supported");
             }
         }
 

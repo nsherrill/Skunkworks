@@ -53,11 +53,11 @@ namespace GP.Accessors.RemoteLeagueAccessor
             try
             {
                 var mlbFilterButton = driver.FindElementByXPath("//*[@id=\"body\"]/section/div[2]/div[2]/div[3]/div[1]/ul/label[3]/li");
-                driver.ExecuteScript("arguments[0].scrollIntoView(true);", mlbFilterButton);
+            //    driver.ExecuteScript("arguments[0].scrollIntoView(true);", mlbFilterButton);
                 mlbFilterButton.Click();
 
                 var leaguesFilterButton = driver.FindElementByXPath("//*[@id=\"body\"]/section/div[2]/div[2]/div[3]/div[3]/ul/label[3]/li");
-                driver.ExecuteScript("arguments[0].scrollIntoView(true);", leaguesFilterButton);
+           //     driver.ExecuteScript("arguments[0].scrollIntoView(true);", leaguesFilterButton);
                 leaguesFilterButton.Click();
             }
             catch

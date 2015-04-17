@@ -73,5 +73,7 @@ namespace GP.Shared.Common
     {
         Aggressive,
         Conservative,
+        Aggressive_PitcherFirst,
+        Conservative_MostExpensive,
     }
 }

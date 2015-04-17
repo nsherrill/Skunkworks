@@ -21,7 +21,7 @@ namespace GP.Engines.DataRetrievalEngine
 
         FantasyPlayer[] GetPlayersForLeague(GPChromeDriver cachedDriver, string leagueForeignId, string url);
 
-        void GetandWriteLeagueRoster(GPChromeDriver cachedDriver, FantasyLeagueEntry interestedLeague);
+        bool GetandWriteLeagueRoster(GPChromeDriver cachedDriver, FantasyLeagueEntry interestedLeague);
 
         DateTime GetMaxAvailableDataDate();
 
@@ -103,11 +103,13 @@ namespace GP.Engines.DataRetrievalEngine
                     temp.Add(remoteResults[i]);
                     if (i > 5 && i % 50 == 0)
                     {
-                        localBaseballAcc.WriteFantasyLeagues(temp.ToArray());
+                        if (temp.Count > 0)
+                            localBaseballAcc.WriteFantasyLeagues(temp.ToArray());
                         temp.Clear();
                     }
                 }
-                localBaseballAcc.WriteFantasyLeagues(temp.ToArray());
+                if (temp.Count > 0)
+                    localBaseballAcc.WriteFantasyLeagues(temp.ToArray());
             }
         }
 
@@ -137,10 +139,14 @@ namespace GP.Engines.DataRetrievalEngine
             return players;
         }
 
-        public void GetandWriteLeagueRoster(GPChromeDriver cachedDriver, FantasyLeagueEntry interestedLeague)
+        public bool GetandWriteLeagueRoster(GPChromeDriver cachedDriver, FantasyLeagueEntry interestedLeague)
         {
             Console.WriteLine("Getting remote roster definition for " + interestedLeague.ForeignId);
             FantasyRosterDefinition result = fanDuelAcc.GetRoster(cachedDriver, interestedLeague.ForeignId, interestedLeague.Url);
+
+            var isValid = fanDuelAcc.ValidateLeague(cachedDriver, interestedLeague.Url);
+            if (!isValid)
+                return false;
 
             if (result != null)
             {
@@ -154,6 +160,8 @@ namespace GP.Engines.DataRetrievalEngine
                 interestedLeague.Starting2B = result.Starting2B;
                 interestedLeague.Starting3B = result.Starting3B;
             }
+
+            return true;
         }
 
         public DateTime GetMaxAvailableDataDate()
@@ -167,7 +175,9 @@ namespace GP.Engines.DataRetrievalEngine
         {
             try
             {
-                fanDuelAcc.NavigateToLeague(cachedDriver, interestedLeague);
+                var shouldContinue = fanDuelAcc.NavigateToLeague(cachedDriver, interestedLeague);
+                if (!shouldContinue)
+                    return false;
 
                 for (int i = 0; i < roster.PlayersToSelect.Length; i++)
                 {
@@ -176,10 +186,10 @@ namespace GP.Engines.DataRetrievalEngine
                 //fanDuelAcc.RegisterForLeague(interestedLeague);
 
                 fanDuelAcc.ConfirmEntry(cachedDriver, interestedLeague.ForeignId);
-                
+
                 return true;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return false;
             }

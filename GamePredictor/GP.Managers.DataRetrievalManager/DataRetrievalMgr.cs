@@ -81,11 +81,11 @@ namespace GP.Managers.DataRetrievalManager
                 var allInterestedLeagues = localBaseballAcc.UpdateFutureFantasyLeagueInterest(minDollar, maxDollar);
 
                 RankingsConfiguration config = localBaseballDataAcc.GetRankingsConfiguration();
-
+                int registeredCount = 0;
                 //foreach (var interestedLeague in allInterestedLeagues)
                 for (int i = 0; 
                     i < allInterestedLeagues.Length
-                        && (i < leagueCap || leagueCap < 0);
+                        && (registeredCount < leagueCap || leagueCap < 0);
                     i++)
                 {
                     try
@@ -94,14 +94,20 @@ namespace GP.Managers.DataRetrievalManager
 
                         FantasyPlayer[] players = dataEng.GetPlayersForLeague(cachedDriver, interestedLeague.ForeignId, interestedLeague.Url);
 
-                        dataEng.GetandWriteLeagueRoster(cachedDriver, interestedLeague);
-
+                        var isValid = dataEng.GetandWriteLeagueRoster(cachedDriver, interestedLeague);
+                        if (!isValid)
+                        {
+                            continue;
+                        }
                         FantasyPlayerRanking[] playerOptions = localBaseballDataAcc.GetPlayerRankings(interestedLeague.ForeignId);
 
                         var configType = config.GetConfigType(i, allInterestedLeagues.Length);
                         var roster = rankingsGeneratorEng.GenerateRoster(interestedLeague, playerOptions, configType);
 
                         bool result = dataEng.RegisterForLeague(cachedDriver, interestedLeague, roster);
+                        if(result)
+                            registeredCount++;
+
                     }
                     catch (Exception e)
                     {

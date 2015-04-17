@@ -28,3 +28,4 @@ C:\Code\Skunkworks\GamePredictor\GP.Shared.Common\bin\Debug\WebDriver.pdb
 C:\Code\Skunkworks\GamePredictor\GP.Shared.Common\bin\Debug\WebDriver.Support.pdb
 C:\Code\Skunkworks\GamePredictor\GP.Shared.Common\obj\Debug\GP.Shared.Common.dll
 C:\Code\Skunkworks\GamePredictor\GP.Shared.Common\obj\Debug\GP.Shared.Common.pdb
+C:\Code\Skunkworks\GamePredictor\GP.Shared.Common\obj\Debug\Common.csprojResolveAssemblyReference.cache

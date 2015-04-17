@@ -155,6 +155,7 @@ namespace GP.Accessors.DatabaseAccessor
                 HRs = rdr.GetInt("HRs"),
                 AVG = rdr.GetDouble("AVG"),
                 ERA = rdr.GetDouble("ERA"),
+                IsHome = rdr.GetBool("IsHome"),
             };
 
             return result;

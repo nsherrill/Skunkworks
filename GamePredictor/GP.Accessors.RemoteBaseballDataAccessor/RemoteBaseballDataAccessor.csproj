@@ -39,9 +39,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="RemoteBaseballDataAcc.cs" />
+    <Compile Include="IRemoteBaseballDataAcc.cs" />
+    <Compile Include="SportingCharts_RemoteBaseballDataParser.cs" />
+    <Compile Include="SportingCharts_RemoteBaseballDataAcc.cs" />
+    <Compile Include="ESPN_RemoteBaseballDataAcc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RemoteBaseballDataParser.cs" />
+    <Compile Include="ESPN_RemoteBaseballDataParser.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GP.Accessors.RemoteAccessor\RemoteAccessor.csproj">

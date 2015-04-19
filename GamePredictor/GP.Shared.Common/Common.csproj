@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigHelper.cs" />
+    <Compile Include="DataContracts\CurrentPlayerStats.cs" />
     <Compile Include="DataContracts\Enums.cs" />
     <Compile Include="DataContracts\FantasyPlayer.cs" />
     <Compile Include="DataContracts\FantasyPlayerRanking.cs" />

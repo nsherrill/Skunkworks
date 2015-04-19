@@ -35,6 +35,7 @@ namespace GP.Clients.DataRetrieverSvc
             bool pullFutureGames = true;
             bool pullCurrentLeagues = true;
             bool signUpForLeagues = true;
+            bool getBaseballStats = true;
             long leagueCap = -1;
 
             if (args != null
@@ -50,6 +51,7 @@ namespace GP.Clients.DataRetrieverSvc
                         {
                             case "-nopullhistory":
                                 pullHistoricalData = false;
+                                getBaseballStats = false;
                                 break;
 
                             case "-nopullgames":
@@ -75,10 +77,15 @@ namespace GP.Clients.DataRetrieverSvc
                 }
             }
 
-            if (pullHistoricalData)
+            if (pullHistoricalData
+                && false)
                 dataRetrieverMgr.GetBaseballData();
 
-            if (pullFutureGames)
+            if (getBaseballStats)
+                dataRetrieverMgr.GetCurrentBaseballStats();
+
+            if (pullFutureGames
+                && false)
                 dataRetrieverMgr.RetrieveFutureGames();
 
             if (pullCurrentLeagues)

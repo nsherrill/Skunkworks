@@ -8,25 +8,11 @@ using System.Threading.Tasks;
 
 namespace GP.Accessors.RemoteBaseballDataAccessor
 {
-    public interface IRemoteBaseballDataAcc
-    {
-        MassData FindAllDataForDate(DateTime desiredDate);
 
-        GameEvent FindGameDataFromContents(string gameId, string pageContents);
-
-        MassData FindAllGamesDataFromContents(string pageContents);
-
-        FutureGameEvent[] FindFutureGamesForDate(DateTime desiredDate);
-
-        FutureGameEvent FindFutureGameDataFromContents(string gameId, string pageContents);
-
-        FutureGameEvent[] FindAllFutureGamesDataFromContents(string pageContents);
-    }
-
-    public class RemoteBaseballDataAcc : IRemoteBaseballDataAcc
+    public class ESPN_RemoteBaseballDataAcc : IRemoteBaseballDataAcc
     {
         IRemoteAcc remoteAcc = new RemoteAcc();
-        IRemoteBaseballDataParser dataParser = new RemoteBaseballDataParser();
+        IRemoteBaseballDataParser dataParser = new ESPN_RemoteBaseballDataParser();
         private string FORMATTER_DAYSGAMESURL
         {
             get
@@ -52,17 +38,17 @@ namespace GP.Accessors.RemoteBaseballDataAccessor
             }
         }
 
-        public MassData FindAllDataForDate(DateTime desiredDate)
+        public MassData deprecated_FindAllDataForDate(DateTime desiredDate)
         {
             var dateString = desiredDate.ToString("yyyyMMdd");
             string gameListUrl = string.Format(FORMATTER_DAYSGAMESURL, dateString);
 
             string gamesPageContent = remoteAcc.GetPageContent(gameListUrl);
 
-            return FindAllGamesDataFromContents(gamesPageContent);
+            return deprecated_FindAllGamesDataFromContents(gamesPageContent);
         }
 
-        public MassData FindAllGamesDataFromContents(string pageContents)
+        public MassData deprecated_FindAllGamesDataFromContents(string pageContents)
         {
             List<GameEvent> allGames = new List<GameEvent>();
             //string[] gameIds = RegexHelper.GetAllRegex(@"""(\d*)-gamebox""", pageContents, 1);
@@ -77,7 +63,7 @@ namespace GP.Accessors.RemoteBaseballDataAccessor
                 {
                     string gameUrl = string.Format(FORMATTER_INDIVIDUALGAMEURL, gameId);
                     string gamePageContent = remoteAcc.GetPageContent(gameUrl);
-                    GameEvent newGame = FindGameDataFromContents(gameId, gamePageContent);
+                    GameEvent newGame = deprecated_FindGameDataFromContents(gameId, gamePageContent);
                     if (newGame != null)
                         allGames.Add(newGame);
                     else
@@ -92,7 +78,7 @@ namespace GP.Accessors.RemoteBaseballDataAccessor
             return result;
         }
 
-        public GameEvent FindGameDataFromContents(string gameId, string gamePageContent)
+        public GameEvent deprecated_FindGameDataFromContents(string gameId, string gamePageContent)
         {
             try
             {
@@ -303,17 +289,17 @@ namespace GP.Accessors.RemoteBaseballDataAccessor
             return result.ToArray();
         }
 
-        public FutureGameEvent[] FindFutureGamesForDate(DateTime desiredDate)
+        public FutureGameEvent[] deprecated_FindFutureGamesForDate(DateTime desiredDate)
         {
             var dateString = desiredDate.ToString("yyyyMMdd");
             string gameListUrl = string.Format(FORMATTER_DAYSGAMESURL, dateString);
 
             string gamesPageContent = remoteAcc.GetPageContent(gameListUrl);
 
-            return FindAllFutureGamesDataFromContents(gamesPageContent);
+            return deprecated_FindAllFutureGamesDataFromContents(gamesPageContent);
         }
 
-        public FutureGameEvent[] FindAllFutureGamesDataFromContents(string pageContents)
+        public FutureGameEvent[] deprecated_FindAllFutureGamesDataFromContents(string pageContents)
         {
             //<a href="/mlb/conversation?gameId=340618106&amp;teams=kansas-city-royals-vs-detroit-tigers">Conversation</a>
             string[] gameIds = RegexHelper.GetAllRegex(@"""(\d*)-gamebox""", pageContents, 1);
@@ -326,7 +312,7 @@ namespace GP.Accessors.RemoteBaseballDataAccessor
 
                 string gameUrl = string.Format(FORMATTER_INDIVIDUALFUTUREGAMEURL, gameId);
                 string gamePageContent = remoteAcc.GetPageContent(gameUrl);
-                FutureGameEvent newGame = FindFutureGameDataFromContents(gameId, gamePageContent);
+                FutureGameEvent newGame = deprecated_FindFutureGameDataFromContents(gameId, gamePageContent);
                 if (newGame != null)
                     allGames.Add(newGame);
 
@@ -337,7 +323,7 @@ namespace GP.Accessors.RemoteBaseballDataAccessor
             return allGames.ToArray();
         }
 
-        public FutureGameEvent FindFutureGameDataFromContents(string gameIdStr, string pageContents)
+        public FutureGameEvent deprecated_FindFutureGameDataFromContents(string gameIdStr, string pageContents)
         {
             try
             {
@@ -445,6 +431,17 @@ namespace GP.Accessors.RemoteBaseballDataAccessor
             {
                 return null;
             }
+        }
+
+
+        public CurrentPlayerStats[] GetCurrentPlayerHittingStats()
+        {
+            throw new NotImplementedException();
+        }
+
+        public CurrentPlayerStats[] GetCurrentPlayerPitchingStats()
+        {
+            throw new NotImplementedException();
         }
     }
 }

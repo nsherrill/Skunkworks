@@ -32,7 +32,7 @@ namespace GP.Accessors.DatabaseAccessor
 
         RankingsConfiguration GetRankingsConfiguration();
 
-        DateTime GetMaxAvailableDataDate();
+        DateTime GetMaxAvailableDataDate(SourceType source);
     }
 
     public class LocalBaseballDataAcc : ILocalBaseballDataAcc
@@ -837,12 +837,29 @@ select * from dbo.FantasyPlayers where foreignleagueid in ({FANTASY_LEAGUEIDS});
             return result;
         }
 
-        public DateTime GetMaxAvailableDataDate()
+        public DateTime GetMaxAvailableDataDate(SourceType source)
         {
             string sql = @"
     SELECT top 1 [date] 
       FROM [GamePredictor].[dbo].[GameEvents]
       order by [date] desc";
+
+            if (source == SourceType.SportingCharts)
+            {
+                sql = @"
+    select top 1 * from
+    (SELECT top 1 [dateretrieved] 
+      FROM [GamePredictor].[baseball].[currentHittingStats]
+      order by [dateretrieved] desc
+    union
+    select top 1 [dateretrieved]
+      from [gamepredictor].[baseball].[currentPitchingStats]
+      order by [dateretrieved] desc
+    union 
+    select '1/1/2010')
+    as q
+    order by [dateretrieved] desc";
+            }
 
             List<ValuePair> paramList = new List<ValuePair>();
 

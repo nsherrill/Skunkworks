@@ -13,9 +13,9 @@ namespace GP.Engines.DataRetrievalEngine
 {
     public interface IBaseballDataRetrieverEng
     {
-        MassData EnsureLocalDataForDate(DateTime dateTime);
+        MassData deprecated_EnsureLocalDataForDate(DateTime dateTime);
 
-        FutureGameEvent[] GetFutureGamesData(DateTime dateTime);
+        FutureGameEvent[] deprecated_GetFutureGamesData(DateTime dateTime);
 
         void PullAvailableLeagues(GPChromeDriver chromeDriver);
 
@@ -23,25 +23,28 @@ namespace GP.Engines.DataRetrievalEngine
 
         bool GetandWriteLeagueRoster(GPChromeDriver cachedDriver, FantasyLeagueEntry interestedLeague);
 
-        DateTime GetMaxAvailableDataDate();
+        DateTime GetMaxAvailableDataDate(SourceType sourceType);
 
         bool RegisterForLeague(GPChromeDriver cachedDriver, FantasyLeagueEntry interestedLeague, FantasyRoster roster);
+
+        CurrentPlayerStats[] GetRecentStats();
     }
 
     public class BaseballDataRetrieverEng : IBaseballDataRetrieverEng
     {
         ILocalBaseballDataAcc localBaseballAcc = new LocalBaseballDataAcc();
-        IRemoteBaseballDataAcc remoteBaseballAcc = new RemoteBaseballDataAcc();
+        IRemoteBaseballDataAcc remoteBaseballAcc = new SportingCharts_RemoteBaseballDataAcc();
         IRemoteFanDuelAcc fanDuelAcc = new RemoteFanDuelAcc();
 
-        public MassData EnsureLocalDataForDate(DateTime desiredDate)
+        #region deprecated
+        public MassData deprecated_EnsureLocalDataForDate(DateTime desiredDate)
         {
             MassData result = localBaseballAcc.FindDataForDate(desiredDate);
             if (result == null
                 || result.Games == null)
             {
                 Console.WriteLine("Getting remote baseball data for " + desiredDate.ToShortDateString());
-                result = remoteBaseballAcc.FindAllDataForDate(desiredDate);
+                result = remoteBaseballAcc.deprecated_FindAllDataForDate(desiredDate);
                 foreach (var game in result.Games)
                 {
                     if (game.PlayerStats != null
@@ -55,7 +58,7 @@ namespace GP.Engines.DataRetrievalEngine
             return result;
         }
 
-        public FutureGameEvent[] GetFutureGamesData(DateTime desiredDate)
+        public FutureGameEvent[] deprecated_GetFutureGamesData(DateTime desiredDate)
         {
             FutureGameEvent[] results = localBaseballAcc.FindFutureGamesForDate(desiredDate);
 
@@ -63,7 +66,7 @@ namespace GP.Engines.DataRetrievalEngine
                 || results.Length == 0)
             {
                 Console.WriteLine("Getting remote future baseball data for " + desiredDate.ToShortDateString());
-                results = remoteBaseballAcc.FindFutureGamesForDate(desiredDate);
+                results = remoteBaseballAcc.deprecated_FindFutureGamesForDate(desiredDate);
 
                 foreach (var game in results)
                 {
@@ -76,6 +79,19 @@ namespace GP.Engines.DataRetrievalEngine
             }
 
             return results;
+        }
+        #endregion
+
+        public CurrentPlayerStats[] GetRecentStats()
+        {
+            var hittingStats = remoteBaseballAcc.GetCurrentPlayerHittingStats();
+            var pitchingStats = remoteBaseballAcc.GetCurrentPlayerPitchingStats();
+            List<CurrentPlayerStats> results = new List<CurrentPlayerStats>();
+            if (hittingStats != null)
+                results.AddRange(hittingStats);
+            if (pitchingStats != null)
+                results.AddRange(pitchingStats);
+            return results.ToArray();
         }
 
         private DateTime lastLeagueRetrievalDate = DateTime.MinValue;
@@ -164,9 +180,9 @@ namespace GP.Engines.DataRetrievalEngine
             return true;
         }
 
-        public DateTime GetMaxAvailableDataDate()
+        public DateTime GetMaxAvailableDataDate(SourceType source)
         {
-            DateTime result = localBaseballAcc.GetMaxAvailableDataDate();
+            DateTime result = localBaseballAcc.GetMaxAvailableDataDate(source);
 
             return result;
         }

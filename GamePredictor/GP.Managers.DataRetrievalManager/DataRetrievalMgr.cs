@@ -21,6 +21,8 @@ namespace GP.Managers.DataRetrievalManager
         void RetrieveCurrentLeagues();
 
         void SignUpForLeagues(long leagueCap = -1);
+
+        void GetCurrentBaseballStats();
     }
 
     public class DataRetrievalMgr : IDataRetrievalMgr
@@ -29,17 +31,17 @@ namespace GP.Managers.DataRetrievalManager
         IRemoteDataEng remoteDataEng = new RemoteDataEng();
         ILocalBaseballDataAcc localBaseballDataAcc = new LocalBaseballDataAcc();
         IRankingsGeneratorEng rankingsGeneratorEng = new RankingsGeneratorEng();
-        ILocalBaseballDataAcc localBaseballAcc = new LocalBaseballDataAcc();
 
         private GPChromeDriver cachedDriver { get; set; }
 
         public void GetBaseballData()
         {
-            DateTime date = dataEng.GetMaxAvailableDataDate();
+            return;
+            DateTime date = dataEng.GetMaxAvailableDataDate(SourceType.ESPN);
             //DateTime date = DateTime.Parse("3/17/2015");
             while (date < DateTime.Now)//for (int i = 0; i < 2; i++)
             {
-                MassData data = dataEng.EnsureLocalDataForDate(date);
+                MassData data = dataEng.deprecated_EnsureLocalDataForDate(date);
 
                 date = date.AddDays(1);
             }
@@ -47,11 +49,12 @@ namespace GP.Managers.DataRetrievalManager
 
         public void RetrieveFutureGames()
         {
+            return;
             List<FutureGameEvent> games = new List<FutureGameEvent>();
-            FutureGameEvent[] tempGames = dataEng.GetFutureGamesData(DateTime.Now.Date);
+            FutureGameEvent[] tempGames = dataEng.deprecated_GetFutureGamesData(DateTime.Now.Date);
             if (tempGames != null)
                 games.AddRange(tempGames);
-            var tempGames2 = dataEng.GetFutureGamesData(DateTime.Now.AddDays(1).Date);
+            var tempGames2 = dataEng.deprecated_GetFutureGamesData(DateTime.Now.AddDays(1).Date);
             if (tempGames2 != null)
                 games.AddRange(tempGames2);
         }
@@ -83,7 +86,7 @@ namespace GP.Managers.DataRetrievalManager
                 RankingsConfiguration config = localBaseballDataAcc.GetRankingsConfiguration();
                 int registeredCount = 0;
                 //foreach (var interestedLeague in allInterestedLeagues)
-                for (int i = 0; 
+                for (int i = 0;
                     i < allInterestedLeagues.Length
                         && (registeredCount < leagueCap || leagueCap < 0);
                     i++)
@@ -105,7 +108,7 @@ namespace GP.Managers.DataRetrievalManager
                         var roster = rankingsGeneratorEng.GenerateRoster(interestedLeague, playerOptions, configType);
 
                         bool result = dataEng.RegisterForLeague(cachedDriver, interestedLeague, roster);
-                        if(result)
+                        if (result)
                             registeredCount++;
 
                     }
@@ -131,6 +134,17 @@ namespace GP.Managers.DataRetrievalManager
         public void TEST_DESERIALIZE()
         {
             new GP.Accessors.RemoteLeagueAccessor.RemoteFanDuelAcc().TEST_DESERIALIZE();
+        }
+
+        public void GetCurrentBaseballStats()
+        {
+            DateTime date = dataEng.GetMaxAvailableDataDate(SourceType.SportingCharts);
+
+            if (date < DateTime.Now.Date)
+            {
+                var stats = dataEng.GetRecentStats();
+                localBaseballDataAcc.WriteStats(stats);
+            }
         }
     }
 }

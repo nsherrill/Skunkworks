@@ -75,5 +75,12 @@ namespace GP.Shared.Common
         Conservative,
         Aggressive_PitcherFirst,
         Conservative_MostExpensive,
+        Conservative_MostExpensiveHomePlayer,
+    }
+
+    public enum SourceType
+    {
+        ESPN,
+        SportingCharts
     }
 }

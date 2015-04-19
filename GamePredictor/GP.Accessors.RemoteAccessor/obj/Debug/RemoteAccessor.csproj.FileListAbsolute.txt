@@ -11,3 +11,9 @@ C:\workspaces\GamePredictor\GP.Accessors.RemoteAccessor\obj\Debug\GP.Accessors.R
 C:\workspaces\GamePredictor\GP.Accessors.RemoteAccessor\bin\Debug\Newtonsoft.Json.dll
 C:\workspaces\GamePredictor\GP.Accessors.RemoteAccessor\bin\Debug\System.Net.Http.Formatting.dll
 C:\workspaces\GamePredictor\GP.Accessors.RemoteAccessor\bin\Debug\System.Net.Http.Formatting.xml
+C:\Code\Skunkworks\GamePredictor\GP.Accessors.RemoteAccessor\bin\Debug\GP.Accessors.RemoteAccessor.dll
+C:\Code\Skunkworks\GamePredictor\GP.Accessors.RemoteAccessor\bin\Debug\GP.Accessors.RemoteAccessor.pdb
+C:\Code\Skunkworks\GamePredictor\GP.Accessors.RemoteAccessor\bin\Debug\Newtonsoft.Json.dll
+C:\Code\Skunkworks\GamePredictor\GP.Accessors.RemoteAccessor\obj\Debug\RemoteAccessor.csprojResolveAssemblyReference.cache
+C:\Code\Skunkworks\GamePredictor\GP.Accessors.RemoteAccessor\obj\Debug\GP.Accessors.RemoteAccessor.dll
+C:\Code\Skunkworks\GamePredictor\GP.Accessors.RemoteAccessor\obj\Debug\GP.Accessors.RemoteAccessor.pdb

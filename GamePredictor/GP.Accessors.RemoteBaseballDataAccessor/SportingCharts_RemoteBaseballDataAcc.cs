@@ -14,7 +14,8 @@ namespace GP.Accessors.RemoteBaseballDataAccessor
         IRemoteBaseballDataParser dataParser = new SportingCharts_RemoteBaseballDataParser();
 
         string SPORTINGCHARTS_HITTINGSTATSURL_FORMATTER { get { return "http://www.sportingcharts.com/mlb/stats/mlb-fanduel-hitter-statistics/{0}/"; } }
-
+        string SPORTINGCHARTS_PITCHINGSTATSURL_FORMATTER { get { return "http://www.sportingcharts.com/mlb/stats/mlb-fanduel-pitcher-statistics/{0}/"; } }
+        
         #region deprecated
         private string FORMATTER_DAYSGAMESURL
         {
@@ -81,15 +82,19 @@ namespace GP.Accessors.RemoteBaseballDataAccessor
             pageContents = pageContents.Substring(pageContents.IndexOf("MLB Fan Duel Hitter Statistics"));
             pageContents = pageContents.Substring(0, pageContents.IndexOf(@"[0].Grid = {""ColumnInfo"":"));
 
-            var matches = RegexHelper.GetAllRegex(@"<tr>
-					<td style=""text-align: center"">\d+</td><td style=""text-align: left""><a.*?</a></td><td style=""text-align: center"">.*?</td><td style=""text-align: center""><a.*?>.*?</a></td><td style=""text-align: center"">\d+</td><td style=""text-align: center"">\d+</td><td style=""text-align: center"">\d+</td><td style=""text-align: center"">\d+</td><td style=""text-align: center"">\d+</td><td style=""text-align: center"">\d+</td><td style""=""text-align: center"">\d+</td><td style=""text-align: center"">\d+</td><td style=""text-align: center"">\d+</td><td style=""text-align: center"">\d+</td><td style=""text-align: center"">[\d,\.]+</td><td style=""text-align: center"">[\d,\.]+</td>
-				</tr>", pageContents);
+            var matches = RegexHelper.GetAllRegex(
+        @"(<td.*?>\d+</td><td.*?><a.*?</a></td><td.*?>.*?</td><td.*?><a.*?>.*?</a></td><td.*?>\d+</td><td.*?>\d+</td><td.*?>\d+</td><td.*?>\d+</td><td.*?>\d+</td><td.*?>\d+</td><td.*?>\d+</td><td.*?>\d+</td><td.*?>\d+</td><td.*?>\d+</td><td.*?>[\d,\.]+</td><td.*?>[\d,\.]+</td>)"
+                , pageContents, 1);
 
+            string sessionId = Guid.NewGuid().ToString();
             foreach (var match in matches)
             {
-                CurrentPlayerStats stat = dataParser.ParseCurrentPlayerStats(match);
+                CurrentPlayerStats stat = dataParser.ParseCurrentPlayerHittingStats(match);
                 if (stat != null)
+                {
+                    stat.SessionId = sessionId;
                     result.Add(stat);
+                }
             }
 
             return result.ToArray();
@@ -97,7 +102,29 @@ namespace GP.Accessors.RemoteBaseballDataAccessor
 
         public CurrentPlayerStats[] GetCurrentPlayerPitchingStats()
         {
-            throw new NotImplementedException();
+            var pageUrl = string.Format(SPORTINGCHARTS_PITCHINGSTATSURL_FORMATTER, DateTime.Now.Year);
+            var pageContents = remoteAcc.GetPageContent(pageUrl);
+
+            List<CurrentPlayerStats> result = new List<CurrentPlayerStats>();
+            pageContents = pageContents.Substring(pageContents.IndexOf("MLB FanDuel Pitcher Statistics"));
+            pageContents = pageContents.Substring(0, pageContents.IndexOf(@"[0].Grid = {""ColumnInfo"":"));
+
+            var matches = RegexHelper.GetAllRegex(
+        @"(<td.*?>\d+</td><td.*?><a href='.*?'>.*?</a></td><td.*?><a href='.*?'>.*?</a></td><td.*?>\d+</td><td.*?>\d+</td><td.*?>\d+</td><td.*?>\d+</td><td.*?>\d+</td><td.*?>[\d,\.]+</td><td.*?>[\d,\.]+</td>)"
+                , pageContents, 1);
+
+            string sessionId = Guid.NewGuid().ToString();
+            foreach (var match in matches)
+            {
+                CurrentPlayerStats stat = dataParser.ParseCurrentPlayerPitchingStats(match);
+                if (stat != null)
+                {
+                    stat.SessionId = sessionId;
+                    result.Add(stat);
+                }
+            }
+
+            return result.ToArray();
         }
     }
 }

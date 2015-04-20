@@ -107,7 +107,12 @@ namespace GP.Accessors.RemoteBaseballDataAccessor
             return result;
         }
 
-        public CurrentPlayerStats ParseCurrentPlayerStats(string content)
+        public CurrentPlayerStats ParseCurrentPlayerHittingStats(string content)
+        {
+            throw new NotImplementedException();
+        }
+
+        public CurrentPlayerStats ParseCurrentPlayerPitchingStats(string content)
         {
             throw new NotImplementedException();
         }

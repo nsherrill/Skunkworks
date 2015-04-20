@@ -23,5 +23,7 @@ namespace GP.Shared.Common
         public PlayerDataType DataType { get; set; }
 
         public string ForeignPlayerName { get; set; }
+
+        public string SessionId { get; set; }
     }
 }

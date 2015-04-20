@@ -33,7 +33,8 @@ namespace GP.Accessors.RemoteBaseballDataAccessor
     {
         PlayerEventStats ParsePlayerEventStats(string gameId, string teamId, string[] data, string[] headers);
 
-        CurrentPlayerStats ParseCurrentPlayerStats(string content);
+        CurrentPlayerStats ParseCurrentPlayerHittingStats(string content);
+        CurrentPlayerStats ParseCurrentPlayerPitchingStats(string content);
 
     }
 }

@@ -40,10 +40,10 @@ namespace GP.Shared.Common
                     }
                     else
                     {
-                        for (int c = 0; c < matches[m].Captures.Count; c++)
+                        for (int c = 0; c < matches[m].Groups.Count; c++)
                         {
-                            if (!string.IsNullOrEmpty(matches[m].Captures[c].Value))
-                                result.Add(matches[m].Captures[c].Value);
+                            if (!string.IsNullOrEmpty(matches[m].Groups[c].Value))
+                                result.Add(matches[m].Groups[c].Value);
                         }
                     }
 

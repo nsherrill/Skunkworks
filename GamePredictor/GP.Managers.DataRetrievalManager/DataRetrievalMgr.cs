@@ -78,10 +78,10 @@ namespace GP.Managers.DataRetrievalManager
                 {
                     cachedDriver = remoteDataEng.GenerateDriver();
                 }
-
+                
                 double minDollar = ConfigHelper.MinimumBuyIn;
                 double maxDollar = ConfigHelper.MaximumBuyIn;
-                var allInterestedLeagues = localBaseballAcc.UpdateFutureFantasyLeagueInterest(minDollar, maxDollar);
+                var allInterestedLeagues = localBaseballDataAcc.UpdateFutureFantasyLeagueInterest(minDollar, maxDollar);
 
                 RankingsConfiguration config = localBaseballDataAcc.GetRankingsConfiguration();
                 int registeredCount = 0;

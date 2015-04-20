@@ -33,6 +33,8 @@ namespace GP.Accessors.DatabaseAccessor
         RankingsConfiguration GetRankingsConfiguration();
 
         DateTime GetMaxAvailableDataDate(SourceType source);
+
+        void WriteStats(CurrentPlayerStats[] stats);
     }
 
     public class LocalBaseballDataAcc : ILocalBaseballDataAcc
@@ -870,6 +872,18 @@ select * from dbo.FantasyPlayers where foreignleagueid in ({FANTASY_LEAGUEIDS});
 
             return (DateTime)resultReader[0][0];
         }
+
+        public void WriteStats(CurrentPlayerStats[] stats, SportType sport, PlayerDataType playerType)
+        {
+            switch ((sport.ToString() + "___" + playerType.ToString()).ToLower())
+            {
+                case "baseball___hitting":
+                    WriteBaseballHittingStats(stats);
+                    break;
+                default:
+                    throw new NotSupportedException("Stats type not yet supported: " + sport.ToString() + ", " + playerType.ToString());
+            }
+        }
         #endregion
 
         #region fantasy player writer privates
@@ -1340,6 +1354,194 @@ select * from dbo.FantasyPlayers where foreignleagueid in ({FANTASY_LEAGUEIDS});
                 sql = sql.Replace("{FANTASY_LEAGUES}", ffl.ToString());
                 //string tempData = "('ricky-nolasco', 'Minnesota Twins', '340615106', 5.1, 9, 3, 3, 2, 5, 0, 5.66, 103, 62)";
                 //sql = sql.Replace("{FANTASY_LEAGUES}", tempData);
+
+            }
+            return sql;
+        }
+        #endregion
+
+        #region current stats writer privates
+        private void WriteBaseballHittingStats(CurrentPlayerStats[] source)
+        {
+            string sql = @"
+
+
+declare @playerStats table (
+	[SessionId] [nvarchar](100) NULL,
+	[ForeignPlayerId] [int] NULL,
+	[TeamId] [int] NULL,
+	[AB] [int] NULL,
+	[Singles] [int] NULL,
+	[Doubles] [int] NULL,
+	[Triples] [int] NULL,
+	[HR] [int] NULL,
+	[RBI] [int] NULL,
+	[R] [int] NULL,
+	[BB] [int] NULL,
+	[SB] [int] NULL,
+	[HBP] [int] NULL,
+	[Points] [decimal](12, 6) NULL,
+	[PPG] [decimal](12, 6) NULL)
+	
+    {HITTING_STATS}
+    
+declare @sessionId nvarchar(100)
+select top 1 @sessionid = sessionid from @playerStats
+
+merge into baseball.CurrentHittingStats as target
+    using (select * from @playerStats) 
+    as source ([SessionId]
+           ,[ForeignPlayerId]
+           ,[TeamId]
+           ,[AB]
+           ,[Singles]
+           ,[Doubles]
+           ,[Triples]
+           ,[HR]
+           ,[RBI]
+           ,[R]
+           ,[BB]
+           ,[SB]
+           ,[HBP]
+           ,[Points]
+           ,[PPG])
+    on (source.sessionId = target.sessionid  and source.foreignplayerid = target.foreignplayerid)
+    when not matched then
+	    insert ([SessionId]
+           ,[ForeignPlayerId]
+           ,[TeamId]
+           ,[AB]
+           ,[Singles]
+           ,[Doubles]
+           ,[Triples]
+           ,[HR]
+           ,[RBI]
+           ,[R]
+           ,[BB]
+           ,[SB]
+           ,[HBP]
+           ,[Points]
+           ,[PPG])
+		    values (source.[SessionId]
+           ,source.[ForeignPlayerId]
+           ,source.[TeamId]
+           ,source.[AB]
+           ,source.[Singles]
+           ,source.[Doubles]
+           ,source.[Triples]
+           ,source.[HR]
+           ,source.[RBI]
+           ,source.[R]
+           ,source.[BB]
+           ,source.[SB]
+           ,source.[HBP]
+           ,source.[Points]
+           ,source.[PPG])
+           
+select * from baseball.CurrentHittingStats where sessionid = @sessionid
+    ";
+
+            List<ValuePair> paramList = new List<ValuePair>();
+            sql = UpdateSqlForHittingStats(sql, source, paramList);
+
+            List<List<object>> resultReader = dbAcc.ExecuteQuery(sql, paramList.ToArray(), null);
+
+            //List<FantasyPlayer> result = new List<FantasyPlayer>();
+            //if (resultReader != null
+            //    && resultReader.Count > 0)
+            //{
+            //    if (resultReader[0] != null
+            //        && resultReader[0].Count > 0
+            //        && resultReader[0][0] is FantasyPlayer)
+            //    {
+            //        foreach (var player in resultReader[0])
+            //            result.Add((FantasyPlayer)player);
+            //    }
+
+            //    return result.ToArray();
+            //}
+
+            //return null;
+        }
+
+        private string UpdateSqlForHittingStats(string sql, CurrentPlayerStats[] source, List<ValuePair> paramList)
+        {
+            if (source != null
+                && source.Length > 0)
+            {
+                StringBuilder fps = new StringBuilder();
+                fps.AppendLine(@"insert into @playerStats ([SessionId]
+           ,[ForeignPlayerId]
+           ,[TeamId]
+           ,[AB]
+           ,[Singles]
+           ,[Doubles]
+           ,[Triples]
+           ,[HR]
+           ,[RBI]
+           ,[R]
+           ,[BB]
+           ,[SB]
+           ,[HBP]
+           ,[Points]
+           ,[PPG])
+	VALUES 
+        ");
+                for (int i = 0; i < source.Length; i++)
+                {
+                    fps.Append("(@baseball_playerstats_sessionid");
+                    fps.Append(", @baseball_playerstats_ForeignPlayerId_");
+                    fps.Append(i);
+                    fps.Append(", @baseball_playerstats_TeamId_");
+                    fps.Append(i);
+                    fps.Append(", @baseball_playerstats_ab_");
+                    fps.Append(i);
+                    fps.Append(", @baseball_playerstats_singles_");
+                    fps.Append(i);
+                    fps.Append(", @baseball_playerstats_doubles_");
+                    fps.Append(i);
+                    fps.Append(", @baseball_playerstats_triples_");
+                    fps.Append(i);
+                    fps.Append(", @baseball_playerstats_hr_");
+                    fps.Append(i);
+                    fps.Append(", @baseball_playerstats_r_");
+                    fps.Append(i);
+                    fps.Append(", @baseball_playerstats_rbi_");
+                    fps.Append(i);
+                    fps.Append(", @baseball_playerstats_bb_");
+                    fps.Append(i);
+                    fps.Append(", @baseball_playerstats_sb_");
+                    fps.Append(i);
+                    fps.Append(", @baseball_playerstats_hbp_");
+                    fps.Append(i);
+                    fps.Append(", @baseball_playerstats_points_");
+                    fps.Append(i);
+                    fps.Append(", @baseball_playerstats_ppg_");
+                    fps.Append(i);
+                    fps.Append(')');
+                    if (source.Length > i + 1)
+                        fps.AppendLine(",");
+
+                    if (paramList.Count == 0)
+                        paramList.Add(new ValuePair("@baseball_playerstats_sessionid", source[i].SessionId));
+
+                    paramList.Add(new ValuePair("@baseball_playerstats_ForeignPlayerId_" + i, source[i].ForeignPlayerId));
+                    paramList.Add(new ValuePair("@baseball_playerstats_TeamId_" + i, source[i].TeamId));
+                    paramList.Add(new ValuePair("@baseball_playerstats_ab_" + i, source[i].Data.First(d=>d.Key == "AB").Value));
+                    paramList.Add(new ValuePair("@baseball_playerstats_singles_" + i, source[i].Data.First(d => d.Key == "Singles").Value));
+                    paramList.Add(new ValuePair("@baseball_playerstats_doubles_" + i, source[i].Data.First(d => d.Key == "Doubles").Value));
+                    paramList.Add(new ValuePair("@baseball_playerstats_triples_" + i, source[i].Data.First(d => d.Key == "Triples").Value));
+                    paramList.Add(new ValuePair("@baseball_playerstats_hr_" + i, source[i].Data.First(d => d.Key == "HR").Value));
+                    paramList.Add(new ValuePair("@baseball_playerstats_r_" + i, source[i].Data.First(d => d.Key == "R").Value));
+                    paramList.Add(new ValuePair("@baseball_playerstats_rbi_" + i, source[i].Data.First(d => d.Key == "RBI").Value));
+                    paramList.Add(new ValuePair("@baseball_playerstats_bb_" + i, source[i].Data.First(d => d.Key == "BB").Value));
+                    paramList.Add(new ValuePair("@baseball_playerstats_sb_" + i, source[i].Data.First(d => d.Key == "SB").Value));
+                    paramList.Add(new ValuePair("@baseball_playerstats_hbp_" + i, source[i].Data.First(d => d.Key == "HBP").Value));
+                    paramList.Add(new ValuePair("@baseball_playerstats_points_" + i, source[i].Data.First(d => d.Key == "TotalPoints").Value));
+                    paramList.Add(new ValuePair("@baseball_playerstats_ppg_" + i, source[i].Data.First(d => d.Key == "PPG").Value));
+                }
+
+                sql = sql.Replace("{HITTING_STATS}", fps.ToString());
 
             }
             return sql;

@@ -434,12 +434,12 @@ namespace GP.Accessors.RemoteBaseballDataAccessor
         }
 
 
-        public CurrentPlayerStats[] GetCurrentPlayerHittingStats()
+        public CurrentPlayerStats[] GetCurrentPlayerHittingStats(string sessionId)
         {
             throw new NotImplementedException();
         }
 
-        public CurrentPlayerStats[] GetCurrentPlayerPitchingStats()
+        public CurrentPlayerStats[] GetCurrentPlayerPitchingStats(string sessionId)
         {
             throw new NotImplementedException();
         }

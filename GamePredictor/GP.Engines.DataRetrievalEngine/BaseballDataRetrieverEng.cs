@@ -84,8 +84,10 @@ namespace GP.Engines.DataRetrievalEngine
 
         public CurrentPlayerStats[] GetRecentStats()
         {
-            var hittingStats = remoteBaseballAcc.GetCurrentPlayerHittingStats();
-            var pitchingStats = remoteBaseballAcc.GetCurrentPlayerPitchingStats();
+            string sessionId = Guid.NewGuid().ToString();
+
+            var hittingStats = remoteBaseballAcc.GetCurrentPlayerHittingStats(sessionId);
+            var pitchingStats = remoteBaseballAcc.GetCurrentPlayerPitchingStats(sessionId);
             List<CurrentPlayerStats> results = new List<CurrentPlayerStats>();
             if (hittingStats != null)
                 results.AddRange(hittingStats);

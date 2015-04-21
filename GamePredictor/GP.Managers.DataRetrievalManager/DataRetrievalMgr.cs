@@ -78,7 +78,7 @@ namespace GP.Managers.DataRetrievalManager
                 {
                     cachedDriver = remoteDataEng.GenerateDriver();
                 }
-                
+
                 double minDollar = ConfigHelper.MinimumBuyIn;
                 double maxDollar = ConfigHelper.MaximumBuyIn;
                 var allInterestedLeagues = localBaseballDataAcc.UpdateFutureFantasyLeagueInterest(minDollar, maxDollar);
@@ -143,7 +143,35 @@ namespace GP.Managers.DataRetrievalManager
             if (date < DateTime.Now.Date)
             {
                 var stats = dataEng.GetRecentStats();
-                localBaseballDataAcc.WriteStats(stats);
+
+                var allHittingStats = stats.Where(s => s.DataType == PlayerDataType.Hitting).ToArray();
+                List<CurrentPlayerStats> currentStats = new List<CurrentPlayerStats>();
+                for (int i = 0; i < allHittingStats.Count(); i++)
+                {
+                    currentStats.Add(allHittingStats[i]);
+                    if (i > 0 && i % 100 == 0)
+                    {
+                        localBaseballDataAcc.WriteStats(currentStats.ToArray(), SportType.Baseball, PlayerDataType.Hitting);
+                        currentStats.Clear();
+                    }
+                }
+                if (currentStats.Count > 0)
+                    localBaseballDataAcc.WriteStats(currentStats.ToArray(), SportType.Baseball, PlayerDataType.Hitting);
+
+                currentStats.Clear();
+
+                var allPitchingStats = stats.Where(s => s.DataType == PlayerDataType.Pitching).ToArray();
+                for (int i = 0; i < allPitchingStats.Count(); i++)
+                {
+                    currentStats.Add(allPitchingStats[i]);
+                    if (i > 0 && i % 100 == 0)
+                    {
+                        localBaseballDataAcc.WriteStats(currentStats.ToArray(), SportType.Baseball, PlayerDataType.Pitching);
+                        currentStats.Clear();
+                    }
+                }
+                if (currentStats.Count > 0)
+                    localBaseballDataAcc.WriteStats(currentStats.ToArray(), SportType.Baseball, PlayerDataType.Pitching);
             }
         }
     }

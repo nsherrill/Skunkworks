@@ -73,7 +73,7 @@ namespace GP.Accessors.RemoteBaseballDataAccessor
         }
         #endregion
 
-        public CurrentPlayerStats[] GetCurrentPlayerHittingStats()
+        public CurrentPlayerStats[] GetCurrentPlayerHittingStats(string sessionId)
         {
             var pageUrl = string.Format(SPORTINGCHARTS_HITTINGSTATSURL_FORMATTER, DateTime.Now.Year);
             var pageContents = remoteAcc.GetPageContent(pageUrl);
@@ -86,7 +86,6 @@ namespace GP.Accessors.RemoteBaseballDataAccessor
         @"(<td.*?>\d+</td><td.*?><a.*?</a></td><td.*?>.*?</td><td.*?><a.*?>.*?</a></td><td.*?>\d+</td><td.*?>\d+</td><td.*?>\d+</td><td.*?>\d+</td><td.*?>\d+</td><td.*?>\d+</td><td.*?>\d+</td><td.*?>\d+</td><td.*?>\d+</td><td.*?>\d+</td><td.*?>[\d,\.]+</td><td.*?>[\d,\.]+</td>)"
                 , pageContents, 1);
 
-            string sessionId = Guid.NewGuid().ToString();
             foreach (var match in matches)
             {
                 CurrentPlayerStats stat = dataParser.ParseCurrentPlayerHittingStats(match);
@@ -100,7 +99,7 @@ namespace GP.Accessors.RemoteBaseballDataAccessor
             return result.ToArray();
         }
 
-        public CurrentPlayerStats[] GetCurrentPlayerPitchingStats()
+        public CurrentPlayerStats[] GetCurrentPlayerPitchingStats(string sessionId)
         {
             var pageUrl = string.Format(SPORTINGCHARTS_PITCHINGSTATSURL_FORMATTER, DateTime.Now.Year);
             var pageContents = remoteAcc.GetPageContent(pageUrl);
@@ -113,7 +112,6 @@ namespace GP.Accessors.RemoteBaseballDataAccessor
         @"(<td.*?>\d+</td><td.*?><a href='.*?'>.*?</a></td><td.*?><a href='.*?'>.*?</a></td><td.*?>\d+</td><td.*?>\d+</td><td.*?>\d+</td><td.*?>\d+</td><td.*?>\d+</td><td.*?>[\d,\.]+</td><td.*?>[\d,\.]+</td>)"
                 , pageContents, 1);
 
-            string sessionId = Guid.NewGuid().ToString();
             foreach (var match in matches)
             {
                 CurrentPlayerStats stat = dataParser.ParseCurrentPlayerPitchingStats(match);

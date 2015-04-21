@@ -34,6 +34,7 @@ namespace GP.Accessors.RemoteBaseballDataAccessor
                 string nameUrlStr = matches[2];
                 string nameStr = matches[3];
                 string positionStr = matches[4];
+                positionStr = positionStr.Replace("CF", "OF").Replace("LF", "OF").Replace("RF", "OF");
                 var position = (BaseballPosition)Enum.Parse(typeof(BaseballPosition), "pos_" + positionStr);
                 string teamUrlStr = matches[5];
                 string teamStr = matches[6];

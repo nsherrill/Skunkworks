@@ -56,6 +56,7 @@ namespace GP.Shared.Common
         pos_3B,
         pos_SS,
         pos_OF,
+        pos_DH,
     }
 
     public enum PlayerAvailability

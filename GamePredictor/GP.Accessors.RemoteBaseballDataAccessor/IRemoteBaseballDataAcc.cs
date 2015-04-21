@@ -23,9 +23,9 @@ namespace GP.Accessors.RemoteBaseballDataAccessor
         FutureGameEvent[] deprecated_FindAllFutureGamesDataFromContents(string pageContents);
         #endregion
 
-        CurrentPlayerStats[] GetCurrentPlayerHittingStats();
+        CurrentPlayerStats[] GetCurrentPlayerHittingStats(string sessionId);
 
-        CurrentPlayerStats[] GetCurrentPlayerPitchingStats();
+        CurrentPlayerStats[] GetCurrentPlayerPitchingStats(string sessionId);
 
     }
 

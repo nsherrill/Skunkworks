@@ -57,6 +57,10 @@ namespace GP.Accessors.DatabaseAccessor
                     using (var rdr = cmd.ExecuteReader())
                     {
                         List<List<object>> result = new List<List<object>>();
+
+                        if (reader == null)
+                            return result;
+
                         int index = 0;
                         List<object> curr = new List<object>();
                         while (rdr.Read())

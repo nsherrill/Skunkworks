@@ -34,7 +34,7 @@ namespace GP.Accessors.DatabaseAccessor
 
         DateTime GetMaxAvailableDataDate(SourceType source);
 
-        void WriteStats(CurrentPlayerStats[] stats);
+        void WriteStats(CurrentPlayerStats[] stats, SportType sport, PlayerDataType playerType);
     }
 
     public class LocalBaseballDataAcc : ILocalBaseballDataAcc
@@ -880,6 +880,9 @@ select * from dbo.FantasyPlayers where foreignleagueid in ({FANTASY_LEAGUEIDS});
                 case "baseball___hitting":
                     WriteBaseballHittingStats(stats);
                     break;
+                case "baseball___pitching":
+                    WriteBaseballPitchingStats(stats);
+                    break;
                 default:
                     throw new NotSupportedException("Stats type not yet supported: " + sport.ToString() + ", " + playerType.ToString());
             }
@@ -1361,6 +1364,108 @@ select * from dbo.FantasyPlayers where foreignleagueid in ({FANTASY_LEAGUEIDS});
         #endregion
 
         #region current stats writer privates
+        private void WriteBaseballPitchingStats(CurrentPlayerStats[] source)
+        {
+            string sql = @"
+
+
+declare @playerStats table (
+	[SessionId] [nvarchar](100) NULL,
+	[ForeignPlayerId] [int] NULL,
+	[TeamId] [int] NULL,
+	[AB] [int] NULL,
+	[Singles] [int] NULL,
+	[Doubles] [int] NULL,
+	[Triples] [int] NULL,
+	[HR] [int] NULL,
+	[RBI] [int] NULL,
+	[R] [int] NULL,
+	[BB] [int] NULL,
+	[SB] [int] NULL,
+	[HBP] [int] NULL,
+	[Points] [decimal](12, 6) NULL,
+	[PPG] [decimal](12, 6) NULL)
+	
+    {PITCHING_STATS}
+    
+declare @sessionId nvarchar(100)
+select top 1 @sessionid = sessionid from @playerStats
+
+merge into baseball.CurrentHittingStats as target
+    using (select * from @playerStats) 
+    as source ([SessionId]
+           ,[ForeignPlayerId]
+           ,[TeamId]
+           ,[AB]
+           ,[Singles]
+           ,[Doubles]
+           ,[Triples]
+           ,[HR]
+           ,[RBI]
+           ,[R]
+           ,[BB]
+           ,[SB]
+           ,[HBP]
+           ,[Points]
+           ,[PPG])
+    on (source.sessionId = target.sessionid  and source.foreignplayerid = target.foreignplayerid)
+    when not matched then
+	    insert ([SessionId]
+           ,[ForeignPlayerId]
+           ,[TeamId]
+           ,[AB]
+           ,[Singles]
+           ,[Doubles]
+           ,[Triples]
+           ,[HR]
+           ,[RBI]
+           ,[R]
+           ,[BB]
+           ,[SB]
+           ,[HBP]
+           ,[Points]
+           ,[PPG])
+		    values (source.[SessionId]
+           ,source.[ForeignPlayerId]
+           ,source.[TeamId]
+           ,source.[AB]
+           ,source.[Singles]
+           ,source.[Doubles]
+           ,source.[Triples]
+           ,source.[HR]
+           ,source.[RBI]
+           ,source.[R]
+           ,source.[BB]
+           ,source.[SB]
+           ,source.[HBP]
+           ,source.[Points]
+           ,source.[PPG]);
+           
+select * from baseball.CurrentHittingStats where sessionid = @sessionid
+    ";
+
+            List<ValuePair> paramList = new List<ValuePair>();
+            sql = UpdateSqlForHittingStats(sql, source, paramList);
+
+            List<List<object>> resultReader = dbAcc.ExecuteQuery(sql, paramList.ToArray(), null);
+
+            //List<FantasyPlayer> result = new List<FantasyPlayer>();
+            //if (resultReader != null
+            //    && resultReader.Count > 0)
+            //{
+            //    if (resultReader[0] != null
+            //        && resultReader[0].Count > 0
+            //        && resultReader[0][0] is FantasyPlayer)
+            //    {
+            //        foreach (var player in resultReader[0])
+            //            result.Add((FantasyPlayer)player);
+            //    }
+
+            //    return result.ToArray();
+            //}
+
+            //return null;
+        }
         private void WriteBaseballHittingStats(CurrentPlayerStats[] source)
         {
             string sql = @"
@@ -1436,7 +1541,7 @@ merge into baseball.CurrentHittingStats as target
            ,source.[SB]
            ,source.[HBP]
            ,source.[Points]
-           ,source.[PPG])
+           ,source.[PPG]);
            
 select * from baseball.CurrentHittingStats where sessionid = @sessionid
     ";
@@ -1547,5 +1652,6 @@ select * from baseball.CurrentHittingStats where sessionid = @sessionid
             return sql;
         }
         #endregion
+
     }
 }

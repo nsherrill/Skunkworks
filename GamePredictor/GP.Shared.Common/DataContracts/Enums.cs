@@ -72,11 +72,11 @@ namespace GP.Shared.Common
 
     public enum ConfigType
     {
-        Aggressive,
-        Conservative,
-        Aggressive_PitcherFirst,
-        Conservative_MostExpensive,
-        Conservative_MostExpensiveHomePlayer,
+        TopAvailablePPG,
+        TopAvailablePPG_PitcherFirst,
+        TopAvailablePPGPerValue,
+        TopAvailableValue,
+        TopAvailableValue_HomeOnly,
     }
 
     public enum SourceType

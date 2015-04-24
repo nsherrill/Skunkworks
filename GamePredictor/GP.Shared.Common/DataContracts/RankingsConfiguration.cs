@@ -15,7 +15,14 @@ namespace GP.Shared.Common
 
         public ConfigType GetConfigType(int index, int max)
         {
-            ConfigType result = ConfigType.Aggressive;
+            var configCount = Enum.GetValues(typeof(ConfigType)).Length;
+            var desiredIndex = random.Next(configCount);
+            return (ConfigType)desiredIndex;
+
+
+
+            /*
+            ConfigType result = ConfigType.TopAvailablePPG;
             if ((double)index / (double)max <
                 this.ConservativePercent / 100.0)
             {
@@ -23,8 +30,8 @@ namespace GP.Shared.Common
                 switch (which)
                 {
                     case 0: return ConfigType.Conservative;
-                    case 1: return ConfigType.Conservative_MostExpensive;
-                    case 2: return ConfigType.Conservative_MostExpensiveHomePlayer;
+                    case 1: return ConfigType.TopAvailableValue;
+                    case 2: return ConfigType.TopAvailableValue_HomeOnly;
                 }
             }
             else if ((double)index / (double)max <
@@ -33,12 +40,13 @@ namespace GP.Shared.Common
                 var which = random.Next(1000) % 2;
                 switch (which)
                 {
-                    case 0: return ConfigType.Aggressive;
-                    case 1: return ConfigType.Aggressive_PitcherFirst;
+                    case 0: return ConfigType.TopAvailablePPG;
+                    case 1: return ConfigType.TopAvailablePPG_PitcherFirst;
                 }
             }
 
             return result;
+             */
         }
     }
 }

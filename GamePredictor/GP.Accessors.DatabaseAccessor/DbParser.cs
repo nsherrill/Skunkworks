@@ -156,6 +156,7 @@ namespace GP.Accessors.DatabaseAccessor
                 AVG = rdr.GetDouble("AVG"),
                 ERA = rdr.GetDouble("ERA"),
                 IsHome = rdr.GetBool("IsHome"),
+                TeamAbr = rdr.GetString("TeamAbr"),
             };
 
             return result;

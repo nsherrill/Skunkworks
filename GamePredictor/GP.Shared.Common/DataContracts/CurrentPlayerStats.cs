@@ -12,8 +12,6 @@ namespace GP.Shared.Common
 
         public long TeamId { get; set; }
 
-        public int ForeignPlayerId { get; set; }
-
         public SportType Sport { get; set; }
 
         public string ForeignTeamId { get; set; }

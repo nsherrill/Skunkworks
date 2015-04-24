@@ -85,7 +85,7 @@ namespace GP.Managers.DataRetrievalManager
 
                 RankingsConfiguration config = localBaseballDataAcc.GetRankingsConfiguration();
                 int registeredCount = 0;
-                //foreach (var interestedLeague in allInterestedLeagues)
+
                 for (int i = 0;
                     i < allInterestedLeagues.Length
                         && (registeredCount < leagueCap || leagueCap < 0);
@@ -95,6 +95,7 @@ namespace GP.Managers.DataRetrievalManager
                     {
                         var interestedLeague = allInterestedLeagues[i];
 
+                        Console.WriteLine("Attempting to sign up for league: {0}", interestedLeague.ForeignId);
                         FantasyPlayer[] players = dataEng.GetPlayersForLeague(cachedDriver, interestedLeague.ForeignId, interestedLeague.Url);
 
                         var isValid = dataEng.GetandWriteLeagueRoster(cachedDriver, interestedLeague);
@@ -104,13 +105,27 @@ namespace GP.Managers.DataRetrievalManager
                         }
                         FantasyPlayerRanking[] playerOptions = localBaseballDataAcc.GetPlayerRankings(interestedLeague.ForeignId);
 
-                        var configType = config.GetConfigType(i, allInterestedLeagues.Length);
-                        var roster = rankingsGeneratorEng.GenerateRoster(interestedLeague, playerOptions, configType);
+                        int maxAttempts = 3;
+                        bool result = false;
+                        ConfigType configType = ConfigType.TopAvailablePPG;
+                        for (int attempt = 0; attempt < maxAttempts && !result; attempt++)
+                        {
+                            configType = config.GetConfigType(i, allInterestedLeagues.Length);
+                            var roster = rankingsGeneratorEng.GenerateRoster(interestedLeague, playerOptions, configType);
 
-                        bool result = dataEng.RegisterForLeague(cachedDriver, interestedLeague, roster);
+                            if (roster == null)
+                                continue;
+
+                            result = dataEng.RegisterForLeague(cachedDriver, interestedLeague, roster);
+                        }
                         if (result)
+                        {
+                            Console.WriteLine("Successfully registered for league {0} as {1}!", interestedLeague.ForeignId, configType);
+                            localBaseballDataAcc.RecordSuccessfulLeagueSignup(interestedLeague.Id, playerOptions.Select(p => p.Id).ToArray(), configType);
                             registeredCount++;
-
+                        }
+                        else
+                            Console.WriteLine("  Just couldn't make this league work... next!");
                     }
                     catch (Exception e)
                     {
@@ -142,9 +157,11 @@ namespace GP.Managers.DataRetrievalManager
 
             if (date < DateTime.Now.Date)
             {
+                Console.WriteLine("Currently have stale stats data, pulling new stats.");
                 var stats = dataEng.GetRecentStats();
 
                 var allHittingStats = stats.Where(s => s.DataType == PlayerDataType.Hitting).ToArray();
+                Console.WriteLine("Writing {0} hitting stats to db", allHittingStats.Length);
                 List<CurrentPlayerStats> currentStats = new List<CurrentPlayerStats>();
                 for (int i = 0; i < allHittingStats.Count(); i++)
                 {
@@ -161,6 +178,7 @@ namespace GP.Managers.DataRetrievalManager
                 currentStats.Clear();
 
                 var allPitchingStats = stats.Where(s => s.DataType == PlayerDataType.Pitching).ToArray();
+                Console.WriteLine("Writing {0} pitching stats to db", allPitchingStats.Length);
                 for (int i = 0; i < allPitchingStats.Count(); i++)
                 {
                     currentStats.Add(allPitchingStats[i]);

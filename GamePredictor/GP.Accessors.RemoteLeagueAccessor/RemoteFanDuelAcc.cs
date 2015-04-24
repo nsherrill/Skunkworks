@@ -365,11 +365,17 @@ namespace GP.Accessors.RemoteLeagueAccessor
             /*<input id="enterButton" type="submit" class="button jumbo primary" value="Enter" data-nav-warning="off">
              */
             var enterButton = cachedDriver.FindElementById("enterButton");
-            enterButton.Click();
+            enterButton.Click(); // if this fails, it could be a legit reason, so let the league registration fail
 
-            var linkToClick = cachedDriver.FindElementByClassName(@"closeMultipleEntryLB");
-            if (linkToClick != null)
-                linkToClick.Click();
+            try
+            {
+                var linkToClick = cachedDriver.FindElementByClassName(@"closeMultipleEntryLB");
+                if (linkToClick != null)
+                    linkToClick.Click();
+            }
+            catch
+            {// dont care if this doesnt work
+            }
         }
 
         public bool ValidateLeague(GPChromeDriver cachedDriver, string url)
@@ -392,6 +398,7 @@ namespace GP.Accessors.RemoteLeagueAccessor
                 var hasMaxEntries = cachedDriver.FindElementByClassName("contest-already-entered");
                 if (hasMaxEntries != null)
                 {
+                    Console.WriteLine("  Already signed up for this league... next!");
                     cachedDriver.Url = HOMEPAGE;
                     System.Threading.Thread.Sleep(1000);
                     cachedDriver.SwitchTo().Alert().Accept();
@@ -408,8 +415,10 @@ namespace GP.Accessors.RemoteLeagueAccessor
             var entered = RegexHelper.GetAllRegex(@"class=""lightboxLeagueEntries_show"">(\d+)</a></b> / (\d+)<span class=""entries-player", source, 1);
             var maxEntries = RegexHelper.GetAllRegex(@"class=""lightboxLeagueEntries_show"">\d+</a></b> / (\d+)<span class=""entries-player", source, 1);
             if (long.Parse(entered[0]) >= long.Parse(maxEntries[0]))
+            {
+                Console.WriteLine("  This league is full... next!");
                 return false;
-            return true;
+            } return true;
         }
 
 

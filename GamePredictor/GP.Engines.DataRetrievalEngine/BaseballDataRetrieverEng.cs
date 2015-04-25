@@ -25,7 +25,7 @@ namespace GP.Engines.DataRetrievalEngine
 
         DateTime GetMaxAvailableDataDate(SourceType sourceType);
 
-        bool RegisterForLeague(GPChromeDriver cachedDriver, FantasyLeagueEntry interestedLeague, FantasyRoster roster);
+        bool RegisterForLeague(GPChromeDriver cachedDriver, FantasyLeagueEntry interestedLeague, FantasyRoster roster, Action<long> onPlayerFail);
 
         CurrentPlayerStats[] GetRecentStats();
     }
@@ -189,8 +189,10 @@ namespace GP.Engines.DataRetrievalEngine
             return result;
         }
 
-        public bool RegisterForLeague(GPChromeDriver cachedDriver, FantasyLeagueEntry interestedLeague, FantasyRoster roster)
+        public bool RegisterForLeague(GPChromeDriver cachedDriver, FantasyLeagueEntry interestedLeague, FantasyRoster roster
+            , Action<long> onPlayerFail)
         {
+            long? currPlayerId = null;
             try
             {
                 var shouldContinue = fanDuelAcc.NavigateToLeague(cachedDriver, interestedLeague);
@@ -199,8 +201,10 @@ namespace GP.Engines.DataRetrievalEngine
 
                 for (int i = 0; i < roster.PlayersToSelect.Length; i++)
                 {
+                    currPlayerId = roster.PlayersToSelect[i].Id;
                     fanDuelAcc.AddPlayerToRoster(cachedDriver, interestedLeague.ForeignId, roster.PlayersToSelect[i]);
                 }
+                currPlayerId = null;
                 //fanDuelAcc.RegisterForLeague(interestedLeague);
 
                 fanDuelAcc.ConfirmEntry(cachedDriver, interestedLeague.ForeignId);
@@ -209,6 +213,10 @@ namespace GP.Engines.DataRetrievalEngine
             }
             catch (Exception e)
             {
+                if (currPlayerId != null
+                    && onPlayerFail != null)
+                    onPlayerFail(currPlayerId.Value);
+
                 return false;
             }
         }

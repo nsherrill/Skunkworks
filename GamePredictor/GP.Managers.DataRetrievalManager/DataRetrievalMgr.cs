@@ -71,6 +71,12 @@ namespace GP.Managers.DataRetrievalManager
 
         public void SignUpForLeagues(long leagueCap = -1)
         {
+            if (firstInvalidDate < DateTime.Now.Date)
+            {
+                InvalidPlayers.Clear();
+                firstInvalidDate = DateTime.Now;
+            }
+
             try
             {
                 if (cachedDriver == null
@@ -104,6 +110,7 @@ namespace GP.Managers.DataRetrievalManager
                             continue;
                         }
                         FantasyPlayerRanking[] playerOptions = localBaseballDataAcc.GetPlayerRankings(interestedLeague.ForeignId);
+                        playerOptions = playerOptions.Where(p => !InvalidPlayers.Contains(p.Id)).ToArray();
 
                         int maxAttempts = 3;
                         bool result = false;
@@ -116,7 +123,7 @@ namespace GP.Managers.DataRetrievalManager
                             if (roster == null)
                                 continue;
 
-                            result = dataEng.RegisterForLeague(cachedDriver, interestedLeague, roster);
+                            result = dataEng.RegisterForLeague(cachedDriver, interestedLeague, roster, InvalidatePlayerById);
                         }
                         if (result)
                         {
@@ -191,6 +198,13 @@ namespace GP.Managers.DataRetrievalManager
                 if (currentStats.Count > 0)
                     localBaseballDataAcc.WriteStats(currentStats.ToArray(), SportType.Baseball, PlayerDataType.Pitching);
             }
+        }
+
+        List<long> InvalidPlayers = new List<long>();
+        DateTime firstInvalidDate = DateTime.MinValue;
+        private void InvalidatePlayerById(long playerId)
+        {
+            InvalidPlayers.Add(playerId);
         }
     }
 }

@@ -40,6 +40,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IRemoteBaseballDataAcc.cs" />
+    <Compile Include="RotoGrinders_RemoteBasebalDataParser.cs" />
+    <Compile Include="RotoGrinders_RemoteBaseballDataAcc.cs" />
     <Compile Include="SportingCharts_RemoteBaseballDataParser.cs" />
     <Compile Include="SportingCharts_RemoteBaseballDataAcc.cs" />
     <Compile Include="ESPN_RemoteBaseballDataAcc.cs" />

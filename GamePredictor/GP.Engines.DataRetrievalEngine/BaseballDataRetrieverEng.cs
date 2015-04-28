@@ -25,7 +25,7 @@ namespace GP.Engines.DataRetrievalEngine
 
         DateTime GetMaxAvailableDataDate(SourceType sourceType);
 
-        bool RegisterForLeague(GPChromeDriver cachedDriver, FantasyLeagueEntry interestedLeague, FantasyRoster roster, Action<long> onPlayerFail);
+        bool RegisterForLeague(GPChromeDriver cachedDriver, FantasyLeagueEntry interestedLeague, FantasyRoster roster, Action<string, string> onPlayerFail);
 
         CurrentPlayerStats[] GetRecentStats();
     }
@@ -34,6 +34,7 @@ namespace GP.Engines.DataRetrievalEngine
     {
         ILocalBaseballDataAcc localBaseballAcc = new LocalBaseballDataAcc();
         IRemoteBaseballDataAcc remoteBaseballAcc = new SportingCharts_RemoteBaseballDataAcc();
+        IRemoteBaseballDataAcc hotHittingBaseballAcc = new RotoGrinders_RemoteBaseballDataAcc();
         IRemoteFanDuelAcc fanDuelAcc = new RemoteFanDuelAcc();
 
         #region deprecated
@@ -87,10 +88,13 @@ namespace GP.Engines.DataRetrievalEngine
             string sessionId = Guid.NewGuid().ToString();
 
             var hittingStats = remoteBaseballAcc.GetCurrentPlayerHittingStats(sessionId);
+            var hotHittingStats = hotHittingBaseballAcc.GetCurrentPlayerHittingStats(sessionId);
             var pitchingStats = remoteBaseballAcc.GetCurrentPlayerPitchingStats(sessionId);
             List<CurrentPlayerStats> results = new List<CurrentPlayerStats>();
             if (hittingStats != null)
                 results.AddRange(hittingStats);
+            if (hotHittingStats != null)
+                results.AddRange(hotHittingStats);
             if (pitchingStats != null)
                 results.AddRange(pitchingStats);
             return results.ToArray();
@@ -190,9 +194,10 @@ namespace GP.Engines.DataRetrievalEngine
         }
 
         public bool RegisterForLeague(GPChromeDriver cachedDriver, FantasyLeagueEntry interestedLeague, FantasyRoster roster
-            , Action<long> onPlayerFail)
+            , Action<string, string> onPlayerFail)
         {
-            long? currPlayerId = null;
+            string playerKey = null;
+            string teamKey = null;
             try
             {
                 var shouldContinue = fanDuelAcc.NavigateToLeague(cachedDriver, interestedLeague);
@@ -201,10 +206,12 @@ namespace GP.Engines.DataRetrievalEngine
 
                 for (int i = 0; i < roster.PlayersToSelect.Length; i++)
                 {
-                    currPlayerId = roster.PlayersToSelect[i].Id;
+                    playerKey = roster.PlayersToSelect[i].Name;
+                    teamKey = roster.PlayersToSelect[i].TeamName;
                     fanDuelAcc.AddPlayerToRoster(cachedDriver, interestedLeague.ForeignId, roster.PlayersToSelect[i]);
                 }
-                currPlayerId = null;
+                playerKey = null;
+                teamKey = null;
                 //fanDuelAcc.RegisterForLeague(interestedLeague);
 
                 fanDuelAcc.ConfirmEntry(cachedDriver, interestedLeague.ForeignId);
@@ -213,9 +220,10 @@ namespace GP.Engines.DataRetrievalEngine
             }
             catch (Exception e)
             {
-                if (currPlayerId != null
+                if (!string.IsNullOrEmpty(playerKey)
+                    && !string.IsNullOrEmpty(teamKey)
                     && onPlayerFail != null)
-                    onPlayerFail(currPlayerId.Value);
+                    onPlayerFail(playerKey, teamKey);
 
                 return false;
             }

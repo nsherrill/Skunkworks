@@ -110,7 +110,7 @@ namespace GP.Managers.DataRetrievalManager
                             continue;
                         }
                         FantasyPlayerRanking[] playerOptions = localBaseballDataAcc.GetPlayerRankings(interestedLeague.ForeignId);
-                        playerOptions = playerOptions.Where(p => !InvalidPlayers.Contains(p.Id)).ToArray();
+                        playerOptions = playerOptions.Where(p => !InvalidPlayers.Contains(GetInvalidKey(p.Name, p.TeamName))).ToArray();
 
                         int maxAttempts = 3;
                         bool result = false;
@@ -123,7 +123,7 @@ namespace GP.Managers.DataRetrievalManager
                             if (roster == null)
                                 continue;
 
-                            result = dataEng.RegisterForLeague(cachedDriver, interestedLeague, roster, InvalidatePlayerById);
+                            result = dataEng.RegisterForLeague(cachedDriver, interestedLeague, roster, InvalidatePlayerByNameAndTeam);
                         }
                         if (result)
                         {
@@ -184,6 +184,21 @@ namespace GP.Managers.DataRetrievalManager
 
                 currentStats.Clear();
 
+                var allHotHittingStats = stats.Where(s => s.DataType == PlayerDataType.HotHitting).ToArray();
+                Console.WriteLine("Writing {0} hot hitting stats to db", allHotHittingStats.Length);
+                for (int i = 0; i < allHotHittingStats.Count(); i++)
+                {
+                    currentStats.Add(allHotHittingStats[i]);
+                    if (i > 0 && i % 100 == 0)
+                    {
+                        localBaseballDataAcc.WriteStats(currentStats.ToArray(), SportType.Baseball, PlayerDataType.HotHitting);
+                        currentStats.Clear();
+                    }
+                }
+                if (currentStats.Count > 0)
+                    localBaseballDataAcc.WriteStats(currentStats.ToArray(), SportType.Baseball, PlayerDataType.HotHitting);
+                currentStats.Clear();
+
                 var allPitchingStats = stats.Where(s => s.DataType == PlayerDataType.Pitching).ToArray();
                 Console.WriteLine("Writing {0} pitching stats to db", allPitchingStats.Length);
                 for (int i = 0; i < allPitchingStats.Count(); i++)
@@ -200,11 +215,16 @@ namespace GP.Managers.DataRetrievalManager
             }
         }
 
-        List<long> InvalidPlayers = new List<long>();
+        List<string> InvalidPlayers = new List<string>();
         DateTime firstInvalidDate = DateTime.MinValue;
-        private void InvalidatePlayerById(long playerId)
+        private void InvalidatePlayerByNameAndTeam(string playerName, string team)
         {
-            InvalidPlayers.Add(playerId);
+            InvalidPlayers.Add(GetInvalidKey(playerName, team));
+        }
+
+        private string GetInvalidKey(string playerName, string team)
+        {
+            return playerName + "__" + team;
         }
     }
 }

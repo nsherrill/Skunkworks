@@ -17,6 +17,7 @@ namespace GP.Shared.Common
         Pitching,
         StartingPitcher,
         Unknown,
+        HotHitting,
     }
 
     public enum WeatherType

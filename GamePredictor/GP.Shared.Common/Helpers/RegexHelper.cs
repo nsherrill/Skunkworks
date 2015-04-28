@@ -24,10 +24,10 @@ namespace GP.Shared.Common
             return null;
         }
 
-        public static string[] GetAllRegex(string regex, string source, int groupIndex = 0)
+        public static string[] GetAllRegex(string regex, string source, int groupIndex = 0, RegexOptions options = RegexOptions.IgnoreCase)
         {
             var matches = Regex.Matches(source, regex,
-                RegexOptions.IgnoreCase);
+                options);
 
             List<string> result = new List<string>();
             if (matches != null

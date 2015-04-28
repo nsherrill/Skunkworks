@@ -903,6 +903,9 @@ select * from dbo.FantasyPlayers where foreignleagueid in ({FANTASY_LEAGUEIDS});
                 case "baseball___hitting":
                     WriteBaseballHittingStats(stats);
                     break;
+                case "baseball___hothitting":
+                    WriteBaseballHotHittingStats(stats);
+                    break;
                 case "baseball___pitching":
                     WriteBaseballPitchingStats(stats);
                     break;
@@ -1580,6 +1583,102 @@ select top 1 * from baseball.CurrentHittingStats where sessionid = @sessionid
 
             //return null;
         }
+        private void WriteBaseballHotHittingStats(CurrentPlayerStats[] source)
+        {
+            string sql = @"
+
+
+declare @playerStats table (
+	[SessionId] [nvarchar](100) NULL,
+	[ForeignPlayerName] nvarchar(100) NULL,
+	[ForeignTeamId] nvarchar(5) NULL,
+	[ABLast7] [int] NULL,
+	[HRLast7] [int] NULL,
+	[AVGLast7] [decimal](12, 6) NULL,
+	[OBPLast7] [decimal](12, 6) NULL,
+	[WOBALast7] [decimal](12, 6) NULL,
+	[OPSLast7] [decimal](12, 6) NULL,
+	[PointsPerABLast7] [decimal](12, 6) NULL)
+	
+    {HOTHITTING_STATS}
+    
+declare @sessionId nvarchar(100)
+select top 1 @sessionid = sessionid from @playerStats
+
+merge into baseball.CurrentHittingStats as target
+    using (select ps.*, p.id as [PlayerId], t.id as [TeamId]
+			from @playerStats ps
+				left join players p on dbo.CleanName(ps.foreignplayername) = p.name
+				left join teams t on t.teamabr= ps.foreignteamid) 
+    as source ([SessionId]
+           ,[ForeignPlayerName]
+           ,[ForeignTeamId]
+           ,[ABLast7]
+           ,[HRLast7]
+           ,[AVGLast7]
+           ,[OBPLast7]
+           ,[WOBALast7]
+           ,[OPSLast7]
+           ,[PointsPerABLast7]
+           ,[PlayerId]
+           ,[TeamId])
+    on (source.sessionId = target.sessionid  and source.playerid = target.playerid)
+    when not matched then
+	    insert ([SessionId]
+           ,[PlayerId]
+           ,[TeamId]
+           ,[ABLast7]
+           ,[HRLast7]
+           ,[AVGLast7]
+           ,[OBPLast7]
+           ,[WOBALast7]
+           ,[OPSLast7]
+           ,[PointsPerABLast7])
+		    values (source.[SessionId]
+           ,source.[PlayerId]
+           ,source.[TeamId]
+           ,[ABLast7]
+           ,[HRLast7]
+           ,[AVGLast7]
+           ,[OBPLast7]
+           ,[WOBALast7]
+           ,[OPSLast7]
+           ,[PointsPerABLast7])
+    when matched then
+	    update set 
+            [ABLast7] = source.[ABLast7]
+           ,[HRLast7] = source.[HRLast7]
+           ,[AVGLast7] = source.[AVGLast7]
+           ,[OBPLast7] = source.[OBPLast7]
+           ,[WOBALast7] = source.[WOBALast7]
+           ,[OPSLast7] = source.[OPSLast7]
+           ,[PointsPerABLast7] = source.[PointsPerABLast7];
+           
+select top 1 * from baseball.CurrentHittingStats where sessionid = @sessionid
+    ";
+
+            List<ValuePair> paramList = new List<ValuePair>();
+            sql = UpdateSqlForHotHittingStats(sql, source, paramList);
+
+            List<List<object>> resultReader = dbAcc.ExecuteQuery(sql, paramList.ToArray(), null);
+
+            //List<FantasyPlayer> result = new List<FantasyPlayer>();
+            //if (resultReader != null
+            //    && resultReader.Count > 0)
+            //{
+            //    if (resultReader[0] != null
+            //        && resultReader[0].Count > 0
+            //        && resultReader[0][0] is FantasyPlayer)
+            //    {
+            //        foreach (var player in resultReader[0])
+            //            result.Add((FantasyPlayer)player);
+            //    }
+
+            //    return result.ToArray();
+            //}
+
+            //return null;
+        }
 
         private string UpdateSqlForHittingStats(string sql, CurrentPlayerStats[] source, List<ValuePair> paramList)
         {
@@ -1664,6 +1763,70 @@ select top 1 * from baseball.CurrentHittingStats where sessionid = @sessionid
             return sql;
         }
 
+        private string UpdateSqlForHotHittingStats(string sql, CurrentPlayerStats[] source, List<ValuePair> paramList)
+        {
+            if (source != null
+                && source.Length > 0)
+            {
+                StringBuilder fps = new StringBuilder();
+                fps.AppendLine(@"insert into @playerStats ([SessionId]
+           ,[ForeignPlayerName]
+           ,[ForeignTeamId]
+           ,[TeamId]
+           ,[ABLast7]
+           ,[HRLast7]
+           ,[AVGLast7]
+           ,[OBPLast7]
+           ,[WOBALast7]
+           ,[OPSLast7]
+           ,[PointsPerABLast7])
+	VALUES 
+        ");
+                for (int i = 0; i < source.Length; i++)
+                {
+                    fps.Append("(@baseball_playerstats_sessionid");
+                    fps.Append(", @baseball_playerstats_ForeignPlayerName_");
+                    fps.Append(i);
+                    fps.Append(", @baseball_playerstats_ForeignTeamId_");
+                    fps.Append(i);
+                    fps.Append(", @baseball_playerstats_ablast7_");
+                    fps.Append(i);
+                    fps.Append(", @baseball_playerstats_hrlast7_");
+                    fps.Append(i);
+                    fps.Append(", @baseball_playerstats_avglast7_");
+                    fps.Append(i);
+                    fps.Append(", @baseball_playerstats_obplast7_");
+                    fps.Append(i);
+                    fps.Append(", @baseball_playerstats_wobalast7_");
+                    fps.Append(i);
+                    fps.Append(", @baseball_playerstats_opslast7_");
+                    fps.Append(i);
+                    fps.Append(", @baseball_playerstats_pointsperablast7_");
+                    fps.Append(i);
+                    fps.Append(')');
+                    if (source.Length > i + 1)
+                        fps.AppendLine(",");
+
+                    if (paramList.Count == 0)
+                        paramList.Add(new ValuePair("@baseball_playerstats_sessionid", source[i].SessionId));
+
+                    paramList.Add(new ValuePair("@baseball_playerstats_ForeignPlayerName_" + i, source[i].ForeignPlayerName));
+                    paramList.Add(new ValuePair("@baseball_playerstats_ForeignTeamId_" + i, source[i].ForeignTeamId));
+                    paramList.Add(new ValuePair("@baseball_playerstats_ablast7_" + i, source[i].Data.First(d => d.Key == "ABLast7Days").Value));
+                    paramList.Add(new ValuePair("@baseball_playerstats_hrlast7_" + i, source[i].Data.First(d => d.Key == "HRLast7Days").Value));
+                    paramList.Add(new ValuePair("@baseball_playerstats_avglast7_" + i, source[i].Data.First(d => d.Key == "AVGLast7Days").Value));
+                    paramList.Add(new ValuePair("@baseball_playerstats_obplast7_" + i, source[i].Data.First(d => d.Key == "OBPLast7Days").Value));
+                    paramList.Add(new ValuePair("@baseball_playerstats_wobalast7_" + i, source[i].Data.First(d => d.Key == "WOBALast7Days").Value));
+                    paramList.Add(new ValuePair("@baseball_playerstats_opslast7_" + i, source[i].Data.First(d => d.Key == "OPSLast7Days").Value));
+                    paramList.Add(new ValuePair("@baseball_playerstats_pointsperablast7_" + i, source[i].Data.First(d => d.Key == "PointsPerABLast7Days").Value));
+                }
+
+                sql = sql.Replace("{HOTHITTING_STATS}", fps.ToString());
+
+            }
+            return sql;
+        }
+        
         private string UpdateSqlForPitchingStats(string sql, CurrentPlayerStats[] source, List<ValuePair> paramList)
         {
             if (source != null

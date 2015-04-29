@@ -19,5 +19,7 @@ namespace GP.Shared.Common
         public int GamesPlayed { get; set; }
         
         public string TeamAbr{ get; set; }
+
+        public bool IsHome { get; set; }
     }
 }

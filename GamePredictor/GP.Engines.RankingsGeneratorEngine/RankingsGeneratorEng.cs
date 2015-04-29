@@ -200,7 +200,7 @@ namespace GP.Engines.RankingsGeneratorEngine
             var bestRemaining = playerOptions
                 .Where(p => remainingSpots
                     .Contains(p.Position)
-                    && p.Hits > 100
+                    && p.ABLast7 > 10
                     && p.Value < interestedLeague.SalaryCap
                     && lastPlayerList.Count(l => l == p.Id) < MAX_DRAFT_COUNT_PER_QUEUE);
             if (bestRemaining.Count() == 0)
@@ -226,7 +226,7 @@ namespace GP.Engines.RankingsGeneratorEngine
             if (interestedLeague.StartingP > 0)
             {
                 var allPitchers = playerOptions.Where(p => p.Position == BaseballPosition.pos_P
-                    && p.Hits > 100
+                    && p.ABLast7 > 10
                     && lastPlayerList.Count(l => l == p.Id) < MAX_DRAFT_COUNT_PER_QUEUE);
                 if (allPitchers.Count() == 0)
                     allPitchers = playerOptions.Where(p => p.Position == BaseballPosition.pos_P
@@ -244,7 +244,7 @@ namespace GP.Engines.RankingsGeneratorEngine
                 var bestRemaining = playerOptions
                     .Where(p => remainingSpots
                         .Contains(p.Position)
-                        && p.Hits > 100
+                        && p.ABLast7 > 10
                         && p.Value < interestedLeague.SalaryCap
                         && lastPlayerList.Count(l => l == p.Id) < MAX_DRAFT_COUNT_PER_QUEUE);
                 if (bestRemaining.Count() == 0)
@@ -253,7 +253,7 @@ namespace GP.Engines.RankingsGeneratorEngine
                         && p.Value < interestedLeague.SalaryCap
                         && lastPlayerList.Count(l => l == p.Id) < MAX_DRAFT_COUNT_PER_QUEUE);
 
-                var orderedList = bestRemaining.OrderByDescending(p => p.AVG / p.ERA);
+                var orderedList = bestRemaining.OrderByDescending(p => p.PPG);
 
                 var desiredIndex = random.Next(Math.Min(3, orderedList.Count()));
                 selected = orderedList.ElementAtOrDefault(desiredIndex);
@@ -275,7 +275,7 @@ namespace GP.Engines.RankingsGeneratorEngine
             var bestRemaining = playerOptions
                 .Where(p => remainingSpots
                     .Contains(p.Position)
-                    && p.Hits > 100
+                    && p.ABLast7 > 10
                     && p.Value < interestedLeague.SalaryCap
                     && p.Value > (interestedLeague.SalaryCap / ((double)remainingSpots.Count) / 2.0)
                     && lastPlayerList.Count(l => l == p.Id) < MAX_DRAFT_COUNT_PER_QUEUE);
@@ -315,7 +315,7 @@ namespace GP.Engines.RankingsGeneratorEngine
             var bestRemaining = playerOptions
                 .Where(p => remainingSpots
                     .Contains(p.Position)
-                    && p.Hits > 100
+                    && p.ABLast7 > 10
                     && p.Value < interestedLeague.SalaryCap
                     && lastPlayerList.Count(l => l == p.Id) < MAX_DRAFT_COUNT_PER_QUEUE);
             if (bestRemaining.Count() == 0)
@@ -355,9 +355,9 @@ namespace GP.Engines.RankingsGeneratorEngine
             var bestRemaining = playerOptions
                 .Where(p => remainingSpots
                     .Contains(p.Position)
-                    && p.Hits > 100
+                    && p.ABLast7 > 10
                     && p.Value < interestedLeague.SalaryCap
-                    && p.IsHome
+                    && true //p.IsHome 
                     && lastPlayerList.Count(l => l == p.Id) < MAX_DRAFT_COUNT_PER_QUEUE);
             if (bestRemaining.Count() == 0)
             {

@@ -705,7 +705,7 @@ select * from dbo.fantasyleagues where sport = 'Baseball' and IsActive = 1;
             string sql = @"
 
 declare @fantasyPlayers table (ForeignId int, ForeignLeagueId nvarchar(100), Name nvarchar(100), 
-        Value decimal(12,6), Position nvarchar(100), PPG decimal(12,6), GamesPlayed int, TeamAbr nvarchar(100))
+        Value decimal(12,6), IsHome bit, Position nvarchar(100), PPG decimal(12,6), GamesPlayed int, TeamAbr nvarchar(100))
     --(@baseball_fantasyPlayer_foreignid_1, @baseball_fantasyPlayer_foreignleagueid_1, @baseball_fantasyPlayer_name_1, 
     --@baseball_fantasyPlayer_value_1, @baseball_fantasyPlayer_position_1, @baseball_fantasyPlayer_ppg_1, 
     --@baseball_fantasyPlayer_gamesplayed_1, @baseball_fantasyPlayer_teamabr_1)
@@ -713,11 +713,11 @@ declare @fantasyPlayers table (ForeignId int, ForeignLeagueId nvarchar(100), Nam
 
 merge into dbo.FantasyPlayers as target
     using (select * from @fantasyPlayers) 
-    as source (ForeignId, ForeignLeagueId, Name, Value, Position, PPG, GamesPlayed, TeamAbr) 
+    as source (ForeignId, ForeignLeagueId, Name, Value, IsHome, Position, PPG, GamesPlayed, TeamAbr) 
     on (source.ForeignId = target.ForeignId and source.ForeignLeagueId = target.ForeignLeagueId)
     when not matched then
-	    insert (ForeignId, ForeignLeagueId, Name, Value, Position, PPG, GamesPlayed, TeamAbr)
-		    values (source.ForeignId, source.ForeignLeagueId, source.Name, source.Value, source.Position, source.PPG, source.GamesPlayed, source.TeamAbr);
+	    insert (ForeignId, ForeignLeagueId, Name, Value, IsHome, Position, PPG, GamesPlayed, TeamAbr)
+		    values (source.ForeignId, source.ForeignLeagueId, source.Name, source.Value, source.IsHome, source.Position, source.PPG, source.GamesPlayed, source.TeamAbr);
 				
 select * from dbo.FantasyPlayers where foreignleagueid in ({FANTASY_LEAGUEIDS});
     ";
@@ -726,24 +726,31 @@ select * from dbo.FantasyPlayers where foreignleagueid in ({FANTASY_LEAGUEIDS});
             sql = UpdateSqlForFantasyPlayers(sql, source, paramList);
             sql = UpdateSqlForFantasyPlayers_LEAGUEIDS(sql, source);
 
-            List<List<object>> resultReader = dbAcc.ExecuteQuery(sql, paramList.ToArray(), (rdr, index) =>
+            try
             {
-                return DbParser.GetFantasyPlayer(rdr);
-            });
-
-            List<FantasyPlayer> result = new List<FantasyPlayer>();
-            if (resultReader != null
-                && resultReader.Count > 0)
-            {
-                if (resultReader[0] != null
-                    && resultReader[0].Count > 0
-                    && resultReader[0][0] is FantasyPlayer)
+                List<List<object>> resultReader = dbAcc.ExecuteQuery(sql, paramList.ToArray(), (rdr, index) =>
                 {
-                    foreach (var player in resultReader[0])
-                        result.Add((FantasyPlayer)player);
-                }
+                    return DbParser.GetFantasyPlayer(rdr);
+                });
 
-                return result.ToArray();
+                List<FantasyPlayer> result = new List<FantasyPlayer>();
+                if (resultReader != null
+                    && resultReader.Count > 0)
+                {
+                    if (resultReader[0] != null
+                        && resultReader[0].Count > 0
+                        && resultReader[0][0] is FantasyPlayer)
+                    {
+                        foreach (var player in resultReader[0])
+                            result.Add((FantasyPlayer)player);
+                    }
+
+                    return result.ToArray();
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
             }
 
             return null;
@@ -944,7 +951,7 @@ select * from dbo.FantasyPlayers where foreignleagueid in ({FANTASY_LEAGUEIDS});
                 && source.Length > 0)
             {
                 StringBuilder fps = new StringBuilder();
-                fps.AppendLine(@"insert into @fantasyPlayers (ForeignId, ForeignLeagueId, Name, Value, Position, PPG, GamesPlayed, TeamAbr)
+                fps.AppendLine(@"insert into @fantasyPlayers (ForeignId, ForeignLeagueId, Name, Value, IsHome, Position, PPG, GamesPlayed, TeamAbr)
 	VALUES 
         ");
                 // fantasy players
@@ -960,6 +967,8 @@ select * from dbo.FantasyPlayers where foreignleagueid in ({FANTASY_LEAGUEIDS});
                     fps.Append(", @baseball_fantasyPlayer_name_");
                     fps.Append(i);
                     fps.Append(", @baseball_fantasyPlayer_value_");
+                    fps.Append(i);
+                    fps.Append(", @baseball_fantasyPlayer_isHome_");
                     fps.Append(i);
                     fps.Append(", @baseball_fantasyPlayer_position_");
                     fps.Append(i);
@@ -977,6 +986,7 @@ select * from dbo.FantasyPlayers where foreignleagueid in ({FANTASY_LEAGUEIDS});
                     paramList.Add(new ValuePair("@baseball_fantasyPlayer_foreignleagueid_" + i, source[i].ForeignLeagueId));
                     paramList.Add(new ValuePair("@baseball_fantasyPlayer_name_" + i, source[i].Name));
                     paramList.Add(new ValuePair("@baseball_fantasyPlayer_value_" + i, source[i].Value));
+                    paramList.Add(new ValuePair("@baseball_fantasyPlayer_isHome_" + i, source[i].IsHome));
                     paramList.Add(new ValuePair("@baseball_fantasyPlayer_position_" + i, source[i].Position.ToString()));
                     paramList.Add(new ValuePair("@baseball_fantasyPlayer_ppg_" + i, source[i].PPG));
                     paramList.Add(new ValuePair("@baseball_fantasyPlayer_gamesplayed_" + i, source[i].GamesPlayed));
@@ -1772,7 +1782,6 @@ select top 1 * from baseball.CurrentHittingStats where sessionid = @sessionid
                 fps.AppendLine(@"insert into @playerStats ([SessionId]
            ,[ForeignPlayerName]
            ,[ForeignTeamId]
-           ,[TeamId]
            ,[ABLast7]
            ,[HRLast7]
            ,[AVGLast7]
@@ -1826,7 +1835,7 @@ select top 1 * from baseball.CurrentHittingStats where sessionid = @sessionid
             }
             return sql;
         }
-        
+
         private string UpdateSqlForPitchingStats(string sql, CurrentPlayerStats[] source, List<ValuePair> paramList)
         {
             if (source != null

@@ -133,6 +133,7 @@ namespace GP.Accessors.DatabaseAccessor
                 PPG = rdr.GetDouble("PPG"),
                 TeamAbr = rdr.GetString("TeamAbr"),
                 Value = rdr.GetDouble("Value"),
+                IsHome = rdr.GetBool("IsHome"),
             };
 
             return result;
@@ -143,20 +144,33 @@ namespace GP.Accessors.DatabaseAccessor
             var result = new FantasyPlayerRanking()
             {
                 ForeignId = rdr.GetInt("ForeignId").ToString(),
+                PlayerId = rdr.GetInt("PlayerId"),
                 ForeignLeagueId = rdr.GetString("ForeignLeagueId"),
                 GamesPlayed = rdr.GetInt("GamesPlayed"),
                 Name = rdr.GetString("Name"),
                 Position = rdr.GetEnum<BaseballPosition>("Position", BaseballPosition.pos_P),
-                PPG = rdr.GetDouble("PPG"),
                 Value = rdr.GetDouble("Value"),
-                NormCalc = rdr.GetDouble("NormCalc"),
-                Hits = rdr.GetInt("Hits"),
                 TeamName = rdr.GetString("TeamName"),
-                HRs = rdr.GetInt("HRs"),
-                AVG = rdr.GetDouble("AVG"),
-                ERA = rdr.GetDouble("ERA"),
-                IsHome = rdr.GetBool("IsHome"),
                 TeamAbr = rdr.GetString("TeamAbr"),
+                AB = rdr.GetInt("AB"),
+                Singles = rdr.GetInt("Singles"),
+                Doubles = rdr.GetInt("Doubles"),
+                Triples = rdr.GetInt("Triples"),
+                HR = rdr.GetInt("HR"),
+                RBI = rdr.GetInt("RBI"),
+                R = rdr.GetInt("R"),
+                BB = rdr.GetInt("BB"),
+                SB = rdr.GetInt("SB"),
+                HBP = rdr.GetInt("HBP"),
+                PPG = rdr.GetDouble("PPG"),
+
+                ABLast7 = rdr.GetInt("ABLast7"),
+                HRLast7 = rdr.GetInt("HRLast7"),
+                AVGLast7 = rdr.GetDouble("AVGLast7"),
+                OBPLast7 = rdr.GetDouble("OBPLast7"),
+                WOBALast7 = rdr.GetDouble("WOBALast7"),
+                OPSLast7 = rdr.GetDouble("OPSLast7"),
+                PointsPerABLast7 = rdr.GetDouble("PointsPerABLast7"),
             };
 
             return result;

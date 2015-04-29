@@ -155,7 +155,8 @@ namespace GP.Engines.DataRetrievalEngine
                         temp.Clear();
                     }
                 }
-                localBaseballAcc.WritePlayers(temp.ToArray());
+                if (temp.Count > 0)
+                    localBaseballAcc.WritePlayers(temp.ToArray());
             }
 
             return players;

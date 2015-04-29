@@ -150,21 +150,38 @@ namespace GP.Accessors.RemoteLeagueAccessor
             }
             catch { }
 
-            var allTxt = driver.PageSource;
-            allTxt = allTxt.Substring(allTxt.IndexOf("FD.playerpicker.allPlayersFullData = ") + "FD.playerpicker.allPlayersFullData = ".Length);
-            allTxt = allTxt.Substring(0, allTxt.IndexOf("FD.playerpicker.teamIdToFixtureCompactString =")).Trim();
-            if (allTxt.EndsWith(";"))
-                allTxt = allTxt.Substring(0, allTxt.Length - 1).Trim();
-            var data = JsonConvert.DeserializeObject<Dictionary<int, object[]>>(allTxt);
+            int attempt = 0;
+            int maxAttempt = 3;
+            bool wasSuccess = false;
+            Dictionary<int, object[]> data = null;
+            Dictionary<int, string> gameData = null;
+            while (attempt < maxAttempt && !wasSuccess)
+            {
+                try
+                {
+                    var allTxt = driver.PageSource;
+                    allTxt = allTxt.Substring(allTxt.IndexOf("FD.playerpicker.allPlayersFullData = ") + "FD.playerpicker.allPlayersFullData = ".Length);
+                    allTxt = allTxt.Substring(0, allTxt.IndexOf("FD.playerpicker.teamIdToFixtureCompactString =")).Trim();
+                    if (allTxt.EndsWith(";"))
+                        allTxt = allTxt.Substring(0, allTxt.Length - 1).Trim();
+                    data = JsonConvert.DeserializeObject<Dictionary<int, object[]>>(allTxt);
 
 
-            allTxt = driver.PageSource;
-            allTxt = allTxt.Substring(allTxt.IndexOf("FD.playerpicker.teamIdToFixtureCompactString = ") + "FD.playerpicker.teamIdToFixtureCompactString = ".Length);
-            allTxt = allTxt.Substring(0, allTxt.IndexOf("FD.playerpicker.positions")).Trim();
-            if (allTxt.EndsWith(";"))
-                allTxt = allTxt.Substring(0, allTxt.Length - 1).Trim();
-            var gameData = JsonConvert.DeserializeObject<Dictionary<int, string>>(allTxt);
+                    allTxt = driver.PageSource;
+                    allTxt = allTxt.Substring(allTxt.IndexOf("FD.playerpicker.teamIdToFixtureCompactString = ") + "FD.playerpicker.teamIdToFixtureCompactString = ".Length);
+                    allTxt = allTxt.Substring(0, allTxt.IndexOf("FD.playerpicker.positions")).Trim();
+                    if (allTxt.EndsWith(";"))
+                        allTxt = allTxt.Substring(0, allTxt.Length - 1).Trim();
+                    gameData = JsonConvert.DeserializeObject<Dictionary<int, string>>(allTxt);
+                    wasSuccess = true;
+                }
+                catch { attempt++; }
+            }
+            if (!wasSuccess)
+            {
+                //blow up?
 
+            }
             //{"597":"KAN@&lt;b&gt;CLE&lt;/b&gt;","599":"&lt;b&gt;KAN&lt;/b&gt;@CLE","609":"NYM@&lt;b&gt;WAS&lt;/b&gt;","607":"&lt;b&gt;NYM&lt;/b&gt;@WAS","595":"SEA@&lt;b&gt;TOR&lt;/b&gt;","603":"&lt;b&gt;SEA&lt;/b&gt;@TOR","605":"PIT@&lt;b&gt;ATL&lt;/b&gt;","614":"&lt;b&gt;PIT&lt;/b&gt;@ATL","611":"MIL@&lt;b&gt;CIN&lt;/b&gt;","613":"&lt;b&gt;MIL&lt;/b&gt;@CIN","592":"TAM@&lt;b&gt;BOS&lt;/b&gt;","594":"&lt;b&gt;TAM&lt;/b&gt;@BOS","606":"PHI@&lt;b&gt;MIA&lt;/b&gt;","608":"&lt;b&gt;PHI&lt;/b&gt;@MIA","604":"HOU@&lt;b&gt;TEX&lt;/b&gt;","612":"&lt;b&gt;HOU&lt;/b&gt;@TEX","610":"STL@&lt;b&gt;CHC&lt;/b&gt;","615":"&lt;b&gt;STL&lt;/b&gt;@CHC","619":"COL@&lt;b&gt;SDP&lt;/b&gt;","617":"&lt;b&gt;COL&lt;/b&gt;@SDP","618":"SFG@&lt;b&gt;LOS&lt;/b&gt;","620":"&lt;b&gt;SFG&lt;/b&gt;@LOS"};
 
             List<FantasyPlayer> result = new List<FantasyPlayer>();
@@ -199,6 +216,9 @@ namespace GP.Accessors.RemoteLeagueAccessor
                         int teamAbrId = int.Parse(teamAbrIdTxt);
                         string teamAbrTxtSource = gameData[teamAbrId].Replace("&gt;", ">").Replace("&lt;", "<");
                         string teamAbrTxt = RegexHelper.GetRegex(@".*?<b>(.+?)</b>.*?", teamAbrTxtSource, 1);
+                        bool isHome = false;
+                        if (teamAbrTxtSource.IndexOf("@") < teamAbrTxtSource.IndexOf(teamAbrTxt))
+                            isHome = true;
 
                         string ppgTxt = data[foreignId][6].ToString();
                         double ppg = double.Parse(ppgTxt);
@@ -219,6 +239,7 @@ namespace GP.Accessors.RemoteLeagueAccessor
                             TeamAbr = teamAbrTxt,
                             Value = value,
                             ForeignLeagueId = foreignLeagueId,
+                            IsHome = isHome,
                         };
                         result.Add(newPlayer);
                     }
@@ -414,7 +435,11 @@ namespace GP.Accessors.RemoteLeagueAccessor
             var source = cachedDriver.PageSource.Substring(0, cachedDriver.PageSource.IndexOf(@"class=""entries-player-league""> player league</span></li>") + 100);
             var entered = RegexHelper.GetAllRegex(@"class=""lightboxLeagueEntries_show"">(\d+)</a></b> / (\d+)<span class=""entries-player", source, 1);
             var maxEntries = RegexHelper.GetAllRegex(@"class=""lightboxLeagueEntries_show"">\d+</a></b> / (\d+)<span class=""entries-player", source, 1);
-            if (long.Parse(entered[0]) >= long.Parse(maxEntries[0]))
+            if (entered != null
+                && entered.Length > 0
+                && maxEntries != null
+                && maxEntries.Length > 0
+                && long.Parse(entered[0]) >= long.Parse(maxEntries[0]))
             {
                 Console.WriteLine("  This league is full... next!");
                 return false;

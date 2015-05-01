@@ -78,6 +78,8 @@ namespace GP.Shared.Common
         TopAvailablePPGPerValue,
         TopAvailableValue,
         TopAvailableValue_HomeOnly,
+        TopAvailablePointsPerABLast7_PPG,
+        TopAvailableOBPLast7_PPG,
     }
 
     public enum SourceType

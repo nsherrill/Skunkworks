@@ -108,6 +108,12 @@ namespace GP.Accessors.DatabaseAccessor
                 Url = rdr.GetString("Url"),
                 SalaryCap = rdr.GetDouble("SalaryCap"),
 
+                IsInterested = rdr.GetBool("IsInterested", false),
+                IsRegistered = rdr.GetBool("IsRegistered", false),
+                FinalRank = rdr.GetInt("FinalRank"),
+                HistoricalForeignId = rdr.GetString("HistoricalForeignId"),
+                HistoricalUrl = rdr.GetString("HistoricalUrl"),
+
                 Starting1B = rdr.GetInt("Starting1B"),
                 Starting2B = rdr.GetInt("Starting2B"),
                 Starting3B = rdr.GetInt("Starting3B"),

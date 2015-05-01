@@ -73,28 +73,6 @@ namespace GP.Engines.RankingsGeneratorEngine
                     {
                         throw new NotSupportedException("ConfigType not yet supported for calculations: " + configType);
                     }
-                    /*
-                    switch (configType)
-                    {
-                        case ConfigType.Conservative:
-                            nextPlayer = DetermineNextPlayer_Conservative(interestedLeague, options.ToArray());
-                            break;
-                        case ConfigType.Conservative_MostExpensive:
-                            nextPlayer = DetermineNextPlayer_ConservativeMostExpensive(interestedLeague, options.ToArray());
-                            break;
-                        case ConfigType.Conservative_MostExpensiveHomePlayer:
-                            nextPlayer = DetermineNextPlayer_ConservativeMostExpensiveHomePlayer(interestedLeague, options.ToArray());
-                            break;
-                        case ConfigType.Aggressive:
-                            nextPlayer = DetermineNextPlayer_Aggressive(interestedLeague, options.ToArray());
-                            break;
-                        case ConfigType.Aggressive_PitcherFirst:
-                            nextPlayer = DetermineNextPlayer_AggressivePitcherFirst(interestedLeague, options.ToArray());
-                            break;
-                        default:
-                            throw new NotImplementedException();
-                    }
-                     */
 
                     if (nextPlayer == null)
                     {
@@ -235,8 +213,6 @@ namespace GP.Engines.RankingsGeneratorEngine
 
                 var desiredIndex = random.Next(Math.Min(3, orderedList.Count()));
                 selected = orderedList.ElementAtOrDefault(desiredIndex);
-
-                interestedLeague.StartingP--;
             }
             else
             {
@@ -357,7 +333,7 @@ namespace GP.Engines.RankingsGeneratorEngine
                     .Contains(p.Position)
                     && p.ABLast7 > 10
                     && p.Value < interestedLeague.SalaryCap
-                    && true //p.IsHome 
+                    && p.IsHome 
                     && lastPlayerList.Count(l => l == p.Id) < MAX_DRAFT_COUNT_PER_QUEUE);
             if (bestRemaining.Count() == 0)
             {
@@ -382,6 +358,160 @@ namespace GP.Engines.RankingsGeneratorEngine
 
             return selected;
         }
+
+        public FantasyPlayerRanking DetermineNextPlayer_TopAvailablePointsPerABLast7_PPG(FantasyLeagueEntry interestedLeague, FantasyPlayerRanking[] playerOptions)
+        {
+            //ConfigType.TopAvailablePointsPerABLast7_PPG,
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+            FantasyPlayerRanking selected = null;
+
+            if (interestedLeague.StartingP > 0)
+            {
+                var allPitchers = playerOptions.Where(p => p.Position == BaseballPosition.pos_P
+                    && lastPlayerList.Count(l => l == p.Id) < MAX_DRAFT_COUNT_PER_QUEUE);
+                var orderedList = allPitchers.OrderByDescending(p => p.Value);
+
+                var desiredIndex = random.Next(Math.Min(3, orderedList.Count()));
+                selected = orderedList.ElementAtOrDefault(desiredIndex);
+            }
+            else
+            {
+                List<BaseballPosition> remainingSpots = interestedLeague.RemainingRosterSpots();
+                var bestRemaining = playerOptions
+                    .Where(p => remainingSpots
+                        .Contains(p.Position)
+                        && p.ABLast7 > 10
+                        && p.Value < interestedLeague.SalaryCap
+                        && lastPlayerList.Count(l => l == p.Id) < MAX_DRAFT_COUNT_PER_QUEUE);
+                if (bestRemaining.Count() == 0)
+                {
+                    bestRemaining = playerOptions
+                        .Where(p => remainingSpots.Contains(p.Position)
+                            && p.Value < interestedLeague.SalaryCap
+                            && lastPlayerList.Count(l => l == p.Id) < MAX_DRAFT_COUNT_PER_QUEUE);
+                }
+                else
+                {
+
+                }
+
+                if (bestRemaining.Count() == 0)
+                {
+                }
+                var orderedList = bestRemaining.OrderByDescending(p => p.PointsPerABLast7);
+
+                var desiredIndex = random.Next(Math.Min(3, orderedList.Count()));
+                selected = orderedList.ElementAtOrDefault(desiredIndex);
+            }
+            sw.Stop();
+
+            return selected;
+        }
+
+        public FantasyPlayerRanking DetermineNextPlayer_TopAvailableOBPLast7_PPG(FantasyLeagueEntry interestedLeague, FantasyPlayerRanking[] playerOptions)
+        {
+            //ConfigType.TopAvailableOBPLast7_PPG,
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+            FantasyPlayerRanking selected = null;
+
+            if (interestedLeague.StartingP > 0)
+            {
+                var allPitchers = playerOptions.Where(p => p.Position == BaseballPosition.pos_P
+                    && lastPlayerList.Count(l => l == p.Id) < MAX_DRAFT_COUNT_PER_QUEUE);
+                var orderedList = allPitchers.OrderByDescending(p => p.Value);
+
+                var desiredIndex = random.Next(Math.Min(3, orderedList.Count()));
+                selected = orderedList.ElementAtOrDefault(desiredIndex);
+            }
+            else
+            {
+                List<BaseballPosition> remainingSpots = interestedLeague.RemainingRosterSpots();
+                var bestRemaining = playerOptions
+                    .Where(p => remainingSpots
+                        .Contains(p.Position)
+                        && p.ABLast7 > 10
+                        && p.Value < interestedLeague.SalaryCap
+                        && lastPlayerList.Count(l => l == p.Id) < MAX_DRAFT_COUNT_PER_QUEUE);
+                if (bestRemaining.Count() == 0)
+                {
+                    bestRemaining = playerOptions
+                        .Where(p => remainingSpots.Contains(p.Position)
+                            && p.Value < interestedLeague.SalaryCap
+                            && lastPlayerList.Count(l => l == p.Id) < MAX_DRAFT_COUNT_PER_QUEUE);
+                }
+                else
+                {
+
+                }
+
+                if (bestRemaining.Count() == 0)
+                {
+                }
+                var orderedList = bestRemaining.OrderByDescending(p => p.OBPLast7);
+
+                var desiredIndex = random.Next(Math.Min(3, orderedList.Count()));
+                selected = orderedList.ElementAtOrDefault(desiredIndex);
+            }
+            sw.Stop();
+
+            return selected;
+        }
+
+        public FantasyPlayerRanking DetermineNextPlayer_TopAvailableWOBALast7_PPG(FantasyLeagueEntry interestedLeague, FantasyPlayerRanking[] playerOptions)
+        {
+            //ConfigType.TopAvailableWOBALast7_PPG,
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+            FantasyPlayerRanking selected = null;
+
+            if (interestedLeague.StartingP > 0)
+            {
+                var allPitchers = playerOptions.Where(p => p.Position == BaseballPosition.pos_P
+                    && lastPlayerList.Count(l => l == p.Id) < MAX_DRAFT_COUNT_PER_QUEUE);
+                var orderedList = allPitchers.OrderByDescending(p => p.Value);
+
+                var desiredIndex = random.Next(Math.Min(3, orderedList.Count()));
+                selected = orderedList.ElementAtOrDefault(desiredIndex);
+            }
+            else
+            {
+                List<BaseballPosition> remainingSpots = interestedLeague.RemainingRosterSpots();
+                var bestRemaining = playerOptions
+                    .Where(p => remainingSpots
+                        .Contains(p.Position)
+                        && p.ABLast7 > 10
+                        && p.Value < interestedLeague.SalaryCap
+                        && lastPlayerList.Count(l => l == p.Id) < MAX_DRAFT_COUNT_PER_QUEUE);
+                if (bestRemaining.Count() == 0)
+                {
+                    bestRemaining = playerOptions
+                        .Where(p => remainingSpots.Contains(p.Position)
+                            && p.Value < interestedLeague.SalaryCap
+                            && lastPlayerList.Count(l => l == p.Id) < MAX_DRAFT_COUNT_PER_QUEUE);
+                }
+                else
+                {
+
+                }
+
+                if (bestRemaining.Count() == 0)
+                {
+                }
+                var orderedList = bestRemaining.OrderByDescending(p => p.WOBALast7);
+
+                var desiredIndex = random.Next(Math.Min(3, orderedList.Count()));
+                selected = orderedList.ElementAtOrDefault(desiredIndex);
+            }
+            sw.Stop();
+
+            return selected;
+        }
+
         #endregion
     }
 }

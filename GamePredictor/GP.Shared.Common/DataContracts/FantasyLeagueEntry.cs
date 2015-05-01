@@ -19,6 +19,12 @@ namespace GP.Shared.Common
         public SportType Sport { get; set; }
         public bool IsActive { get; set; }
 
+        public bool IsRegistered { get; set; }
+        public bool IsInterested { get; set; }
+        public string HistoricalForeignId { get; set; }
+        public string HistoricalUrl { get; set; }
+        public int FinalRank { get; set; }
+
         public override string ToString()
         {
             string title = string.Format("{0}: {1} ({2})", ForeignSite, ForeignTitle, BuyIn);

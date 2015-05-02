@@ -419,7 +419,7 @@ namespace GP.Accessors.RemoteLeagueAccessor
                 var hasMaxEntries = cachedDriver.FindElementByClassName("contest-already-entered");
                 if (hasMaxEntries != null)
                 {
-                    Console.WriteLine("  Already signed up for this league... next!");
+                    Console.WriteLine("  Already signed up for this league");
                     cachedDriver.Url = HOMEPAGE;
                     System.Threading.Thread.Sleep(1000);
                     cachedDriver.SwitchTo().Alert().Accept();
@@ -441,7 +441,7 @@ namespace GP.Accessors.RemoteLeagueAccessor
                 && maxEntries.Length > 0
                 && long.Parse(entered[0]) >= long.Parse(maxEntries[0]))
             {
-                Console.WriteLine("  This league is full... next!");
+                Console.WriteLine("  This league is full");
                 return false;
             } return true;
         }

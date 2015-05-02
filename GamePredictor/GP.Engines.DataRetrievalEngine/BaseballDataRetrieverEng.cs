@@ -164,13 +164,17 @@ namespace GP.Engines.DataRetrievalEngine
 
         public bool GetandWriteLeagueRoster(GPChromeDriver cachedDriver, FantasyLeagueEntry interestedLeague)
         {
-            Console.WriteLine("Getting remote roster definition for " + interestedLeague.ForeignId);
+            Console.WriteLine("  Pulling player options");
             FantasyRosterDefinition result = fanDuelAcc.GetRoster(cachedDriver, interestedLeague.ForeignId, interestedLeague.Url);
 
             var isValid = fanDuelAcc.ValidateLeague(cachedDriver, interestedLeague.Url);
             if (!isValid)
+            {
+                Console.WriteLine("  ** League invalid for some reason");
                 return false;
+            }
 
+            Console.WriteLine("  Writing player options");
             if (result != null)
             {
                 localBaseballAcc.WriteLeagueRoster(result);

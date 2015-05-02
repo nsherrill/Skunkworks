@@ -101,7 +101,7 @@ namespace GP.Managers.DataRetrievalManager
                     {
                         var interestedLeague = allInterestedLeagues[i];
 
-                        Console.WriteLine("Attempting to sign up for league: {0}", interestedLeague.ForeignId);
+                        Console.WriteLine("New league: {0}", interestedLeague.ForeignId);
                         FantasyPlayer[] players = dataEng.GetPlayersForLeague(cachedDriver, interestedLeague.ForeignId, interestedLeague.Url);
 
                         var isValid = dataEng.GetandWriteLeagueRoster(cachedDriver, interestedLeague);
@@ -110,34 +110,44 @@ namespace GP.Managers.DataRetrievalManager
                             continue;
                         }
                         FantasyPlayerRanking[] playerOptions = localBaseballDataAcc.GetPlayerRankings(interestedLeague.ForeignId);
-                        playerOptions = playerOptions.Where(p => !InvalidPlayers.Contains(GetInvalidKey(p.Name, p.TeamName))).ToArray();
 
                         int maxAttempts = 3;
                         bool result = false;
                         ConfigType configType = ConfigType.TopAvailablePPG;
                         for (int attempt = 0; attempt < maxAttempts && !result; attempt++)
                         {
+                            playerOptions = playerOptions.Where(p => !InvalidPlayers.Contains(GetInvalidKey(p.Name, p.TeamName))).ToArray();
+
                             configType = config.GetConfigType(i, allInterestedLeagues.Length);
+                            Console.WriteLine("  Generating roster of type " + configType);
                             var roster = rankingsGeneratorEng.GenerateRoster(interestedLeague, playerOptions, configType);
 
                             if (roster == null)
                                 continue;
 
+                            Console.WriteLine("  Attempting to register roster!");
                             result = dataEng.RegisterForLeague(cachedDriver, interestedLeague, roster, InvalidatePlayerByNameAndTeam);
                         }
                         if (result)
                         {
-                            Console.WriteLine("Successfully registered for league {0} as {1}!", interestedLeague.ForeignId, configType);
+                            Console.WriteLine("  Success  as " + configType);
                             localBaseballDataAcc.RecordSuccessfulLeagueSignup(interestedLeague.Id, playerOptions.Select(p => p.Id).ToArray(), configType);
                             registeredCount++;
                         }
                         else
-                            Console.WriteLine("  Just couldn't make this league work... next!");
+                            Console.WriteLine("  ** Just couldn't make this league work!");
                     }
                     catch (Exception e)
                     {
                     }
                 }
+
+                Console.WriteLine("");
+                Console.WriteLine("Done registering!");
+                Console.WriteLine("Leagues registered: {0}", registeredCount);
+                Console.WriteLine("Leagues available:  {0}", allInterestedLeagues.Length);
+                Console.WriteLine("");
+                Console.WriteLine("");
             }
             catch
             {
@@ -219,6 +229,7 @@ namespace GP.Managers.DataRetrievalManager
         DateTime firstInvalidDate = DateTime.MinValue;
         private void InvalidatePlayerByNameAndTeam(string playerName, string team)
         {
+            Console.WriteLine("  ** Ditching " + playerName);
             InvalidPlayers.Add(GetInvalidKey(playerName, team));
         }
 

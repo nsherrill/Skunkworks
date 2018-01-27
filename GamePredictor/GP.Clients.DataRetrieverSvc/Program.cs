@@ -24,7 +24,7 @@ namespace GP.Clients.DataRetrieverSvc
                 list.RemoveAt(0);
                 dataRetriverSvc.ConsoleStart(list.ToArray());
                 Console.WriteLine("Press enter to end service");
-                Console.ReadLine();
+                //Console.ReadLine();
                 dataRetriverSvc.ConsoleStop();
             }
             else

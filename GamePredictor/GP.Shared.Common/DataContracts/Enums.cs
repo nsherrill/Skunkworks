@@ -73,13 +73,13 @@ namespace GP.Shared.Common
 
     public enum ConfigType
     {
-        TopAvailablePPG,
-        TopAvailablePPG_PitcherFirst,
-        TopAvailablePPGPerValue,
-        TopAvailableValue,
-        TopAvailableValue_HomeOnly,
-        TopAvailablePointsPerABLast7_PPG,
-        TopAvailableOBPLast7_PPG,
+       // TopAvailablePPG,
+        //TopAvailablePPG_PitcherFirst,
+       // TopAvailablePPGPerValue,
+       // TopAvailableValue,
+       // TopAvailableValue_HomeOnly,
+        TopAvailablePointsPerABLast7_PPG,  //5/29
+        //TopAvailableOBPLast7_PPG, // 5/16
     }
 
     public enum SourceType

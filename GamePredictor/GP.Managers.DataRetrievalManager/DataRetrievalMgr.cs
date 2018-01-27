@@ -111,9 +111,9 @@ namespace GP.Managers.DataRetrievalManager
                         }
                         FantasyPlayerRanking[] playerOptions = localBaseballDataAcc.GetPlayerRankings(interestedLeague.ForeignId);
 
-                        int maxAttempts = 3;
+                        int maxAttempts = 7;
                         bool result = false;
-                        ConfigType configType = ConfigType.TopAvailablePPG;
+                        ConfigType configType = ConfigType.TopAvailablePointsPerABLast7_PPG;//.TopAvailablePPG;
                         for (int attempt = 0; attempt < maxAttempts && !result; attempt++)
                         {
                             playerOptions = playerOptions.Where(p => !InvalidPlayers.Contains(GetInvalidKey(p.Name, p.TeamName))).ToArray();

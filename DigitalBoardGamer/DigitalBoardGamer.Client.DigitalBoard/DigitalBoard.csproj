@@ -53,6 +53,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\BoardOptionItemControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\GameItemControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -65,14 +69,26 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controls\BoardOptionItemControl.xaml.cs">
+      <DependentUpon>BoardOptionItemControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\GameItemControl.xaml.cs">
       <DependentUpon>GameItemControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EventArgs\BoardOptionEventArgs.cs" />
     <Compile Include="EventArgs\GameEventArgs.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Pages\BoardOptionsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\GameOptionsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles\Brushes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -87,6 +103,12 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Pages\BoardOptionsPage.xaml.cs">
+      <DependentUpon>BoardOptionsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\GameOptionsPage.xaml.cs">
+      <DependentUpon>GameOptionsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

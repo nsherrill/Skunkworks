@@ -23,34 +23,30 @@ namespace DigitalBoardGamer.Client.DigitalBoard
     /// </summary>
     public partial class MainWindow : Window
     {
-        IGameManager myGameManager = null;
         public MainWindow()
         {
             InitializeComponent();
-            this.myGameManager = new GameManager();
         }
-
-        Game[] gamesCache = null;
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            gamesCache = myGameManager.FindAllGames();
+            this.gameOptionsPage.OnGameSelected += GameOptionsGrid_OnGameSelected;
+            this.boardOptionsPage.OnBoardOptionSelected += boardOptionsPage_OnBoardOptionSelected;
+        }
 
-            if(gamesCache != null)
+        void GameOptionsGrid_OnGameSelected(object sender, GameEventArgs e)
+        {
+            if (e != null
+                && e.Game != null)
             {
-                foreach (var game in gamesCache)
-                {
-                    var newItem = new GameItemControl();
-                    newItem.Init(game);
-                    newItem.OnGameSelected += newItem_OnGameSelected;
-                    this.GameOptionsPanel.Children.Add(newItem);
-                }
+                this.gameOptionsPage.Visibility = System.Windows.Visibility.Collapsed;
+                this.boardOptionsPage.Init(e.Game.GameId);
             }
         }
 
-        void newItem_OnGameSelected(object sender, GameEventArgs e)
+        void boardOptionsPage_OnBoardOptionSelected(object sender, BoardOptionEventArgs e)
         {
-            MessageBox.Show(string.Format("Game selected! [{0}]", e.Game.Name));
+            
         }
     }
 }

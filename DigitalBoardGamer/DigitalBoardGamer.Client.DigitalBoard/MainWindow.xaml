@@ -1,18 +1,14 @@
 ﻿<Window x:Class="DigitalBoardGamer.Client.DigitalBoard.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:pages="clr-namespace:DigitalBoardGamer.Client.DigitalBoard.Pages"
         WindowState="Maximized"
         Title="MainWindow" Height="350" Width="525"
         Loaded="Window_Loaded">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <Label Content="Game Options" />
-        <StackPanel Name="GameOptionsPanel" 
-                    Orientation="Vertical"
-                    Grid.Row="1"
-                    Margin="10"/>
+        <pages:GameOptionsPage x:Name="gameOptionsPage">
+        </pages:GameOptionsPage>
+        <pages:BoardOptionsPage x:Name="boardOptionsPage">
+        </pages:BoardOptionsPage>
     </Grid>
 </Window>

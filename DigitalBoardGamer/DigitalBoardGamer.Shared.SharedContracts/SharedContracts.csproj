@@ -39,7 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\IBoardOptionManager.cs" />
     <Compile Include="Contracts\IGameManager.cs" />
+    <Compile Include="DataContracts\BoardOption.cs" />
     <Compile Include="DataContracts\Game.cs" />
     <Compile Include="DataContracts\IGameBoard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

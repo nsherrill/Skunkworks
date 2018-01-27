@@ -98,10 +98,6 @@
       <Project>{d431e94d-02b5-402b-8ff7-1106b016b85c}</Project>
       <Name>GameManager</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DigitalBoardGamer.Manager.SettlersManager\SettlersManager.csproj">
-      <Project>{5d9df9c9-91da-45ba-86ea-cd5c5d0b72fc}</Project>
-      <Name>SettlersManager</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DigitalBoardGamer.Shared.SettlersShared\SettlersShared.csproj">
       <Project>{82e9772c-44de-4140-b422-f9d23cdf2926}</Project>
       <Name>SettlersShared</Name>

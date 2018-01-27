@@ -4,14 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5D9DF9C9-91DA-45BA-86EA-CD5C5D0B72FC}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{5b4f9007-0d56-49df-a3d9-7f5e05bc32a3}</ProjectGuid>
+    <OutputType>library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DigitalBoardGamer.Manager.SettlersManager</RootNamespace>
     <AssemblyName>DigitalBoardGamer.Manager.SettlersManager</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -29,48 +32,73 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    
+    <Reference Include="Microsoft.CSharp" />
+    
+    
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    
+    
+    <Reference Include="System.Xaml">
+	<RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    
+    
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Page Include="UserControl1.xaml">
+       <Generator>MSBuild:Compile</Generator>
+       <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="UserControl1.xaml.cs">
+      <DependentUpon>UserControl1.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\DigialBoardGamer.Engine.SettlersEngine\SettlersEngine.csproj">
-      <Project>{e1d5a1bf-38d6-403a-88f7-3b30d33ef70d}</Project>
-      <Name>SettlersEngine</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DigitalBoardGamer.Engine.GameEngine\GameEngine.csproj">
-      <Project>{6f43a75b-c4c2-48a7-aca5-f25c0008a19b}</Project>
-      <Name>GameEngine</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DigitalBoardGamer.Manager.GameManager\GameManager.csproj">
-      <Project>{d431e94d-02b5-402b-8ff7-1106b016b85c}</Project>
-      <Name>GameManager</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DigitalBoardGamer.ResourceAccessor.GameAccessor\GameAccessor.csproj">
-      <Project>{d397fea1-881e-4294-93fa-67f4ed34ca56}</Project>
-      <Name>GameAccessor</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DigitalBoardGamer.ResourceAccessor.SettlersAccessor\SettlersAccessor.csproj">
-      <Project>{68f03ab1-f2fe-4474-93b7-e7246a119e12}</Project>
-      <Name>SettlersAccessor</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DigitalBoardGamer.Shared.SettlersShared\SettlersShared.csproj">
-      <Project>{82e9772c-44de-4140-b422-f9d23cdf2926}</Project>
-      <Name>SettlersShared</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DigitalBoardGamer.Shared.SharedContracts\SharedContracts.csproj">
-      <Project>{a2060058-10bd-4dde-9628-618f78fc0fdc}</Project>
-      <Name>SharedContracts</Name>
-    </ProjectReference>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+
+    <AppDesigner Include="Properties\" />
+
   </ItemGroup>
+
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -79,4 +107,5 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  
 </Project>

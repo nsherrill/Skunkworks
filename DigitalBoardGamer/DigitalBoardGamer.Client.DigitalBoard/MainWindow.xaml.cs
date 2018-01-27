@@ -1,4 +1,7 @@
-﻿using System;
+﻿using DigitalBoardGamer.Client.DigitalBoard.Controls;
+using DigitalBoardGamer.Manager.GameManager;
+using DigitalBoardGamer.Shared.SharedContracts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +23,34 @@ namespace DigitalBoardGamer.Client.DigitalBoard
     /// </summary>
     public partial class MainWindow : Window
     {
+        IGameManager myGameManager = null;
         public MainWindow()
         {
             InitializeComponent();
+            this.myGameManager = new GameManager();
+        }
+
+        Game[] gamesCache = null;
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            gamesCache = myGameManager.FindAllGames();
+
+            if(gamesCache != null)
+            {
+                foreach (var game in gamesCache)
+                {
+                    var newItem = new GameItemControl();
+                    newItem.Init(game);
+                    newItem.OnGameSelected += newItem_OnGameSelected;
+                    this.GameOptionsPanel.Children.Add(newItem);
+                }
+            }
+        }
+
+        void newItem_OnGameSelected(object sender, GameEventArgs e)
+        {
+            MessageBox.Show(string.Format("Game selected! [{0}]", e.Game.Name));
         }
     }
 }

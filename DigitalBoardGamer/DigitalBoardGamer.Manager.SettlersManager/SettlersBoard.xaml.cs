@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DigitalBoardGamer.Shared.SharedContracts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,9 +19,9 @@ namespace DigitalBoardGamer.Manager.SettlersManager
     /// <summary>
     /// Interaction logic for UserControl1.xaml
     /// </summary>
-    public partial class UserControl1 : UserControl
+    public partial class SettlersBoard : UserControl, IGameBoard
     {
-        public UserControl1()
+        public SettlersBoard()
         {
             InitializeComponent();
         }

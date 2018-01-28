@@ -16,6 +16,6 @@ namespace DigitalBoardGamer.Shared.SettlersShared
 
         public HexBoardDefinition[] HexDefinition { get; set; }
 
-        public HexBoardDefinition[] ValueDefinition { get; set; }
+        public ValueBoardDefinition[] ValueDefinition { get; set; }
     }
 }

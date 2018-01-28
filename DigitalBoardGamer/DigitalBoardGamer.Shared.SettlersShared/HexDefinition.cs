@@ -12,5 +12,9 @@ namespace DigitalBoardGamer.Shared.SettlersShared
         public HexValue MyHexValue { get; set; }
         public int RowIndex { get; set; }
         public int ColumnIndex { get; set; }
+
+        public long HexTypeId { get; set; }
+
+        public long HexValueId { get; set; }
     }
 }

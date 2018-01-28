@@ -15,5 +15,7 @@ namespace DigitalBoardGamer.Shared.SettlersShared
         public string ImageUrl { get; set; }
 
         public string BackupColor { get; set; }
+
+        public long HexTypeId { get; set; }
     }
 }

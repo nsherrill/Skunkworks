@@ -11,5 +11,7 @@ namespace DigitalBoardGamer.Shared.SettlersShared
         public int ValCount { get; set; }
 
         public int DiceValue { get; set; }
+
+        public long HexValueId { get; set; }
     }
 }

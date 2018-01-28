@@ -48,10 +48,6 @@
       <Project>{e1d5a1bf-38d6-403a-88f7-3b30d33ef70d}</Project>
       <Name>SettlersEngine</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DigitalBoardGamer.Engine.GameEngine\GameEngine.csproj">
-      <Project>{6f43a75b-c4c2-48a7-aca5-f25c0008a19b}</Project>
-      <Name>GameEngine</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DigitalBoardGamer.ResourceAccessor.GameAccessor\GameAccessor.csproj">
       <Project>{d397fea1-881e-4294-93fa-67f4ed34ca56}</Project>
       <Name>GameAccessor</Name>

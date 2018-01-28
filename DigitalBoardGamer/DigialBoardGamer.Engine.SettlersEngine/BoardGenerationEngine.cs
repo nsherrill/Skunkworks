@@ -29,11 +29,30 @@ namespace DigialBoardGamer.Engine.SettlersEngine
             var maxRow = myBoardDef.RowCount - 1; // 0 based
 
             List<HexDefinition> allHexes = new List<HexDefinition>();
+            foreach (var stat in myBoardDef.StaticHexes)
+            {// remove all static ones from boardDef
+                for (int i = 0; i < myBoardDef.HexBoardDefinition.Length; i++)
+                {
+                    if (myBoardDef.HexBoardDefinition[i].TypeId == stat.MyHexType.TypeId)
+                        myBoardDef.HexBoardDefinition[i].MaxHexCount--;
+                }
+
+                for (int i = 0; i < myBoardDef.ValueBoardDefinition.Length; i++)
+                {
+                    if (myBoardDef.ValueBoardDefinition[i].HexValueId == stat.MyHexValue.HexValueId)
+                        myBoardDef.ValueBoardDefinition[i].ValCount--;
+                }
+                allHexes.Add(new HexDefinition(stat));
+            }
+
             Random r = new Random(DateTime.Now.Millisecond);
             for (int row = 0; row < maxRow; row++)
             {
                 for (int col = 0; col < maxCol; col++)
-                {
+                {//generate the rest!
+                    if (allHexes.Any(h => h.RowIndex == row && h.ColumnIndex == col))
+                        continue; // ignore spot if it's already a static!
+
                     allHexes.Add(DeterminePosition(r, myBoardDef, row, col));
                 }
             }
@@ -44,25 +63,6 @@ namespace DigialBoardGamer.Engine.SettlersEngine
 
         private HexDefinition DeterminePosition(Random r, BoardDefinition boardDef, int row, int col)
         {
-            var stat = boardDef.StaticHexes.FirstOrDefault(s => s.RowIndex == row && s.ColumnIndex == col);
-
-            if (stat != null)
-            {
-                for (int i = 0; i < boardDef.HexBoardDefinition.Length; i++)
-                {
-                    if (boardDef.HexBoardDefinition[i].TypeId == stat.MyHexType.TypeId)
-                        boardDef.HexBoardDefinition[i].MaxHexCount--;
-                }
-
-                for (int i = 0; i < boardDef.ValueBoardDefinition.Length; i++)
-                {
-                    if (boardDef.ValueBoardDefinition[i].HexValueId == stat.MyHexValue.HexValueId)
-                        boardDef.ValueBoardDefinition[i].ValCount--;
-                }
-
-                return stat;
-            }
-
             var totalRemainingHexes = boardDef.HexBoardDefinition.Sum(h => h.MaxHexCount);
             var hexIndex = r.Next(0, totalRemainingHexes);
 

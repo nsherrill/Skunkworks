@@ -8,11 +8,11 @@ namespace DigitalBoardGamer.Shared.SharedContracts
 {
     public class Game
     {
-        public int GameId { get; set; }
+        public long GameId { get; set; }
         public string Name { get; set; }
         public string DllName { get; set; }
 
-        public Game(int gameId, string gameName, string dllName)
+        public Game(long gameId, string gameName, string dllName)
         {
             this.GameId = gameId;
             this.Name = gameName;

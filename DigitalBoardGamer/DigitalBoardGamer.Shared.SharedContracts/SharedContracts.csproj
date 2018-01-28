@@ -43,7 +43,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\IBoardAccessor.cs" />
     <Compile Include="Contracts\IBoardOptionManager.cs" />
+    <Compile Include="Contracts\IGameAccessor.cs" />
     <Compile Include="Contracts\IGameManager.cs" />
     <Compile Include="DataContracts\BoardOption.cs" />
     <Compile Include="DataContracts\Game.cs" />

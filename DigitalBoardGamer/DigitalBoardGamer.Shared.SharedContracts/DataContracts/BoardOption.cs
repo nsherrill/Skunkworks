@@ -8,10 +8,10 @@ namespace DigitalBoardGamer.Shared.SharedContracts
 {
     public class BoardOption
     {
-        public int BoardId { get; set; }
+        public long BoardId { get; set; }
         public string BoardOptionName { get; set; }
 
-        public BoardOption(int boardId, string boardOptionName)
+        public BoardOption(long boardId, string boardOptionName)
         {
             this.BoardId = boardId;
             this.BoardOptionName = boardOptionName;

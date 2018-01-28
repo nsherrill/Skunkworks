@@ -23,6 +23,7 @@ namespace DigitalBoardGamer.Client.DigitalBoard.Pages
         public event EventHandler<BoardOptionEventArgs> OnBoardOptionSelected;
 
         IBoardOptionManager myBoardManager = null;
+        Game myGame = null;
         BoardOption[] boardsCache = null;
 
         public BoardOptionsPage()
@@ -42,18 +43,18 @@ namespace DigitalBoardGamer.Client.DigitalBoard.Pages
             catch { }
         }
 
-        public void Init(long gameId)
+        public void Init(Game game)
         {
             this.Visibility = System.Windows.Visibility.Visible;
-
-            boardsCache = myBoardManager.FindAllBoardOptions(gameId);
+            this.myGame = game;
+            boardsCache = myBoardManager.FindAllBoardOptions(game.GameId);
 
             if (boardsCache != null)
             {
                 foreach (var boardOption in boardsCache)
                 {
                     var newItem = new BoardOptionItemControl();
-                    newItem.Init(boardOption);
+                    newItem.Init(myGame, boardOption);
                     newItem.OnBoardOptionSelected += newItem_OnBoardOptionSelected;
                     this.BoardOptionsPanel.Children.Add(newItem);
                 }

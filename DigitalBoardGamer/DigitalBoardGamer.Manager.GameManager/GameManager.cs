@@ -12,9 +12,9 @@ namespace DigitalBoardGamer.Manager.GameManager
         public Game[] FindAllGames()
         {
             List<Game> games = new List<Game>();
-            games.Add(new Game(1, "test game"));
-            games.Add(new Game(2, "test game2"));
-            games.Add(new Game(3, "test game3"));
+            games.Add(new Game(1, "test game", "DigitalBoardGamer.Manager.SettlersManager.dll"));
+            games.Add(new Game(2, "test game2", "DigitalBoardGamer.Manager.SettlersManager.dll"));
+            games.Add(new Game(3, "test game3", "DigitalBoardGamer.Manager.SettlersManager.dll"));
             return games.ToArray();
         }
     }

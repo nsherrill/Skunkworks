@@ -28,6 +28,7 @@ namespace DigitalBoardGamer.Client.DigitalBoard.Controls
         public string BoardOptionName { get; set; }
 
         private BoardOption myBoardOption { get; set; }
+        private Game myGame { get; set; }
 
         public BoardOptionItemControl()
         {
@@ -35,8 +36,9 @@ namespace DigitalBoardGamer.Client.DigitalBoard.Controls
             this.DataContext = this;
         }
 
-        public void Init(BoardOption boardOption)
+        public void Init(Game game, BoardOption boardOption)
         {
+            this.myGame = game;
             this.myBoardOption = boardOption;
             this.BoardId = boardOption.BoardId.ToString();
             this.BoardOptionName = boardOption.BoardOptionName;
@@ -61,7 +63,7 @@ namespace DigitalBoardGamer.Client.DigitalBoard.Controls
         {
             if (this.OnBoardOptionSelected != null)
             {
-                this.OnBoardOptionSelected(this, new BoardOptionEventArgs(this.myBoardOption));
+                this.OnBoardOptionSelected(this, new BoardOptionEventArgs(this.myGame, this.myBoardOption));
             }
         }
     }

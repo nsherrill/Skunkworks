@@ -30,15 +30,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BoardDrawingEngine.cs" />
+    <Compile Include="BoardGenerationEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -53,6 +59,10 @@
     <ProjectReference Include="..\DigitalBoardGamer.ResourceAccessor.SettlersAccessor\SettlersAccessor.csproj">
       <Project>{68f03ab1-f2fe-4474-93b7-e7246a119e12}</Project>
       <Name>SettlersAccessor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DigitalBoardGamer.Shared.SettlersShared\SettlersShared.csproj">
+      <Project>{82e9772c-44de-4140-b422-f9d23cdf2926}</Project>
+      <Name>SettlersShared</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

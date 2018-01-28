@@ -39,6 +39,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BoardDefinition.cs" />
+    <Compile Include="HexDefinition.cs" />
+    <Compile Include="HexType.cs" />
+    <Compile Include="HexValue.cs" />
+    <Compile Include="IBoardDefinitionAccessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

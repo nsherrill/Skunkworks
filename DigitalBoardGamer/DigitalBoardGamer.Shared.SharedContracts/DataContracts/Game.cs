@@ -10,11 +10,13 @@ namespace DigitalBoardGamer.Shared.SharedContracts
     {
         public int GameId { get; set; }
         public string Name { get; set; }
+        public string DllName { get; set; }
 
-        public Game(int gameId, string gameName)
+        public Game(int gameId, string gameName, string dllName)
         {
             this.GameId = gameId;
             this.Name = gameName;
+            this.DllName = dllName;
         }
     }
 }

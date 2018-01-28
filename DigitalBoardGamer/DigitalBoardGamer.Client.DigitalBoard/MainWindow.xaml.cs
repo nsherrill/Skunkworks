@@ -23,9 +23,12 @@ namespace DigitalBoardGamer.Client.DigitalBoard
     /// </summary>
     public partial class MainWindow : Window
     {
+        GameLoader gameLoader = null;
+        IGameBoardManager currentManager = null;
         public MainWindow()
         {
             InitializeComponent();
+            gameLoader = new GameLoader();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -40,13 +43,20 @@ namespace DigitalBoardGamer.Client.DigitalBoard
                 && e.Game != null)
             {
                 this.gameOptionsPage.Visibility = System.Windows.Visibility.Collapsed;
-                this.boardOptionsPage.Init(e.Game.GameId);
+                this.boardOptionsPage.Init(e.Game);
             }
         }
 
         void boardOptionsPage_OnBoardOptionSelected(object sender, BoardOptionEventArgs e)
         {
-            
+            ProcessEvent(e);
+        }
+
+        private void ProcessEvent(BoardOptionEventArgs e)
+        {
+            currentManager = gameLoader.LoadGameBoardManager(e.Game.DllName);
+            var gameBoard = currentManager.GetGameBoard(e.BoardOption.BoardId);
+            this.BoardGrid.Children.Add(gameBoard);
         }
     }
 }

@@ -75,8 +75,9 @@
     <Compile Include="Controls\GameItemControl.xaml.cs">
       <DependentUpon>GameItemControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="EventArgs\BoardOptionEventArgs.cs" />
-    <Compile Include="EventArgs\GameEventArgs.cs" />
+    <Compile Include="Contracts\BoardOptionEventArgs.cs" />
+    <Compile Include="Contracts\GameEventArgs.cs" />
+    <Compile Include="GameLoader.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -140,9 +141,9 @@
       <Project>{d431e94d-02b5-402b-8ff7-1106b016b85c}</Project>
       <Name>GameManager</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DigitalBoardGamer.Shared.SettlersShared\SettlersShared.csproj">
-      <Project>{82e9772c-44de-4140-b422-f9d23cdf2926}</Project>
-      <Name>SettlersShared</Name>
+    <ProjectReference Include="..\DigitalBoardGamer.Manager.SettlersManager\SettlersManager.csproj">
+      <Project>{5b4f9007-0d56-49df-a3d9-7f5e05bc32a3}</Project>
+      <Name>SettlersManager</Name>
     </ProjectReference>
     <ProjectReference Include="..\DigitalBoardGamer.Shared.SharedContracts\SharedContracts.csproj">
       <Project>{a2060058-10bd-4dde-9628-618f78fc0fdc}</Project>

@@ -47,12 +47,12 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="SettlersBoard.xaml">
+    <Page Include="SettlersBoardManager.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="SettlersBoard.xaml.cs">
-      <DependentUpon>SettlersBoard.xaml</DependentUpon>
+    <Compile Include="SettlersBoardManager.xaml.cs">
+      <DependentUpon>SettlersBoardManager.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

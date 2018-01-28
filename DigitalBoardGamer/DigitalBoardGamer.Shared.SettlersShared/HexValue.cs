@@ -8,7 +8,14 @@ namespace DigitalBoardGamer.Shared.SettlersShared
 {
     public class HexValue
     {
-        public long ValueId { get; set; }
-        public string Value { get; set; }
+        public long HexValueId { get; set; }
+        public string DiceValue { get; set; }
+
+        public HexValue() { }
+        public HexValue(HexValue original)
+        {
+            this.HexValueId = original.HexValueId;
+            this.DiceValue = original.DiceValue;
+        }
     }
 }

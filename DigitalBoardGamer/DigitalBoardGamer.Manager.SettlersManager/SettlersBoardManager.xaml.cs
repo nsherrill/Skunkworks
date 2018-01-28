@@ -25,7 +25,6 @@ namespace DigitalBoardGamer.Manager.SettlersManager
     public partial class SettlersBoardManager : UserControl, IGameBoardManager
     {
         BoardGenerationEngine boardGenEng = new BoardGenerationEngine();
-        BoardDrawingEngine boardDrawingEng = new BoardDrawingEngine();
         public SettlersBoardManager()
         {
             InitializeComponent();
@@ -34,9 +33,15 @@ namespace DigitalBoardGamer.Manager.SettlersManager
         public UserControl GetGameBoard(long boardId)
         {
             int playerCount = 3;
-            var boardDef = boardGenEng.GetRandomizedBoardDefinition(boardId, playerCount);
-            var newBoardControl = boardDrawingEng.DrawNewBoard(boardDef);
-            return newBoardControl;
+            var genBoard = boardGenEng.GetRandomizedBoardDefinition(boardId, playerCount);
+            DrawBoard(genBoard);
+            //var newBoardControl = boardDrawingEng.DrawNewBoard(genBoard);
+            return this;
+        }
+
+        private void DrawBoard(GeneratedBoard genBoard)
+        {
+            throw new NotImplementedException();
         }
     }
 }

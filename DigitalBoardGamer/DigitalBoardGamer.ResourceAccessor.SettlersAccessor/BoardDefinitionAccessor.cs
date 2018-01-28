@@ -37,10 +37,10 @@ namespace DigitalBoardGamer.ResourceAccessor.SettlersAccessor
                             hexDef.Name = (string)rdr["Name"];
                             hexDef.ImageUrl = rdr["ImageUrl"] == DBNull.Value ? null : (string)rdr["ImageUrl"];
                             hexDef.BackupColor = rdr["BackupColor"] == DBNull.Value ? null : (string)rdr["BackupColor"];
-                            hexDef.HexTypeId = (long)rdr["HexTypeId"];
+                            hexDef.TypeId = (long)rdr["HexTypeId"];
                             hexes.Add(hexDef);
                         }
-                        result.HexDefinition = hexes.ToArray();
+                        result.HexBoardDefinition = hexes.ToArray();
 
                         rdr.NextResult();
                         List<ValueBoardDefinition> vals = new List<ValueBoardDefinition>();
@@ -48,11 +48,11 @@ namespace DigitalBoardGamer.ResourceAccessor.SettlersAccessor
                         {// value things
                             var valDef = new ValueBoardDefinition();
                             valDef.ValCount = (int)rdr["MaxValueCount"];
-                            valDef.DiceValue = (int)rdr["DiceValue"];
+                            valDef.DiceValue = rdr["DiceValue"].ToString();
                             valDef.HexValueId = (long)rdr["HexValueId"];
                             vals.Add(valDef);
                         }
-                        result.ValueDefinition = vals.ToArray();
+                        result.ValueBoardDefinition = vals.ToArray();
 
                         rdr.NextResult();
                         List<HexDefinition> staticHexes = new List<HexDefinition>();
@@ -60,9 +60,24 @@ namespace DigitalBoardGamer.ResourceAccessor.SettlersAccessor
                         {// static things
                             var hexDef = new HexDefinition();
                             hexDef.RowIndex = (int)rdr["RowIndex"];
-                            hexDef.ColumnIndex = (int)rdr["ColumnIndex"];
-                            hexDef.HexTypeId = (long)rdr["HexTypeId"];
-                            hexDef.HexValueId = (long)rdr["ValueId"];
+                            hexDef.ColumnIndex = (int)rdr["ColIndex"];
+
+                            var newHex = new HexType()
+                            {
+                                TypeId = (long)rdr["HexTypeId"],
+                                Name = (string)rdr["Name"],
+                                ImageUrl = rdr["ImageUrl"] == DBNull.Value ? null : (string)rdr["ImageUrl"],
+                                BackupColor = rdr["BackupColor"] == DBNull.Value ? null : (string)rdr["BackupColor"],
+                            };
+                            hexDef.MyHexType = newHex;
+
+                            var newVal = new HexValue()
+                            {
+                                DiceValue = rdr["DiceValue"].ToString(),
+                                HexValueId = (long)rdr["HexValueId"],
+                            };
+                            hexDef.MyHexValue = newVal;
+
                             staticHexes.Add(hexDef);
                         }
                         result.StaticHexes = staticHexes.ToArray();

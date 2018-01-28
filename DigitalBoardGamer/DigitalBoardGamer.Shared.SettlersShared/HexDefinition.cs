@@ -13,8 +13,13 @@ namespace DigitalBoardGamer.Shared.SettlersShared
         public int RowIndex { get; set; }
         public int ColumnIndex { get; set; }
 
-        public long HexTypeId { get; set; }
-
-        public long HexValueId { get; set; }
+        public HexDefinition() { }
+        public HexDefinition(HexDefinition original)
+        {
+            this.RowIndex = original.RowIndex;
+            this.ColumnIndex = original.ColumnIndex;
+            this.MyHexType = new HexType(original.MyHexType);
+            this.MyHexValue = new HexValue(original.MyHexValue);
+        }
     }
 }

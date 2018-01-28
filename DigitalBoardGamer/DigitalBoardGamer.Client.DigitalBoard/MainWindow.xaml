@@ -21,6 +21,8 @@
                 Name="refreshButton"
                 Width="100"
                 Height="50"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
                 Visibility="Collapsed">New Board!</Button>
     </Grid>
 </Window>

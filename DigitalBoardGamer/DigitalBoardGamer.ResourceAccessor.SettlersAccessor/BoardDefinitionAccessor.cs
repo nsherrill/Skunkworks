@@ -10,10 +10,10 @@ namespace DigitalBoardGamer.ResourceAccessor.SettlersAccessor
 {
     public class BoardDefinitionAccessor : IBoardDefinitionAccessor
     {
-        public BoardDefinition GetBoardDefinition(long boardId, int playerCount)
+        public BoardDefinition GetBoardDefinition(long boardId)
         {
             BoardDefinition result = null;
-            string sql = string.Format("execute settlers.GetBoardDefinition {0}, {1}", boardId, playerCount);
+            string sql = string.Format("execute settlers.GetBoardDefinition {0}", boardId);
 
             using (SqlConnection conn = new SqlConnection(@"Server=.\SqlExpress;Database=DigitalBoardGamer;Trusted_Connection=true"))
             {

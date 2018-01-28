@@ -41,7 +41,7 @@ namespace DigitalBoardGamer.Client.DigitalBoard.Controls
             this.myGame = game;
             this.myBoardOption = boardOption;
             this.BoardId = boardOption.BoardId.ToString();
-            this.BoardOptionName = boardOption.BoardOptionName;
+            this.BoardOptionName = string.Format("{0} ({1}plyr)", boardOption.BoardOptionName, boardOption.PlayerCount);
             RaisePropertyChanged();
         }
 

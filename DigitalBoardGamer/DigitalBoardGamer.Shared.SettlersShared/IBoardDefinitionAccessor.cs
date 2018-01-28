@@ -8,6 +8,6 @@ namespace DigitalBoardGamer.Shared.SettlersShared
 {
     public interface IBoardDefinitionAccessor
     {
-        BoardDefinition GetBoardDefinition(long boardId, int playerCount);
+        BoardDefinition GetBoardDefinition(long boardId);
     }
 }

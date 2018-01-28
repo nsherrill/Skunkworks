@@ -10,11 +10,13 @@ namespace DigitalBoardGamer.Shared.SharedContracts
     {
         public long BoardId { get; set; }
         public string BoardOptionName { get; set; }
+        public int PlayerCount { get; set; }
 
-        public BoardOption(long boardId, string boardOptionName)
+        public BoardOption(long boardId, string boardOptionName, int playerCount)
         {
             this.BoardId = boardId;
             this.BoardOptionName = boardOptionName;
+            this.PlayerCount = playerCount;
         }
     }
 }

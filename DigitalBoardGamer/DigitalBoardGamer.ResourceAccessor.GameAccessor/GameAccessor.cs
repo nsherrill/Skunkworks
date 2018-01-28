@@ -14,7 +14,7 @@ namespace DigitalBoardGamer.ResourceAccessor.GameAccessor
         public Game[] GetAllGames()
         {
             List<Game> result = new List<Game>();
-            string sql = string.Format("select * from dbo.games");
+            string sql = string.Format("select * from dbo.games order by name desc");
 
             using (SqlConnection conn = new SqlConnection(@"Server=.\SqlExpress;Database=DigitalBoardGamer;Trusted_Connection=true"))
             {
@@ -37,7 +37,7 @@ namespace DigitalBoardGamer.ResourceAccessor.GameAccessor
         public BoardOption[] GetAllBoardOptions(long gameId)
         {
             List<BoardOption> result = new List<BoardOption>();
-            string sql = string.Format("select * from dbo.boards where gameid = {0}", gameId);
+            string sql = string.Format("select * from dbo.boards where gameid = {0} order by playercount, name", gameId);
 
             using (SqlConnection conn = new SqlConnection(@"Server=.\SqlExpress;Database=DigitalBoardGamer;Trusted_Connection=true"))
             {
@@ -50,7 +50,8 @@ namespace DigitalBoardGamer.ResourceAccessor.GameAccessor
                     {// board things
                         var boardId = (long)rdr["BoardId"];
                         var boardOptionName = (string)rdr["Name"];
-                        result.Add(new BoardOption(boardId, boardOptionName));
+                        var playerCount = (int)rdr["PlayerCount"];
+                        result.Add(new BoardOption(boardId, boardOptionName, playerCount));
                     }
                 }
             }

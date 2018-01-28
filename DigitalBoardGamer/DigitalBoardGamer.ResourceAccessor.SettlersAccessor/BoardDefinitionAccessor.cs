@@ -38,6 +38,11 @@ namespace DigitalBoardGamer.ResourceAccessor.SettlersAccessor
                             hexDef.ImageUrl = rdr["ImageUrl"] == DBNull.Value ? null : (string)rdr["ImageUrl"];
                             hexDef.BackupColor = rdr["BackupColor"] == DBNull.Value ? null : (string)rdr["BackupColor"];
                             hexDef.TypeId = (long)rdr["HexTypeId"];
+
+                            if (!string.IsNullOrEmpty(hexDef.BackupColor)
+                                && hexDef.BackupColor[0] != '#')
+                                hexDef.BackupColor = "#" + hexDef.BackupColor;
+
                             hexes.Add(hexDef);
                         }
                         result.HexBoardDefinition = hexes.ToArray();
@@ -69,6 +74,11 @@ namespace DigitalBoardGamer.ResourceAccessor.SettlersAccessor
                                 ImageUrl = rdr["ImageUrl"] == DBNull.Value ? null : (string)rdr["ImageUrl"],
                                 BackupColor = rdr["BackupColor"] == DBNull.Value ? null : (string)rdr["BackupColor"],
                             };
+
+                            if (!string.IsNullOrEmpty(newHex.BackupColor)
+                                && newHex.BackupColor[0] != '#')
+                                newHex.BackupColor = "#" + newHex.BackupColor;
+
                             hexDef.MyHexType = newHex;
 
                             var newVal = new HexValue()

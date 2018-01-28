@@ -52,11 +52,21 @@ namespace DigitalBoardGamer.Client.DigitalBoard
             ProcessEvent(e);
         }
 
+        BoardOptionEventArgs lastBoard = null;
         private void ProcessEvent(BoardOptionEventArgs e)
         {
+            lastBoard = e;
             currentManager = gameLoader.LoadGameBoardManager(e.Game.DllName);
-            var gameBoard = currentManager.GetGameBoard(e.BoardOption.BoardId);
+            var gameBoard = currentManager.GetGameBoard(e.BoardOption.BoardId, this.ActualWidth, this.ActualHeight);
             this.BoardGrid.Children.Add(gameBoard);
+            this.BoardGrid.Visibility = System.Windows.Visibility.Visible;
+            this.refreshButton.Visibility = System.Windows.Visibility.Visible;
+
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            ProcessEvent(lastBoard);
         }
     }
 }

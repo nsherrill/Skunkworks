@@ -51,6 +51,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="HexagonGenerator.cs" />
     <Compile Include="SettlersBoardManager.xaml.cs">
       <DependentUpon>SettlersBoardManager.xaml</DependentUpon>
       <SubType>Code</SubType>

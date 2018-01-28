@@ -8,11 +8,19 @@
     <Grid>
         <pages:GameOptionsPage x:Name="gameOptionsPage">
         </pages:GameOptionsPage>
-        <pages:BoardOptionsPage x:Name="boardOptionsPage">
+        <pages:BoardOptionsPage x:Name="boardOptionsPage"
+                                Visibility="Collapsed">
         </pages:BoardOptionsPage>
         <Grid Name="BoardGrid"
+              Background="Black"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center"
               Visibility="Collapsed">
-            
         </Grid>
+        <Button Click="Button_Click"
+                Name="refreshButton"
+                Width="100"
+                Height="50"
+                Visibility="Collapsed">New Board!</Button>
     </Grid>
 </Window>

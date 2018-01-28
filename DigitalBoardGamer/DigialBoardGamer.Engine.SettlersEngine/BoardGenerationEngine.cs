@@ -46,9 +46,9 @@ namespace DigialBoardGamer.Engine.SettlersEngine
             }
 
             Random r = new Random(DateTime.Now.Millisecond);
-            for (int row = 0; row < maxRow; row++)
+            for (int row = 0; row <= maxRow; row++)
             {
-                for (int col = 0; col < maxCol; col++)
+                for (int col = 0; col <= maxCol; col++)
                 {//generate the rest!
                     if (allHexes.Any(h => h.RowIndex == row && h.ColumnIndex == col))
                         continue; // ignore spot if it's already a static!

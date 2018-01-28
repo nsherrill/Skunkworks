@@ -10,7 +10,7 @@ namespace DigitalBoardGamer.Shared.SettlersShared
     {
         public HexDefinition[] AllHexes { get; set; }
 
-        public int ColumnCount { get { if (AllHexes != null) return AllHexes.Max(e => e.ColumnIndex); return -1; } }
-        public int RowCount { get { if (AllHexes != null) return AllHexes.Max(e => e.RowIndex); return -1; } }
+        public int ColumnCount { get { if (AllHexes != null) return AllHexes.Max(e => e.ColumnIndex) + 1; return -1; } }
+        public int RowCount { get { if (AllHexes != null) return AllHexes.Max(e => e.RowIndex) + 1; return -1; } }
     }
 }

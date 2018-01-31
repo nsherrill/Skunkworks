@@ -10,6 +10,7 @@ namespace DigialBoardGamer.Engine.SettlersEngine
 {
     public class BoardGenerationEngine
     {
+        BoardValidationEngine boardValidationEngine = new BoardValidationEngine();
         IDictionary<long, BoardDefinition> boardDefinitionCache = new Dictionary<long, BoardDefinition>();
         IBoardDefinitionAccessor boardDefAcc = new BoardDefinitionAccessor();
 
@@ -47,6 +48,7 @@ namespace DigialBoardGamer.Engine.SettlersEngine
                     allHexes.Add(new HexDefinition(stat));
                 }
 
+                int attempts = 0;
                 Random r = new Random(DateTime.Now.Millisecond);
                 for (int row = 0; row <= maxRow; row++)
                 {
@@ -55,7 +57,20 @@ namespace DigialBoardGamer.Engine.SettlersEngine
                         if (allHexes.Any(h => h.RowIndex == row && h.ColumnIndex == col))
                             continue; // ignore spot if it's already a static!
 
-                        allHexes.Add(DeterminePosition(r, myBoardDef, row, col));
+                        var newHex = DeterminePosition(r, myBoardDef, row, col);
+                        while (!boardValidationEngine.IsHexValid(newHex, allHexes.ToArray(), row, col))
+                        {
+                            // put the count back
+                            myBoardDef.HexBoardDefinition.FirstOrDefault(x => x.TypeId == newHex.MyHexType.TypeId).MaxHexCount++;
+                            myBoardDef.ValueBoardDefinition.FirstOrDefault(x => x.HexValueId == newHex.MyHexValue.HexValueId).ValCount++;
+
+                            newHex = DeterminePosition(r, myBoardDef, row, col);
+                            attempts++;
+                            if (attempts > 100)
+                                return null;
+                        }
+                        allHexes.Add(newHex);
+                        attempts = 0;
                     }
                 }
 

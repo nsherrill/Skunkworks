@@ -25,6 +25,7 @@ namespace DigitalBoardGamer.Manager.SettlersManager
     public partial class SettlersBoardManager : UserControl, IGameBoardManager
     {
         BoardGenerationEngine boardGenEng = new BoardGenerationEngine();
+        BoardValidationEngine boardValidationEng = new BoardValidationEngine();
         public SettlersBoardManager()
         {
             InitializeComponent();
@@ -32,7 +33,14 @@ namespace DigitalBoardGamer.Manager.SettlersManager
 
         public UserControl GetGameBoard(long boardId, double maxWidth, double maxHeight)
         {
-            var genBoard = boardGenEng.GetRandomizedBoardDefinition(boardId);
+            GeneratedBoard genBoard = boardGenEng.GetRandomizedBoardDefinition(boardId);
+            int attempts = 0;
+            while (!boardValidationEng.IsBoardValid(genBoard))
+            {
+                genBoard = boardGenEng.GetRandomizedBoardDefinition(boardId);
+                attempts++;
+            }
+            var valid = boardValidationEng.IsBoardValid(genBoard);
             if (genBoard != null)
                 DrawBoard(genBoard, maxWidth, maxHeight);
             //var newBoardControl = boardDrawingEng.DrawNewBoard(genBoard);

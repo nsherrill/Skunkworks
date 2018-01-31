@@ -46,6 +46,7 @@
     <Compile Include="HexType.cs" />
     <Compile Include="HexValue.cs" />
     <Compile Include="IBoardDefinitionAccessor.cs" />
+    <Compile Include="IBoardValidationEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ValueBoardDefinition.cs" />
   </ItemGroup>

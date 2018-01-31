@@ -16,6 +16,7 @@ namespace DigitalBoardGamer.Shared.SettlersShared
             this.ValCount = original.ValCount;
             this.DiceValue = original.DiceValue;
             this.HexValueId = original.HexValueId;
+            this.DiceProbabilityCount = original.DiceProbabilityCount;
         }
     }
 }

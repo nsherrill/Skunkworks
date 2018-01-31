@@ -54,6 +54,7 @@ namespace DigitalBoardGamer.ResourceAccessor.SettlersAccessor
                             var valDef = new ValueBoardDefinition();
                             valDef.ValCount = (int)rdr["MaxValueCount"];
                             valDef.DiceValue = rdr["DiceValue"].ToString();
+                            valDef.DiceProbabilityCount = (int)rdr["DiceProbabilityCount"];
                             valDef.HexValueId = (long)rdr["HexValueId"];
                             vals.Add(valDef);
                         }
@@ -84,6 +85,7 @@ namespace DigitalBoardGamer.ResourceAccessor.SettlersAccessor
                             var newVal = new HexValue()
                             {
                                 DiceValue = rdr["DiceValue"].ToString(),
+                                DiceProbabilityCount = (int)rdr["DiceProbabilityCount"],
                                 HexValueId = (long)rdr["HexValueId"],
                             };
                             hexDef.MyHexValue = newVal;

@@ -10,6 +10,7 @@ namespace DigialBoardGamer.Engine.SettlersEngine
 {
     public class BoardGenerationEngine
     {
+        BoardValidationEngine boardValidationEngine = new BoardValidationEngine();
         IDictionary<long, BoardDefinition> boardDefinitionCache = new Dictionary<long, BoardDefinition>();
         IBoardDefinitionAccessor boardDefAcc = new BoardDefinitionAccessor();
 
@@ -55,7 +56,12 @@ namespace DigialBoardGamer.Engine.SettlersEngine
                         if (allHexes.Any(h => h.RowIndex == row && h.ColumnIndex == col))
                             continue; // ignore spot if it's already a static!
 
-                        allHexes.Add(DeterminePosition(r, myBoardDef, row, col));
+                        var newHex = DeterminePosition(r, myBoardDef, row, col);
+                        while (!boardValidationEngine.IsHexValid(newHex, allHexes.ToArray(), row, col))
+                        {
+                            newHex = DeterminePosition(r, myBoardDef, row, col);
+                        }
+                        allHexes.Add(newHex);
                     }
                 }
 
@@ -71,7 +77,8 @@ namespace DigialBoardGamer.Engine.SettlersEngine
             var hexIndex = r.Next(0, totalRemainingHexes);
 
             var currHexIndex = 0;
-            while (hexIndex >= boardDef.HexBoardDefinition[currHexIndex].MaxHexCount)
+            while (boardDef.HexBoardDefinition.Length < currHexIndex
+                && hexIndex >= boardDef.HexBoardDefinition[currHexIndex].MaxHexCount)
             {
                 hexIndex -= boardDef.HexBoardDefinition[currHexIndex].MaxHexCount;
                 currHexIndex++;
@@ -80,7 +87,8 @@ namespace DigialBoardGamer.Engine.SettlersEngine
             var totalRemainingVals = boardDef.ValueBoardDefinition.Sum(h => h.ValCount);
             var valIndex = r.Next(0, totalRemainingVals);
             var currValIndex = 0;
-            while (valIndex >= boardDef.ValueBoardDefinition[currValIndex].ValCount)
+            while (boardDef.ValueBoardDefinition.Length < currValIndex
+                && valIndex >= boardDef.ValueBoardDefinition[currValIndex].ValCount)
             {
                 valIndex -= boardDef.ValueBoardDefinition[currValIndex].ValCount;
                 currValIndex++;

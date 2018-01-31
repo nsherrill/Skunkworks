@@ -55,6 +55,7 @@ namespace DigitalBoardGamer.Client.DigitalBoard
         BoardOptionEventArgs lastBoard = null;
         private void ProcessEvent(BoardOptionEventArgs e)
         {
+            this.BoardGrid.Children.Clear();
             lastBoard = e;
             currentManager = gameLoader.LoadGameBoardManager(e.Game.DllName);
             var gameBoard = currentManager.GetGameBoard(e.BoardOption.BoardId, this.ActualWidth, this.ActualHeight);

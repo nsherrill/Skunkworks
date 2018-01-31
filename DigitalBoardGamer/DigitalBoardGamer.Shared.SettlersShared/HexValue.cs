@@ -10,12 +10,14 @@ namespace DigitalBoardGamer.Shared.SettlersShared
     {
         public long HexValueId { get; set; }
         public string DiceValue { get; set; }
+        public int DiceProbabilityCount { get; set; }
 
         public HexValue() { }
         public HexValue(HexValue original)
         {
             this.HexValueId = original.HexValueId;
             this.DiceValue = original.DiceValue;
+            this.DiceProbabilityCount = original.DiceProbabilityCount;
         }
     }
 }

@@ -11,7 +11,7 @@ namespace DigialBoardGamer.Engine.SettlersEngine
     {
         public bool IsBoardValid(GeneratedBoard board)
         {
-            return true;
+            //return true;
 
             bool isValid = false;
 
@@ -37,7 +37,7 @@ namespace DigialBoardGamer.Engine.SettlersEngine
 
         public bool IsHexValid(HexDefinition myHex, HexDefinition[] allHexes, int row, int col)
         {
-            return true;
+            //return true;
 
             bool hexValid = true;
             for (int hextant = 0; hextant < 6 && hexValid; hextant++)
@@ -94,7 +94,8 @@ namespace DigialBoardGamer.Engine.SettlersEngine
 
             if (currentProbabilities.Count > 0)
             {
-                int maxValue =
+                int maxValue = //12;
+                //var temp =
                     currentProbabilities.Count == 3 ? 12 :
                     currentProbabilities.Count == 2 ? 9 : 5;
 

@@ -40,7 +40,6 @@ namespace DigitalBoardGamer.Manager.SettlersManager
                 genBoard = boardGenEng.GetRandomizedBoardDefinition(boardId);
                 attempts++;
             }
-            var v68Hex = genBoard.AllHexes.FirstOrDefault(x => x.MyHexValue.DiceProbabilityCount == 5);
             var valid = boardValidationEng.IsBoardValid(genBoard);
             if (genBoard != null)
                 DrawBoard(genBoard, maxWidth, maxHeight);

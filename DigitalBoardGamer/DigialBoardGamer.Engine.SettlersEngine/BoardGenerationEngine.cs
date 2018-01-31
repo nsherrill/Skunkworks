@@ -48,6 +48,7 @@ namespace DigialBoardGamer.Engine.SettlersEngine
                     allHexes.Add(new HexDefinition(stat));
                 }
 
+                int attempts = 0;
                 Random r = new Random(DateTime.Now.Millisecond);
                 for (int row = 0; row <= maxRow; row++)
                 {
@@ -59,9 +60,17 @@ namespace DigialBoardGamer.Engine.SettlersEngine
                         var newHex = DeterminePosition(r, myBoardDef, row, col);
                         while (!boardValidationEngine.IsHexValid(newHex, allHexes.ToArray(), row, col))
                         {
+                            // put the count back
+                            myBoardDef.HexBoardDefinition.FirstOrDefault(x => x.TypeId == newHex.MyHexType.TypeId).MaxHexCount++;
+                            myBoardDef.ValueBoardDefinition.FirstOrDefault(x => x.HexValueId == newHex.MyHexValue.HexValueId).ValCount++;
+
                             newHex = DeterminePosition(r, myBoardDef, row, col);
+                            attempts++;
+                            if (attempts > 100)
+                                return null;
                         }
                         allHexes.Add(newHex);
+                        attempts = 0;
                     }
                 }
 
@@ -77,8 +86,7 @@ namespace DigialBoardGamer.Engine.SettlersEngine
             var hexIndex = r.Next(0, totalRemainingHexes);
 
             var currHexIndex = 0;
-            while (boardDef.HexBoardDefinition.Length < currHexIndex
-                && hexIndex >= boardDef.HexBoardDefinition[currHexIndex].MaxHexCount)
+            while (hexIndex >= boardDef.HexBoardDefinition[currHexIndex].MaxHexCount)
             {
                 hexIndex -= boardDef.HexBoardDefinition[currHexIndex].MaxHexCount;
                 currHexIndex++;
@@ -87,8 +95,7 @@ namespace DigialBoardGamer.Engine.SettlersEngine
             var totalRemainingVals = boardDef.ValueBoardDefinition.Sum(h => h.ValCount);
             var valIndex = r.Next(0, totalRemainingVals);
             var currValIndex = 0;
-            while (boardDef.ValueBoardDefinition.Length < currValIndex
-                && valIndex >= boardDef.ValueBoardDefinition[currValIndex].ValCount)
+            while (valIndex >= boardDef.ValueBoardDefinition[currValIndex].ValCount)
             {
                 valIndex -= boardDef.ValueBoardDefinition[currValIndex].ValCount;
                 currValIndex++;

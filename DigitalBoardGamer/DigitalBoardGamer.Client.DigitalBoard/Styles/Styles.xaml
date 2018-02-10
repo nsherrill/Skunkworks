@@ -17,5 +17,6 @@
 
     <Style TargetType="Button">
         <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Padding" Value="5" />
     </Style>
 </ResourceDictionary>

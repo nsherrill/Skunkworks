@@ -85,5 +85,10 @@ namespace DigitalBoardGamer.Client.DigitalBoard
         {
             this.Close();
         }
+
+        private void RotateLabels_Click(object sender, RoutedEventArgs e)
+        {
+            this.currentManager.RotateLabels();
+        }
     }
 }

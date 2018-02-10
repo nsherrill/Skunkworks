@@ -56,6 +56,7 @@ namespace DigitalBoardGamer.Manager.SettlersManager
         private void DrawBoard(GeneratedBoard genBoard, double maxWidth, double maxHeight)
         {
             this.CanvasToDraw.Children.Clear();
+            allLabels.Clear();
 
             this.CanvasToDraw.Height = maxHeight;
             this.CanvasToDraw.Width = maxWidth;
@@ -96,6 +97,7 @@ namespace DigitalBoardGamer.Manager.SettlersManager
             }
         }
 
+        List<Label> allLabels = new List<Label>();
         private void AddLabelToCanvas(Canvas canvas, HexDefinition desiredHex, double centerX, double centerY)
         {
             Ellipse textBack = new Ellipse()
@@ -124,6 +126,7 @@ namespace DigitalBoardGamer.Manager.SettlersManager
                 HorizontalContentAlignment = System.Windows.HorizontalAlignment.Center,
                 VerticalContentAlignment = System.Windows.VerticalAlignment.Center
             };
+            allLabels.Add(text);
             Canvas.SetLeft(text, centerX + text.Width / 1.25);
             Canvas.SetTop(text, centerY + text.Height / 1.25);
             Canvas.SetZIndex(text, 1000);
@@ -210,6 +213,22 @@ namespace DigitalBoardGamer.Manager.SettlersManager
 
                 currentLabel.Foreground = firstLabelToSwap.MyHexValue.DiceProbabilityCount == 5 ? Brushes.Red : Brushes.Black;
                 firstLabelToSwap = null;
+            }
+        }
+
+        public void RotateLabels()
+        {
+            foreach (var label in allLabels)
+            {
+                if (label.RenderTransform == null
+                    || !(label.RenderTransform is RotateTransform))
+                {
+                    label.RenderTransform = new RotateTransform(90);
+                }
+                else
+                {
+                    (label.RenderTransform as RotateTransform).Angle += 90;
+                }
             }
         }
     }

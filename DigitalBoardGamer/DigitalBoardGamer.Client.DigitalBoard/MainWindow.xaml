@@ -28,6 +28,10 @@
                     VerticalAlignment="Top"
                     Name="ButtonPanel"
                     Visibility="Collapsed">
+            <Button Click="RotateLabels_Click"
+                    Name="rotateLabelsButton"
+                    Width="100"
+                    Height="50">Rotate Labels</Button>
             <Button Click="RandomizeBoard_Click"
                     Name="refreshButton"
                     Width="100"

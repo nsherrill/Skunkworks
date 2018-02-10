@@ -10,5 +10,7 @@ namespace DigitalBoardGamer.Shared.SharedContracts
     public interface IGameBoardManager
     {
         UserControl GetGameBoard(long boardId, double maxWidth, double maxHeight);
+
+        void RotateLabels();
     }
 }

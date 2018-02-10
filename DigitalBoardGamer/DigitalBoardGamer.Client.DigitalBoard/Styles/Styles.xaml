@@ -14,4 +14,8 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+
+    <Style TargetType="Button">
+        <Setter Property="Cursor" Value="Hand"/>
+    </Style>
 </ResourceDictionary>

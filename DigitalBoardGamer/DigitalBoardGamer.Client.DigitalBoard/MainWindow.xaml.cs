@@ -58,16 +58,32 @@ namespace DigitalBoardGamer.Client.DigitalBoard
             this.BoardGrid.Children.Clear();
             lastBoard = e;
             currentManager = gameLoader.LoadGameBoardManager(e.Game.DllName);
-            var gameBoard = currentManager.GetGameBoard(e.BoardOption.BoardId, this.ActualWidth, this.ActualHeight);
+            var gameBoard = currentManager.GetGameBoard(e.BoardOption.BoardId, this.ActualWidth * 1.20, this.ActualHeight * 1.20);
+            TransformGroup tg = new TransformGroup();
+            tg.Children.Add(new TranslateTransform(-120, -1200));
+            tg.Children.Add(new RotateTransform(90));
+            gameBoard.RenderTransform = tg;//;
             this.BoardGrid.Children.Add(gameBoard);
             this.BoardGrid.Visibility = System.Windows.Visibility.Visible;
-            this.refreshButton.Visibility = System.Windows.Visibility.Visible;
+            this.ButtonPanel.Visibility = System.Windows.Visibility.Visible;
 
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void RandomizeBoard_Click(object sender, RoutedEventArgs e)
         {
             ProcessEvent(lastBoard);
+        }
+
+        private void StartOver_Click(object sender, RoutedEventArgs e)
+        {
+            BoardGrid.Children.Clear();
+            gameOptionsPage.Visibility = System.Windows.Visibility.Visible;
+            this.ButtonPanel.Visibility = System.Windows.Visibility.Collapsed;
+        }
+
+        private void Close_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

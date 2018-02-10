@@ -7,7 +7,9 @@
              HorizontalAlignment="Center"
              VerticalAlignment="Center"
              d:DesignHeight="300" d:DesignWidth="300">
-    <Canvas Name="CanvasToDraw">
+    <Canvas Name="CanvasToDraw" 
+            Background="Transparent"
+            MouseLeftButtonDown="CanvasToDraw_MouseLeftButtonDown">
 
     </Canvas>
 </UserControl>

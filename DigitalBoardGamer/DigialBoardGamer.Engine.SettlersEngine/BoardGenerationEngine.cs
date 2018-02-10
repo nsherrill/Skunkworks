@@ -58,17 +58,25 @@ namespace DigialBoardGamer.Engine.SettlersEngine
                             continue; // ignore spot if it's already a static!
 
                         var newHex = DeterminePosition(r, myBoardDef, row, col);
-                        while (!boardValidationEngine.IsHexValid(newHex, allHexes.ToArray(), row, col))
+                        bool isValid = boardValidationEngine.IsHexValid(newHex, allHexes.ToArray(), row, col);
+                        while (!isValid)
                         {
+                            if (attempts > 100)
+                            {
+                                //                                return null;
+                                break;
+                            }
+
                             // put the count back
                             myBoardDef.HexBoardDefinition.FirstOrDefault(x => x.TypeId == newHex.MyHexType.TypeId).MaxHexCount++;
                             myBoardDef.ValueBoardDefinition.FirstOrDefault(x => x.HexValueId == newHex.MyHexValue.HexValueId).ValCount++;
 
                             newHex = DeterminePosition(r, myBoardDef, row, col);
                             attempts++;
-                            if (attempts > 100)
-                                return null;
+                            isValid = boardValidationEngine.IsHexValid(newHex, allHexes.ToArray(), row, col);
                         }
+                        newHex.IsValid = isValid;
+
                         allHexes.Add(newHex);
                         attempts = 0;
                     }
@@ -112,6 +120,43 @@ namespace DigialBoardGamer.Engine.SettlersEngine
             boardDef.HexBoardDefinition[currHexIndex].MaxHexCount--;
             boardDef.ValueBoardDefinition[currValIndex].ValCount--;
             return result;
+        }
+
+        public HexDefinition SwapHex(GeneratedBoard generatedBoard, HexDefinition sourceHex, int intendedRow, int intendedCol)//HexDefinition sourceHex2)
+        {
+            for (int i = 0; i < generatedBoard.AllHexes.Length; i++)
+            {
+                if (generatedBoard.AllHexes[i].ColumnIndex == sourceHex.ColumnIndex
+                    && generatedBoard.AllHexes[i].RowIndex == sourceHex.RowIndex)
+                {
+                    var destHex = new HexDefinition(sourceHex);
+                    destHex.ColumnIndex = intendedCol;
+                    destHex.RowIndex = intendedRow;
+                    generatedBoard.AllHexes[i] = destHex;
+
+                    return destHex;
+                }
+            }
+
+            return null;
+        }
+
+        public void SwapValue(GeneratedBoard generatedBoard, HexValue sourceValue, int intendedRow, int intendedCol)//HexDefinition sourceHex2)
+        {
+            for (int i = 0; i < generatedBoard.AllHexes.Length; i++)
+            {
+                if (generatedBoard.AllHexes[i].ColumnIndex == intendedCol
+                    && generatedBoard.AllHexes[i].RowIndex == intendedRow)
+                {
+                    generatedBoard.AllHexes[i].MyHexValue = new HexValue(sourceValue);
+
+                    //var destHex = new HexDefinition(sourceHex);
+                    //destHex.ColumnIndex = intendedCol;
+                    //destHex.RowIndex = intendedRow;
+                    //generatedBoard.AllHexes[i] = destHex;
+                    break;
+                }
+            }
         }
     }
 }

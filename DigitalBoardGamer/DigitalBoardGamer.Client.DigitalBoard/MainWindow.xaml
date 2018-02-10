@@ -3,8 +3,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:pages="clr-namespace:DigitalBoardGamer.Client.DigitalBoard.Pages"
         WindowState="Maximized"
+        WindowStyle="None"
         Title="MainWindow" Height="350" Width="525"
         Loaded="Window_Loaded">
+
+    <Window.Resources>
+        <ResourceDictionary Source="/Styles/Styles.xaml" />
+    </Window.Resources>
+    
     <Grid>
         <pages:GameOptionsPage x:Name="gameOptionsPage">
         </pages:GameOptionsPage>
@@ -17,12 +23,23 @@
               VerticalAlignment="Center"
               Visibility="Collapsed">
         </Grid>
-        <Button Click="Button_Click"
-                Name="refreshButton"
-                Width="100"
-                Height="50"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Visibility="Collapsed">New Board!</Button>
+        <StackPanel Orientation="Vertical"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Name="ButtonPanel"
+                    Visibility="Collapsed">
+            <Button Click="RandomizeBoard_Click"
+                    Name="refreshButton"
+                    Width="100"
+                    Height="50">Randomize Board</Button>
+            <Button Click="StartOver_Click"
+                    Name="startOverButton"
+                    Width="100"
+                    Height="50">Start Over</Button>
+            <Button Click="Close_Click"
+                    Name="closeButton"
+                    Width="100"
+                    Height="50">Close</Button>
+        </StackPanel>
     </Grid>
 </Window>

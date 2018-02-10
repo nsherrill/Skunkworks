@@ -31,24 +31,32 @@ namespace DigitalBoardGamer.Manager.SettlersManager
             InitializeComponent();
         }
 
+        GeneratedBoard currentBoard = null;
+        double lastWidth, lastHeight;
         public UserControl GetGameBoard(long boardId, double maxWidth, double maxHeight)
         {
-            GeneratedBoard genBoard = boardGenEng.GetRandomizedBoardDefinition(boardId);
+            this.lastWidth = maxWidth;
+            this.lastHeight = maxHeight;
+
+            currentBoard = boardGenEng.GetRandomizedBoardDefinition(boardId);
             int attempts = 0;
-            while (!boardValidationEng.IsBoardValid(genBoard))
+            while (!boardValidationEng.IsBoardValid(currentBoard)
+                && attempts < 5)
             {
-                genBoard = boardGenEng.GetRandomizedBoardDefinition(boardId);
+                currentBoard = boardGenEng.GetRandomizedBoardDefinition(boardId);
                 attempts++;
             }
-            var valid = boardValidationEng.IsBoardValid(genBoard);
-            if (genBoard != null)
-                DrawBoard(genBoard, maxWidth, maxHeight);
+            var valid = boardValidationEng.IsBoardValid(currentBoard);
+            if (currentBoard != null)
+                DrawBoard(currentBoard, maxWidth, maxHeight);
             //var newBoardControl = boardDrawingEng.DrawNewBoard(genBoard);
             return this;
         }
 
         private void DrawBoard(GeneratedBoard genBoard, double maxWidth, double maxHeight)
         {
+            this.CanvasToDraw.Children.Clear();
+
             this.CanvasToDraw.Height = maxHeight;
             this.CanvasToDraw.Width = maxWidth;
 
@@ -74,6 +82,8 @@ namespace DigitalBoardGamer.Manager.SettlersManager
                         if (!string.IsNullOrEmpty(desiredHex.MyHexType.BackupColor))
                             newPath.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString(desiredHex.MyHexType.BackupColor));
 
+                        newPath.DataContext = desiredHex;
+
                         this.CanvasToDraw.Children.Add(newPath);
 
                         if (!string.IsNullOrEmpty(desiredHex.MyHexValue.DiceValue)
@@ -92,6 +102,7 @@ namespace DigitalBoardGamer.Manager.SettlersManager
             {
                 Height = 40,
                 Width = 40,
+                //Fill = desiredHex.IsValid ? Brushes.White : Brushes.DarkRed,
                 Fill = Brushes.White,
             };
             Canvas.SetLeft(textBack, centerX + textBack.Width / 1.25);
@@ -99,8 +110,7 @@ namespace DigitalBoardGamer.Manager.SettlersManager
             Canvas.SetZIndex(textBack, 900);
             canvas.Children.Add(textBack);
 
-            Brush labelForeground = desiredHex.MyHexValue.DiceValue == "6"
-                    || desiredHex.MyHexValue.DiceValue == "8"
+            Brush labelForeground = desiredHex.MyHexValue.DiceProbabilityCount == 5
                     ? Brushes.Red
                     : Brushes.Black;
             Label text = new Label()
@@ -110,6 +120,7 @@ namespace DigitalBoardGamer.Manager.SettlersManager
                 FontSize = 24,
                 Width = 40,
                 Height = 40,
+                DataContext = desiredHex,
                 HorizontalContentAlignment = System.Windows.HorizontalAlignment.Center,
                 VerticalContentAlignment = System.Windows.VerticalAlignment.Center
             };
@@ -117,6 +128,89 @@ namespace DigitalBoardGamer.Manager.SettlersManager
             Canvas.SetTop(text, centerY + text.Height / 1.25);
             Canvas.SetZIndex(text, 1000);
             canvas.Children.Add(text);
+        }
+
+        HexDefinition firstHexToSwap = null;
+        HexDefinition firstLabelToSwap = null;
+        private void CanvasToDraw_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.Source is Path)
+            {
+                var currentPath = (e.Source as Path);
+                if (currentPath != null)
+                    HandlePathClick(currentPath);
+            }
+            else if (e.Source is Label)
+            {
+                var currentLabel = (e.Source as Label);
+                if (currentLabel != null)
+                    HandleLabelClick(currentLabel);
+            }
+        }
+
+        private void HandlePathClick(Path currentPath)
+        {
+            HexDefinition currentHex = currentPath.DataContext as HexDefinition;
+            if (firstHexToSwap == null)
+            {//selected first hex
+                firstHexToSwap = new HexDefinition(currentHex);
+                currentPath.Stroke = Brushes.Yellow;
+                currentPath.StrokeThickness *= 2;
+            }
+            else
+            {
+                if (firstHexToSwap.ColumnIndex == currentHex.ColumnIndex
+                   && firstHexToSwap.RowIndex == currentHex.RowIndex)
+                {//selected same hex
+                    // do nothing!
+                }
+                else
+                {//selected second hex!
+                    var originalRow1 = currentHex.RowIndex;
+                    var originalCol1 = currentHex.ColumnIndex;
+                    var originalRow2 = firstHexToSwap.RowIndex;
+                    var originalCol2 = firstHexToSwap.ColumnIndex;
+
+                    currentHex = boardGenEng.SwapHex(this.currentBoard, currentHex, -1, -1);
+                    boardGenEng.SwapHex(this.currentBoard, firstHexToSwap, originalRow1, originalCol1);
+                    boardGenEng.SwapHex(this.currentBoard, currentHex, originalRow2, originalCol2);
+                    DrawBoard(currentBoard, lastWidth, lastHeight);
+                }
+
+                currentPath.Stroke = Brushes.Black;
+                currentPath.StrokeThickness /= 2;
+                firstHexToSwap = null;
+            }
+        }
+
+        private void HandleLabelClick(Label currentLabel)
+        {
+            HexDefinition currentHex = currentLabel.DataContext as HexDefinition;
+            if (firstLabelToSwap == null)
+            {//selected first label
+                firstLabelToSwap = new HexDefinition(currentHex);
+                currentLabel.Foreground = Brushes.Yellow;
+            }
+            else
+            {
+                if (firstLabelToSwap.ColumnIndex == currentHex.ColumnIndex
+                   && firstLabelToSwap.RowIndex == currentHex.RowIndex)
+                {//selected same hex
+                    // do nothing!
+                }
+                else
+                {//selected second hex!
+                    var sourceValue1 = new HexValue(currentHex.MyHexValue);
+                    var sourceValue2 = new HexValue(firstLabelToSwap.MyHexValue);
+
+                    boardGenEng.SwapValue(this.currentBoard, sourceValue2, currentHex.RowIndex, currentHex.ColumnIndex);
+                    boardGenEng.SwapValue(this.currentBoard, sourceValue1, firstLabelToSwap.RowIndex, firstLabelToSwap.ColumnIndex);
+                    DrawBoard(currentBoard, lastWidth, lastHeight);
+                }
+
+                currentLabel.Foreground = firstLabelToSwap.MyHexValue.DiceProbabilityCount == 5 ? Brushes.Red : Brushes.Black;
+                firstLabelToSwap = null;
+            }
         }
     }
 }

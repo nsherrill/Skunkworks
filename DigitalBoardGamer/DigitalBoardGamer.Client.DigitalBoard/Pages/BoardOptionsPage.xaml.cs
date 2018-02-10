@@ -45,6 +45,7 @@ namespace DigitalBoardGamer.Client.DigitalBoard.Pages
 
         public void Init(Game game)
         {
+            this.BoardOptionsPanel.Children.Clear();
             this.Visibility = System.Windows.Visibility.Visible;
             this.myGame = game;
             boardsCache = myBoardManager.FindAllBoardOptions(game.GameId);

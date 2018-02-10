@@ -12,6 +12,7 @@ namespace DigitalBoardGamer.Shared.SettlersShared
         public HexValue MyHexValue { get; set; }
         public int RowIndex { get; set; }
         public int ColumnIndex { get; set; }
+        public bool IsValid { get; set; }
 
         public HexDefinition() { }
         public HexDefinition(HexDefinition original)

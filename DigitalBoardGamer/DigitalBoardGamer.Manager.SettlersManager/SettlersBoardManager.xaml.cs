@@ -153,6 +153,7 @@ namespace DigitalBoardGamer.Manager.SettlersManager
 
         private void HandlePathClick(Path currentPath)
         {
+            firstLabelToSwap = null;
             HexDefinition currentHex = currentPath.DataContext as HexDefinition;
             if (firstHexToSwap == null)
             {//selected first hex
@@ -188,6 +189,7 @@ namespace DigitalBoardGamer.Manager.SettlersManager
 
         private void HandleLabelClick(Label currentLabel)
         {
+            firstHexToSwap = null;
             HexDefinition currentHex = currentLabel.DataContext as HexDefinition;
             if (firstLabelToSwap == null)
             {//selected first label

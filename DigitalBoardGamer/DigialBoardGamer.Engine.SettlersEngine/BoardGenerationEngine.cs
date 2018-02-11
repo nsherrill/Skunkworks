@@ -43,7 +43,7 @@ namespace DigialBoardGamer.Engine.SettlersEngine
                     for (int i = 0; i < myBoardDef.ValueBoardDefinition.Length; i++)
                     {
                         if (myBoardDef.ValueBoardDefinition[i].HexValueId == stat.MyHexValue.HexValueId)
-                            myBoardDef.ValueBoardDefinition[i].ValCount--;
+                            myBoardDef.ValueBoardDefinition[i].MaxValCount--;
                     }
                     allHexes.Add(new HexDefinition(stat));
                 }
@@ -69,7 +69,7 @@ namespace DigialBoardGamer.Engine.SettlersEngine
 
                             // put the count back
                             myBoardDef.HexBoardDefinition.FirstOrDefault(x => x.TypeId == newHex.MyHexType.TypeId).MaxHexCount++;
-                            myBoardDef.ValueBoardDefinition.FirstOrDefault(x => x.HexValueId == newHex.MyHexValue.HexValueId).ValCount++;
+                            myBoardDef.ValueBoardDefinition.FirstOrDefault(x => x.HexValueId == newHex.MyHexValue.HexValueId).MaxValCount++;
 
                             newHex = DeterminePosition(r, myBoardDef, row, col);
                             attempts++;
@@ -88,6 +88,7 @@ namespace DigialBoardGamer.Engine.SettlersEngine
             return null;
         }
 
+        long[] HEX_IDS_WITHOUT_VALUES = new long[] { 1, 8 };
         private HexDefinition DeterminePosition(Random r, BoardDefinition boardDef, int row, int col)
         {
             var totalRemainingHexes = boardDef.HexBoardDefinition.Sum(h => h.MaxHexCount);
@@ -100,13 +101,30 @@ namespace DigialBoardGamer.Engine.SettlersEngine
                 currHexIndex++;
             }
 
-            var totalRemainingVals = boardDef.ValueBoardDefinition.Sum(h => h.ValCount);
-            var valIndex = r.Next(0, totalRemainingVals);
             var currValIndex = 0;
-            while (valIndex >= boardDef.ValueBoardDefinition[currValIndex].ValCount)
+            if (HEX_IDS_WITHOUT_VALUES.Contains(boardDef.HexBoardDefinition[currHexIndex].TypeId))
             {
-                valIndex -= boardDef.ValueBoardDefinition[currValIndex].ValCount;
-                currValIndex++;
+                for (currValIndex = 0; currValIndex < boardDef.ValueBoardDefinition.Length; currValIndex++)
+                {
+                    if (boardDef.ValueBoardDefinition[currValIndex].HexValueId == -1)
+                        break;
+                }
+            }
+            else
+            {
+                var totalRemainingVals = boardDef.ValueBoardDefinition.Sum(h => h.MaxValCount);
+                do
+                {
+                    var valIndex = r.Next(0, totalRemainingVals);
+                    currValIndex = 0;
+
+                    while (valIndex >= boardDef.ValueBoardDefinition[currValIndex].MaxValCount)
+                    {
+                        valIndex -= boardDef.ValueBoardDefinition[currValIndex].MaxValCount;
+                        currValIndex++;
+                    }
+                }
+                while (boardDef.ValueBoardDefinition[currValIndex].HexValueId < 0);
             }
 
             var result = new HexDefinition()
@@ -118,7 +136,7 @@ namespace DigialBoardGamer.Engine.SettlersEngine
             };
 
             boardDef.HexBoardDefinition[currHexIndex].MaxHexCount--;
-            boardDef.ValueBoardDefinition[currValIndex].ValCount--;
+            boardDef.ValueBoardDefinition[currValIndex].MaxValCount--;
             return result;
         }
 

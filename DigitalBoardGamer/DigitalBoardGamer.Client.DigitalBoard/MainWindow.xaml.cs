@@ -59,9 +59,9 @@ namespace DigitalBoardGamer.Client.DigitalBoard
             this.BoardGrid.Children.Clear();
             lastBoard = e;
             currentManager = gameLoader.LoadGameBoardManager(e.Game.DllName);
-            var gameBoard = currentManager.GetGameBoard(e.BoardOption.BoardId, this.ActualWidth * 1.20, this.ActualHeight * 1.20);
+            var gameBoard = currentManager.GetGameBoard(e.BoardOption.BoardId, this.ActualWidth * 1.24, this.ActualHeight * 1.24);
             TransformGroup tg = new TransformGroup();
-            tg.Children.Add(new TranslateTransform(-120, -1200));
+            tg.Children.Add(new TranslateTransform(-128, -1100));
             tg.Children.Add(new RotateTransform(90));
             gameBoard.RenderTransform = tg;//;
             this.BoardGrid.Children.Add(gameBoard);

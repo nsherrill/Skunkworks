@@ -52,7 +52,7 @@ namespace DigitalBoardGamer.ResourceAccessor.SettlersAccessor
                         while (rdr.Read())
                         {// value things
                             var valDef = new ValueBoardDefinition();
-                            valDef.ValCount = (int)rdr["MaxValueCount"];
+                            valDef.MaxValCount = (int)rdr["MaxValueCount"];
                             valDef.DiceValue = rdr["DiceValue"].ToString();
                             valDef.DiceProbabilityCount = (int)rdr["DiceProbabilityCount"];
                             valDef.HexValueId = (long)rdr["HexValueId"];

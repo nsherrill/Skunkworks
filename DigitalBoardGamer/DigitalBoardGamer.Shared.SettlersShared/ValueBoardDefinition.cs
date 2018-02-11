@@ -8,12 +8,12 @@ namespace DigitalBoardGamer.Shared.SettlersShared
 {
     public class ValueBoardDefinition : HexValue
     {
-        public int ValCount { get; set; }
+        public int MaxValCount { get; set; }
 
         public ValueBoardDefinition() { }
         public ValueBoardDefinition(ValueBoardDefinition original)
         {
-            this.ValCount = original.ValCount;
+            this.MaxValCount = original.MaxValCount;
             this.DiceValue = original.DiceValue;
             this.HexValueId = original.HexValueId;
             this.DiceProbabilityCount = original.DiceProbabilityCount;

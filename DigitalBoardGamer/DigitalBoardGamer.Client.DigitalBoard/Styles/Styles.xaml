@@ -15,6 +15,10 @@
         </Style.Triggers>
     </Style>
 
+    <Style TargetType="Label">
+        <Setter Property="FontSize" Value="18"/>
+    </Style>
+
     <Style TargetType="Button">
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Padding" Value="5" />

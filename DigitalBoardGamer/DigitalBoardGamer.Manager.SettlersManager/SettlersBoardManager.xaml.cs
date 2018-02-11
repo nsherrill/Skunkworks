@@ -100,15 +100,17 @@ namespace DigitalBoardGamer.Manager.SettlersManager
         List<Label> allLabels = new List<Label>();
         private void AddLabelToCanvas(Canvas canvas, HexDefinition desiredHex, double centerX, double centerY)
         {
+            double offset = 1.0;
+            double dotSpacing = 5d;
             Ellipse textBack = new Ellipse()
             {
-                Height = 40,
-                Width = 40,
+                Height = 45,
+                Width = 45,
                 //Fill = desiredHex.IsValid ? Brushes.White : Brushes.DarkRed,
                 Fill = Brushes.White,
             };
-            Canvas.SetLeft(textBack, centerX + textBack.Width / 1.25);
-            Canvas.SetTop(textBack, centerY + textBack.Height / 1.25);
+            Canvas.SetLeft(textBack, centerX + textBack.Width / offset);
+            Canvas.SetTop(textBack, centerY + textBack.Height / offset);
             Canvas.SetZIndex(textBack, 900);
             canvas.Children.Add(textBack);
 
@@ -119,18 +121,76 @@ namespace DigitalBoardGamer.Manager.SettlersManager
             {
                 Content = desiredHex.MyHexValue.DiceValue,
                 Foreground = labelForeground,
-                FontSize = 24,
-                Width = 40,
-                Height = 40,
+                FontSize = 32,
+                Width = 45,
+                Height = 45,
                 DataContext = desiredHex,
                 HorizontalContentAlignment = System.Windows.HorizontalAlignment.Center,
                 VerticalContentAlignment = System.Windows.VerticalAlignment.Center
             };
             allLabels.Add(text);
-            Canvas.SetLeft(text, centerX + text.Width / 1.25);
-            Canvas.SetTop(text, centerY + text.Height / 1.25);
+            Canvas.SetLeft(text, centerX + text.Width / offset);
+            Canvas.SetTop(text, centerY + text.Height / offset - 5);
             Canvas.SetZIndex(text, 1000);
             canvas.Children.Add(text);
+
+            // add the probability dots
+            for (int i = 0; i < desiredHex.MyHexValue.DiceProbabilityCount; i++)
+            {
+                Ellipse newEllipse = new Ellipse()
+                {
+                    Height = 4,
+                    Width = 4,
+                    Fill = desiredHex.MyHexValue.DiceProbabilityCount == 5
+                        ? Brushes.Red
+                        : Brushes.Black,
+                };
+
+                var center = centerX + text.Width / offset + text.Width / 2.1;
+                if (desiredHex.MyHexValue.DiceProbabilityCount % 2 == 1)// odd
+                {
+                    switch (i)
+                    {
+                        case 0:
+                            break;
+                        case 1:
+                            center += dotSpacing;
+                            break;
+                        case 2:
+                            center -= dotSpacing;
+                            break;
+                        case 3:
+                            center += 2d * dotSpacing;
+                            break;
+                        case 4:
+                            center -= 2d * dotSpacing;
+                            break;
+                    }
+                }
+                else
+                {
+                    switch (i)
+                    {
+                        case 0:
+                            center += dotSpacing / 2d;
+                            break;
+                        case 1:
+                            center -= dotSpacing / 2d;
+                            break;
+                        case 2:
+                            center += 3d * dotSpacing / 2d;
+                            break;
+                        case 3:
+                            center -= 3d * dotSpacing / 2d;
+                            break;
+                    }
+                }
+
+                Canvas.SetLeft(newEllipse, center);
+                Canvas.SetTop(newEllipse, centerY + text.Height / offset + 38);
+                Canvas.SetZIndex(newEllipse, 1000);
+                canvas.Children.Add(newEllipse);
+            }
         }
 
         HexDefinition firstHexToSwap = null;
@@ -222,14 +282,14 @@ namespace DigitalBoardGamer.Manager.SettlersManager
         {
             foreach (var label in allLabels)
             {
-                if (label.RenderTransform == null
-                    || !(label.RenderTransform is RotateTransform))
+                if (label.LayoutTransform == null
+                    || !(label.LayoutTransform is RotateTransform))
                 {
-                    label.RenderTransform = new RotateTransform(90);
+                    label.LayoutTransform = new RotateTransform(90);
                 }
                 else
                 {
-                    (label.RenderTransform as RotateTransform).Angle += 90;
+                    (label.LayoutTransform as RotateTransform).Angle += 90;
                 }
             }
         }

@@ -90,5 +90,10 @@ namespace DigitalBoardGamer.Client.DigitalBoard
         {
             this.currentManager.RotateLabels();
         }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            this.currentManager.ProcessKeyDown(e.Key);
+        }
     }
 }

@@ -80,15 +80,19 @@ namespace DigitalBoardGamer.Manager.SettlersManager
                             centerX = (1.5 * col + .75) * size + size;
 
                         var newPath = hexGenerator.CreateDataPath(centerX, centerY, size, size, 2);
-                        if (!string.IsNullOrEmpty(desiredHex.MyHexType.BackupColor))
+                        if (!string.IsNullOrEmpty(desiredHex.MyHexType.ImageUrl))
+                        {
+                            var path = new Uri(AppDomain.CurrentDomain.BaseDirectory + "Images/" + desiredHex.MyHexType.ImageUrl, UriKind.RelativeOrAbsolute);
+                            newPath.Fill = new ImageBrush(BitmapFrame.Create(path));
+                        }
+                        else if (!string.IsNullOrEmpty(desiredHex.MyHexType.BackupColor))
                             newPath.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString(desiredHex.MyHexType.BackupColor));
 
                         newPath.DataContext = desiredHex;
 
                         this.CanvasToDraw.Children.Add(newPath);
 
-                        if (!string.IsNullOrEmpty(desiredHex.MyHexValue.DiceValue)
-                            && desiredHex.MyHexValue.DiceValue != "0")
+                        if (desiredHex.MyHexValue.DiceProbabilityCount > 0)
                         {
                             AddLabelToCanvas(this.CanvasToDraw, desiredHex, centerX, centerY);
                         }
@@ -258,6 +262,7 @@ namespace DigitalBoardGamer.Manager.SettlersManager
             }
             else
             {
+                currentLabel.Foreground = firstLabelToSwap.MyHexValue.DiceProbabilityCount == 5 ? Brushes.Red : Brushes.Black;
                 if (firstLabelToSwap.ColumnIndex == currentHex.ColumnIndex
                    && firstLabelToSwap.RowIndex == currentHex.RowIndex)
                 {//selected same hex
@@ -273,7 +278,6 @@ namespace DigitalBoardGamer.Manager.SettlersManager
                     DrawBoard(currentBoard, lastWidth, lastHeight);
                 }
 
-                currentLabel.Foreground = firstLabelToSwap.MyHexValue.DiceProbabilityCount == 5 ? Brushes.Red : Brushes.Black;
                 firstLabelToSwap = null;
             }
         }
@@ -291,6 +295,26 @@ namespace DigitalBoardGamer.Manager.SettlersManager
                 {
                     (label.LayoutTransform as RotateTransform).Angle += 90;
                 }
+            }
+        }
+
+        Key[] validHexKeys = new Key[] { Key.W, Key.O, Key.B, Key.G, Key.D, Key.S, Key.H, Key.A };
+        Key[] validValueKeys = new Key[] { Key.Down, Key.Up };
+        public void ProcessKeyDown(Key key)
+        {
+            if (firstHexToSwap != null
+                && validHexKeys.Contains(key))
+            {
+                boardGenEng.UpdateHex(currentBoard, firstHexToSwap, key);
+                DrawBoard(currentBoard, lastWidth, lastHeight);
+                firstHexToSwap = null;
+            }
+            else if (firstLabelToSwap != null
+                && validValueKeys.Contains(key))
+            {
+                boardGenEng.UpdateValue(currentBoard, firstLabelToSwap, key);
+                DrawBoard(currentBoard, lastWidth, lastHeight);
+                firstLabelToSwap = null;
             }
         }
     }

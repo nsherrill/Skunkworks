@@ -12,5 +12,7 @@ namespace DigitalBoardGamer.Shared.SharedContracts
         UserControl GetGameBoard(long boardId, double maxWidth, double maxHeight);
 
         void RotateLabels();
+
+        void ProcessKeyDown(System.Windows.Input.Key key);
     }
 }

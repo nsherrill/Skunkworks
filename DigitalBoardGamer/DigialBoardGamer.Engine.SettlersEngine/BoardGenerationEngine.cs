@@ -149,12 +149,93 @@ namespace DigialBoardGamer.Engine.SettlersEngine
                     && generatedBoard.AllHexes[i].RowIndex == intendedRow)
                 {
                     generatedBoard.AllHexes[i].MyHexValue = new HexValue(sourceValue);
-
-                    //var destHex = new HexDefinition(sourceHex);
-                    //destHex.ColumnIndex = intendedCol;
-                    //destHex.RowIndex = intendedRow;
-                    //generatedBoard.AllHexes[i] = destHex;
                     break;
+                }
+            }
+        }
+
+        public void UpdateHex(GeneratedBoard generatedBoard, HexDefinition desiredHex, System.Windows.Input.Key key)
+        {
+            string hexName = string.Empty;
+            switch (key)
+            {
+                case System.Windows.Input.Key.W:
+                    hexName = "Wood";
+                    break;
+                case System.Windows.Input.Key.A:
+                    hexName = "Water";
+                    break;
+                case System.Windows.Input.Key.S:
+                    hexName = "Sheep";
+                    break;
+                case System.Windows.Input.Key.G:
+                    hexName = "Gold";
+                    break;
+                case System.Windows.Input.Key.H:
+                    hexName = "Wheat";
+                    break;
+                case System.Windows.Input.Key.O:
+                    hexName = "Ore";
+                    break;
+                case System.Windows.Input.Key.D:
+                    hexName = "Desert";
+                    break;
+                case System.Windows.Input.Key.B:
+                    hexName = "Brick";
+                    break;
+            }
+
+            if (!string.IsNullOrEmpty(hexName))
+            {
+                var newHexType = new HexType(generatedBoard.AllHexes
+                    .FirstOrDefault(x => x.MyHexType.Name.Equals(hexName, StringComparison.InvariantCultureIgnoreCase)).MyHexType);
+
+                for (int i = 0; i < generatedBoard.AllHexes.Length; i++)
+                {
+                    if (generatedBoard.AllHexes[i].ColumnIndex == desiredHex.ColumnIndex
+                        && generatedBoard.AllHexes[i].RowIndex == desiredHex.RowIndex)
+                    {
+                        generatedBoard.AllHexes[i].MyHexType = newHexType;
+                        break;
+                    }
+                }
+            }
+        }
+
+        public void UpdateValue(GeneratedBoard generatedBoard, HexDefinition desiredHex, System.Windows.Input.Key key)
+        {
+            int desiredHexValue = 0;
+            switch (key)
+            {
+                case System.Windows.Input.Key.Up:
+                    desiredHexValue = int.Parse(desiredHex.MyHexValue.DiceValue) + 1;
+                    if (desiredHexValue > 12)
+                        desiredHexValue = 2;
+                    if (desiredHexValue == 7)
+                        desiredHexValue = 8;
+                    break;
+                case System.Windows.Input.Key.Down:
+                    desiredHexValue = int.Parse(desiredHex.MyHexValue.DiceValue) - 1;
+                    if (desiredHexValue < 2)
+                        desiredHexValue = 12;
+                    if (desiredHexValue == 7)
+                        desiredHexValue = 6;
+                    break;
+            }
+
+            if (desiredHexValue > 0)
+            {
+                var newHexValue = new HexValue(generatedBoard.AllHexes
+                    .FirstOrDefault(x => x.MyHexValue.DiceValue == desiredHexValue.ToString()).MyHexValue);
+
+                for (int i = 0; i < generatedBoard.AllHexes.Length; i++)
+                {
+                    if (generatedBoard.AllHexes[i].ColumnIndex == desiredHex.ColumnIndex
+                        && generatedBoard.AllHexes[i].RowIndex == desiredHex.RowIndex)
+                    {
+                        generatedBoard.AllHexes[i].MyHexValue = newHexValue;
+                        break;
+                    }
                 }
             }
         }

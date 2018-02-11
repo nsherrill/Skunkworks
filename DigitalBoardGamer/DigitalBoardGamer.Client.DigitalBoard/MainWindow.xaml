@@ -36,7 +36,7 @@
             <Button Click="RandomizeBoard_Click"
                     Name="refreshButton"
                     Width="100"
-                    Height="50">Randomize Board</Button>
+                    Height="50">Re-Randomize</Button>
             <Button Click="StartOver_Click"
                     Name="startOverButton"
                     Width="100"

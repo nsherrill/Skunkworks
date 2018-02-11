@@ -29,6 +29,7 @@ namespace DigitalBoardGamer.Client.DigitalBoard
         {
             InitializeComponent();
             gameLoader = new GameLoader();
+            rotateLabelsButton.Focus();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

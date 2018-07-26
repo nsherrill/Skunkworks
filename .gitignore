@@ -121,3 +121,4 @@ Elmah.Errors/
 Eam/WebEssentials-Settings.json
 
 .DS_Store
+db.lock

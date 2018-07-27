@@ -30,9 +30,12 @@
             @Html.DisplayFor(modelItem => item.NickName)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.VolunteerId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.VolunteerId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.VolunteerId })
+            @Html.DisplayFor(modelItem => item.Gender)
+        </td>
+        <td>
+            @*@Html.ActionLink("Edit", "Edit", new { id = item.VolunteerId }) |*@
+            @Html.ActionLink("Details", "Details", new { id = item.VolunteerId }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.VolunteerId })
         </td>
     </tr>
 }

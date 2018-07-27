@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RFKBackend.Shared.DataContracts;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -7,23 +8,22 @@ using System.Web;
 
 namespace Dashboard.Models
 {
-    [Table("Volunteers")]
-    public class VolunteerModel
+    public class VolunteerModel : RFKBackend.Shared.DataContracts.Volunteer
     {
-        [Required]
-        [Key]
-        [Display(Name = "Id")]
-        public int VolunteerId { get; set; }
-
-        [Required]
-        [Display(Name = "Name")]
-        public string Name { get; set; }
-
-        [Required]
-        [Display(Name = "NickName")]
-        public string NickName { get; set; }
+        public VolunteerModel(Volunteer source)
+        {
+            this.VolunteerId = source.VolunteerId;
+            this.Name = source.Name;
+            this.NickName = source.NickName;
+            this.Gender = source.Gender;
+            this.Notes = source.Notes;
+        }
     }
     public class CounselorModel : VolunteerModel
     {
+        public CounselorModel(Volunteer source)
+            : base(source)
+        {
+        }
     }
 }

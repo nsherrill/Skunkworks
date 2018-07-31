@@ -27,7 +27,7 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Name)
+            @Html.ActionLink(item.Name, "Details", new { id = item.CamperId })
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.BirthYear)
@@ -36,7 +36,6 @@
             @Html.DisplayFor(modelItem => item.Gender)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.CamperId }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.CamperId })
         </td>
     </tr>

@@ -278,6 +278,10 @@
     <Content Include="Views\Reports\Index.cshtml" />
     <Content Include="Views\Camper\Index.cshtml" />
     <Content Include="Views\Cabin\Index.cshtml" />
+    <Content Include="Views\Cabin\Details.cshtml" />
+    <Content Include="Views\Camper\Details.cshtml" />
+    <Content Include="Views\Camper\Create.cshtml" />
+    <Content Include="Views\Cabin\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

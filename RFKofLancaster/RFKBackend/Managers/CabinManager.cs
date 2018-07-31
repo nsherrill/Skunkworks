@@ -27,9 +27,21 @@ namespace RFKBackend.Managers
         {
             var result = new Cabin()
             {
+                CabinId = -1
             };
 
             return result;
+        }
+
+        public bool SaveCabin(Cabin source)
+        {
+            try
+            {
+                cabAcc.SaveCabin(source);
+                return true;
+            }
+            catch (Exception e)
+            { return false; }
         }
     }
 }

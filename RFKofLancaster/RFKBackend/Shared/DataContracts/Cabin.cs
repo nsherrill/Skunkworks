@@ -32,7 +32,6 @@ namespace RFKBackend.Shared.DataContracts
         [Display(Name = "AdultCapacity")]
         public int AdultCapacity { get; set; }
 
-        [Required]
         [Display(Name = "Notes")]
         public string Notes { get; set; }
     }

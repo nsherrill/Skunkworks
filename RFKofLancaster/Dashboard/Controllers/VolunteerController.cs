@@ -8,10 +8,11 @@ using System.Web.Mvc;
 
 namespace Dashboard.Controllers
 {
+    [Authorize]
     public class VolunteerController : Controller
     {
         VolunteerManager volMgr = new VolunteerManager();
-        // GET: Volunteer
+
         public ActionResult Index()
         {
             var result = volMgr.FindAllVolunteers();

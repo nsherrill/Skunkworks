@@ -31,5 +31,11 @@ namespace Dashboard.Models
         }
 
         public System.Data.Entity.DbSet<Dashboard.Models.VolunteerModel> VolunteerModels { get; set; }
+
+        public System.Data.Entity.DbSet<Dashboard.Models.CounselorModel> CounselorModels { get; set; }
+
+        public System.Data.Entity.DbSet<RFKBackend.Shared.DataContracts.Camper> Campers { get; set; }
+
+        public System.Data.Entity.DbSet<RFKBackend.Shared.DataContracts.Cabin> Cabins { get; set; }
     }
 }

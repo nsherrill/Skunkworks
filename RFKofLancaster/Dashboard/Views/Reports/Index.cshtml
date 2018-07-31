@@ -1,0 +1,26 @@
+﻿@model Dashboard.Models.ReportModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            Report Name
+        </th>
+    </tr>
+
+    @foreach (var item in Model.Reports)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(item, item, new { year = DateTime.Now.Month < 8 ? DateTime.Now.Year : DateTime.Now.Year + 1 })
+            </td>
+        </tr>
+    }
+
+</table>

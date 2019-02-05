@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2016
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterSearch", "TwitterSearch\TwitterSearch.csproj", "{D0E16D3D-3BD0-4386-B183-502581F1620B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterSearchBackend", "TwitterSearchBackend\TwitterSearchBackend.csproj", "{B74BF2BF-83A7-4B5D-9C7A-23FD1A74CC5D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterTests", "TwitterTests\TwitterTests.csproj", "{438A4799-28C6-4DF0-BF8A-227982730FA4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D0E16D3D-3BD0-4386-B183-502581F1620B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0E16D3D-3BD0-4386-B183-502581F1620B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0E16D3D-3BD0-4386-B183-502581F1620B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0E16D3D-3BD0-4386-B183-502581F1620B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B74BF2BF-83A7-4B5D-9C7A-23FD1A74CC5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B74BF2BF-83A7-4B5D-9C7A-23FD1A74CC5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B74BF2BF-83A7-4B5D-9C7A-23FD1A74CC5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B74BF2BF-83A7-4B5D-9C7A-23FD1A74CC5D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{438A4799-28C6-4DF0-BF8A-227982730FA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{438A4799-28C6-4DF0-BF8A-227982730FA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{438A4799-28C6-4DF0-BF8A-227982730FA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{438A4799-28C6-4DF0-BF8A-227982730FA4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.Logging.6.0.1304.0\lib\NET45
+		SolutionGuid = {EBB6C020-A73E-4187-AB59-65F00913EFF5}
+	EndGlobalSection
+EndGlobal

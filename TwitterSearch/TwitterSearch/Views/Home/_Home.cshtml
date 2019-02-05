@@ -1,0 +1,72 @@
+﻿<div class="jumbotron">
+    <h1>Twitter Searcher!</h1>
+
+    <input type="text" id="searchTxt" />
+    <button type="button" id="details" onClick="searchForTweets();">SEARCH!</button>
+</div>
+
+<div class="row">
+    <h2>Search Results</h2>
+    <table>
+        <thead>
+            <tr><th>UserName</th><th>Text</th></tr>
+        </thead>
+        <tbody data-bind="foreach: tweets">
+            <tr>
+                <td data-bind="text: userName"></td>
+                <td data-bind="text: text"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+    function searchForTweets()
+    {
+        var searchText = $("#searchTxt").val();
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("Search", "Home")',
+            dataType: 'json',
+            data: { textToSearch: searchText },
+            success: function (data, textStatus, xhr) {
+                alert(data);
+
+                this.displayData(data);
+                alert(data);
+            },
+            error: function (xhr){
+                alert(xhr.responseText);
+            }
+        });
+    }
+
+    function displayData(data) {
+        alert(data);
+        viewmodel.addTweet({ UserName : 'test1', Test : 'test2' });
+        //data.forEach(function (item) {
+        //    addTweet(item);
+        //});
+    }
+
+
+    var AppViewModel = function () {
+        var self = this;
+
+        self.tweets = ko.observableArray([
+            { userName: 'Bert', text: 'what1' },
+            { userName: 'Charles', text: 'what2' },
+            { userName: 'Denise', text: 'what3' }
+        ]);
+
+        self.addTweet = function (item) {
+            alert('addTweet(item.UserName) = ' + item.UserName);
+            self.tweets.push({ userName: item.UserName, text: item.Text });
+        };
+    }.bind(this);
+
+    var viewmodel = new AppViewModel();
+    ko.applyBindings(viewmodel);
+</script>
+

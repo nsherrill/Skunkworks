@@ -12,7 +12,7 @@ namespace TwitterTests.AccessorTests
         {
             var twitterAcc = new TwitterAPIAccessor();
 
-            var results = twitterAcc.SearchForTweets("norm");
+            var results = twitterAcc.SearchForTweets("a");
 
             Assert.IsTrue(results != null);
         }

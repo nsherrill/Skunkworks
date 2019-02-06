@@ -10,7 +10,7 @@ namespace TwitterSearch.Controllers
 {
     public class HomeController : Controller
     {
-        ITwitterManager twitterManager = null;
+        public ITwitterManager twitterManager = null;
 
         [HttpGet]
         public ActionResult Index()
@@ -21,16 +21,18 @@ namespace TwitterSearch.Controllers
         [HttpPost]
         public ActionResult Index(string textToSearch)
         {
-            //string textToSearch = id;
             if (string.IsNullOrEmpty(textToSearch))
-                return View();
-
-            if (twitterManager == null)
-                twitterManager = new TwitterManager();
+                return View(new SearchResultModel()
+                {
+                    Error = "Please specify a valid search parameter"
+                });
 
             List<TweetModel> result = new List<TweetModel>();
             try
             {
+                if (twitterManager == null)
+                    twitterManager = new TwitterManager();
+
                 var tempResult = twitterManager.Search(textToSearch);
                 foreach (var item in tempResult)
                 {

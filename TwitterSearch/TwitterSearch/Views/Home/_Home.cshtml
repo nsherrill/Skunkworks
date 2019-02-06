@@ -3,13 +3,20 @@
 @using (Html.BeginForm("Index", "Home"))
 {
     <div>
-        <h2>Test searcher</h2>
+        <h2>Twitter searcher</h2>
 
-        @*@Html.TextBoxFor(model => model.SearchText, new { name = "textToSearch" })*@
         <input type="text" id="txt" name="textToSearch" value="@Model.SearchText" />
         <input type="submit" />
 
     </div>
+    if (Model != null
+        && Model.Error != null
+        && Model.Error.Length > 0)
+    {
+        <div>
+            <h4>@Model.Error</h4>
+        </div>
+    }
 
     if (Model != null
         && Model.Items != null)

@@ -13,9 +13,7 @@ namespace TwitterSearch.Models
         public DateTime CreateDate { get; set; }
 
         public TweetModel()
-        {
-
-        }
+        { }
 
         public TweetModel(TweetContract source)
             : base()

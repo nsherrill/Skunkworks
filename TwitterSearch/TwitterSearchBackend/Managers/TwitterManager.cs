@@ -7,14 +7,14 @@ namespace TwitterSearchBackend.Managers
 {
     public interface ITwitterManager
     {
-        TweetModel[] Search(string textToSearch);
+        TweetContract[] Search(string textToSearch);
     }
 
     public class TwitterManager : ITwitterManager
     {
         public ITwitterApiAccessor twitterAccessor { get; set; }
 
-        public TweetModel[] Search(string textToSearch)
+        public TweetContract[] Search(string textToSearch)
         {
             if (string.IsNullOrEmpty(textToSearch))
             {
@@ -24,7 +24,7 @@ namespace TwitterSearchBackend.Managers
 
             if (twitterAccessor == null)
                 twitterAccessor = new TwitterAPIAccessor();
-            TweetModel[] result = null;
+            TweetContract[] result = null;
 
             result = twitterAccessor.SearchForTweets(textToSearch);
 

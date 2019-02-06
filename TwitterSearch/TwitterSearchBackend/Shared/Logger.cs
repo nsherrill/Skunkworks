@@ -10,17 +10,13 @@ namespace TwitterSearchBackend
 
         public static void Error(string textToLog, Exception exc)
         {
-            return;
-
             Init();
             string logText = textToLog + Environment.NewLine + exc.ToString();
-            Microsoft.Practices.EnterpriseLibrary.Logging.Logger.Write(logText, "Standard");
+            Microsoft.Practices.EnterpriseLibrary.Logging.Logger.Write(logText, "Error");
         }
 
         internal static void Log(string textToLog)
         {
-            return;
-
             Init();
             Microsoft.Practices.EnterpriseLibrary.Logging.Logger.Write(textToLog, "Standard");
         }

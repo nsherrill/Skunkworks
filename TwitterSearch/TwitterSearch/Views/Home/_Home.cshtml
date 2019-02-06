@@ -1,72 +1,60 @@
-﻿<div class="jumbotron">
-    <h1>Twitter Searcher!</h1>
+﻿@model  TwitterSearch.Models.SearchResultModel
 
-    <input type="text" id="searchTxt" />
-    <button type="button" id="details" onClick="searchForTweets();">SEARCH!</button>
-</div>
+@using (Html.BeginForm("Index", "Home"))
+{
+    <div>
+        <h2>Test searcher</h2>
 
-<div class="row">
-    <h2>Search Results</h2>
-    <table>
-        <thead>
-            <tr><th>UserName</th><th>Text</th></tr>
-        </thead>
-        <tbody data-bind="foreach: tweets">
-            <tr>
-                <td data-bind="text: userName"></td>
-                <td data-bind="text: text"></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+        @*@Html.TextBoxFor(model => model.SearchText, new { name = "textToSearch" })*@
+        <input type="text" id="txt" name="textToSearch" value="@Model.SearchText" />
+        <input type="submit" />
 
-<script type="text/javascript">
-    function searchForTweets()
+    </div>
+
+    if (Model != null
+        && Model.Items != null)
     {
-        var searchText = $("#searchTxt").val();
+        <div>
+            <h2>Search Results</h2>
 
-        $.ajax({
-            type: 'POST',
-            url: '@Url.Action("Search", "Home")',
-            dataType: 'json',
-            data: { textToSearch: searchText },
-            success: function (data, textStatus, xhr) {
-                alert(data);
-
-                this.displayData(data);
-                alert(data);
-            },
-            error: function (xhr){
-                alert(xhr.responseText);
+            @if (Model.Items.Length == 0)
+            {
+                <div><h4>No results found</h4></div>
             }
-        });
+            else
+            {
+                <table class="table">
+                    <tr>
+                        <th>
+                            UserName
+                        </th>
+                        <th>
+                            Date
+                        </th>
+                        <th>
+                            Text
+                        </th>
+                    </tr>
+
+                    @foreach (var item in Model.Items)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(m => item.UserName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => item.CreateDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => item.Text)
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            }
+        </div>
     }
+}
 
-    function displayData(data) {
-        alert(data);
-        viewmodel.addTweet({ UserName : 'test1', Test : 'test2' });
-        //data.forEach(function (item) {
-        //    addTweet(item);
-        //});
-    }
-
-
-    var AppViewModel = function () {
-        var self = this;
-
-        self.tweets = ko.observableArray([
-            { userName: 'Bert', text: 'what1' },
-            { userName: 'Charles', text: 'what2' },
-            { userName: 'Denise', text: 'what3' }
-        ]);
-
-        self.addTweet = function (item) {
-            alert('addTweet(item.UserName) = ' + item.UserName);
-            self.tweets.push({ userName: item.UserName, text: item.Text });
-        };
-    }.bind(this);
-
-    var viewmodel = new AppViewModel();
-    ko.applyBindings(viewmodel);
-</script>
 

@@ -8,7 +8,6 @@ using Microsoft.Owin.Security.DataProtection;
 using Microsoft.Owin.Security.Google;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
-using TwitterSearch.Providers;
 
 namespace TwitterSearch
 {

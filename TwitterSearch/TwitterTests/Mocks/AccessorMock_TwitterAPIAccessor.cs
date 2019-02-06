@@ -10,17 +10,17 @@ namespace TwitterTests.Mocks
 {
     public class AccessorMock_TwitterAPIAccessor : ITwitterApiAccessor
     {
-        public TweetModel[] SearchForTweets(string searchText)
+        public TweetContract[] SearchForTweets(string searchText)
         {
             if (searchText.Contains("null"))
                 return null;
             if (searchText.Contains("empty"))
-                return new TweetModel[] { };
+                return new TweetContract[] { };
 
-            List<TweetModel> result = new List<TweetModel>();
+            List<TweetContract> result = new List<TweetContract>();
             for (int i = 0; i < 10; i++)
             {
-                result.Add(new TweetModel()
+                result.Add(new TweetContract()
                 {
                     Text = Guid.NewGuid().ToString() + " " + searchText + " " + Guid.NewGuid().ToString(),
                     UserName = Guid.NewGuid().ToString(),

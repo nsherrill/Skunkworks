@@ -8,6 +8,17 @@ namespace TwitterTests.AccessorTests
     public class TwitterAPIAccessorTests
     {
         [TestMethod]
+        public void TwitterAPIAccessorTests_TestMe()
+        {
+            var twitterAcc = new TwitterAPIAccessor();
+
+            var result = twitterAcc.TestMe();
+
+            Assert.IsFalse(string.IsNullOrEmpty(result));
+            Assert.AreEqual("TwitterSearchBackend.Accessors.TwitterAPIAccessor", result);
+        }
+
+        [TestMethod]
         public void TwitterAPIAccessorTests_SearchForTweets()
         {
             var twitterAcc = new TwitterAPIAccessor();
@@ -15,8 +26,11 @@ namespace TwitterTests.AccessorTests
             var results = twitterAcc.SearchForTweets("norm");
 
             Assert.IsTrue(results != null);
+            Assert.IsTrue(results.Items != null);
+            Assert.IsTrue(string.IsNullOrEmpty(results.Error));
         }
 
+        #region bads
         [TestMethod]
         public void TwitterAPIAccessorTests_SearchForTweets_empty()
         {
@@ -24,7 +38,9 @@ namespace TwitterTests.AccessorTests
 
             var results = twitterAcc.SearchForTweets("");
 
-            Assert.IsTrue(results == null);
+            Assert.IsTrue(results != null);
+            Assert.IsTrue(results.Items == null);
+            Assert.IsFalse(string.IsNullOrEmpty(results.Error));
         }
 
         [TestMethod]
@@ -34,7 +50,10 @@ namespace TwitterTests.AccessorTests
 
             var results = twitterAcc.SearchForTweets(null);
 
-            Assert.IsTrue(results == null);
+            Assert.IsTrue(results != null);
+            Assert.IsTrue(results.Items == null);
+            Assert.IsFalse(string.IsNullOrEmpty(results.Error));
         }
+        #endregion
     }
 }

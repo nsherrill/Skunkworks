@@ -10,7 +10,13 @@ namespace TwitterSearch.Controllers
 {
     public class HomeController : Controller
     {
-        public ITwitterManager twitterManager = null;
+        private ITwitterManager twitterMgr = null;
+
+        public void FactoryOverride<T>(T service)
+        {
+            if (typeof(T) == typeof(ITwitterManager))
+                this.twitterMgr = (ITwitterManager)service;
+        }
 
         [HttpGet]
         public ActionResult Index()
@@ -21,39 +27,37 @@ namespace TwitterSearch.Controllers
         [HttpPost]
         public ActionResult Index(string textToSearch)
         {
-            if (string.IsNullOrEmpty(textToSearch))
-                return View(new SearchResultModel()
-                {
-                    Error = "Please specify a valid search parameter"
-                });
-
-            List<TweetModel> result = new List<TweetModel>();
+            //Intended as a manager-passthrough, validation handled by manager
             try
             {
-                if (twitterManager == null)
-                    twitterManager = new TwitterManager();
+                Init();
 
-                var tempResult = twitterManager.Search(textToSearch);
-                foreach (var item in tempResult)
+                var tempResult = twitterMgr.Search(textToSearch);
+
+                return View(new SearchResultModel()
                 {
-                    result.Add(new TweetModel(item));
-                }
+                    SearchText = textToSearch,
+                    Items = tempResult.Items,
+                    Error = tempResult.Error,
+                });
             }
             catch (Exception e)
             {
-                Logger.Error(string.Format("Exception caught searching for {0}", textToSearch), e);
+                Logger.Error(string.Format("Exception caught hitting the manager for [{0}]", textToSearch), e);
                 return View(new SearchResultModel()
                 {
-                    Error = "Exception caught, please try again",
+                    Error = ErrorCodes.ExceptionCaught(ErrorTextType.Public, e),
                     SearchText = textToSearch,
                 });
             }
-
-            return View(new SearchResultModel()
-            {
-                SearchText = textToSearch,
-                Items = result.ToArray()
-            });
         }
+
+        #region privates
+        private void Init()
+        {
+            if (twitterMgr == null)
+                twitterMgr = new TwitterManager();
+        }
+        #endregion
     }
 }

@@ -8,14 +8,16 @@ using TwitterSearchBackend.Accessors;
 
 namespace TwitterTests.Mocks
 {
-    public class AccessorMock_TwitterAPIAccessor : ITwitterApiAccessor
+    public class AccessorMock_TwitterAPIAccessor : TwitterSearchServiceBase, ITwitterApiAccessor
     {
-        public TweetContract[] SearchForTweets(string searchText)
+        public TweetArrayResult SearchForTweets(string searchText)
         {
             if (searchText.Contains("null"))
-                return null;
+                return new TweetArrayResult() { Items = null };
             if (searchText.Contains("empty"))
-                return new TweetContract[] { };
+                return new TweetArrayResult() { Items = new TweetContract[] { } };
+            if (searchText.Contains("error"))
+                return new TweetArrayResult() { Error = "ERROR!!" };
 
             List<TweetContract> result = new List<TweetContract>();
             for (int i = 0; i < 10; i++)
@@ -27,7 +29,7 @@ namespace TwitterTests.Mocks
                 });
             }
 
-            return result.ToArray();
+            return new TweetArrayResult() { Items = result.ToArray() };
         }
     }
 }

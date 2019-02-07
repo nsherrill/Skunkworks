@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TwitterSearch.Controllers;
+using TwitterSearchBackend.Managers;
 
 namespace TwitterTests.ControllerTests
 {
@@ -20,7 +21,7 @@ namespace TwitterTests.ControllerTests
         public void HomeControllerTests_Index_Standard()
         {
             var controller = new HomeController();
-            controller.twitterManager = new Mocks.ManagerMock_TwitterManager();
+            controller.FactoryOverride<ITwitterManager>(new Mocks.ManagerMock_TwitterManager());
 
             var result = controller.Index("text");
 
@@ -37,7 +38,7 @@ namespace TwitterTests.ControllerTests
         public void HomeControllerTests_Index_empty()
         {
             var controller = new HomeController();
-            controller.twitterManager = new Mocks.ManagerMock_TwitterManager();
+            controller.FactoryOverride<ITwitterManager>(new Mocks.ManagerMock_TwitterManager());
 
             var result = controller.Index("");
 
@@ -54,7 +55,7 @@ namespace TwitterTests.ControllerTests
         public void HomeControllerTests_Index_null()
         {
             var controller = new HomeController();
-            controller.twitterManager = new Mocks.ManagerMock_TwitterManager();
+            controller.FactoryOverride<ITwitterManager>(new Mocks.ManagerMock_TwitterManager());
 
             var result = controller.Index(null);
 

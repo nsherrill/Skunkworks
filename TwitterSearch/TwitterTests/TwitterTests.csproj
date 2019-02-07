@@ -159,7 +159,9 @@
   <ItemGroup>
     <Compile Include="AccessorTests\TwitterAPIAccessorTests.cs" />
     <Compile Include="ControllerTests\HomeControllerTests.cs" />
+    <Compile Include="EngineTests\ValidationEngineTests.cs" />
     <Compile Include="ManagerTests\TwitterManagerTests.cs" />
+    <Compile Include="Mocks\EngineMock_ValidationEngine.cs" />
     <Compile Include="Mocks\ManagerMock_TwitterManager.cs" />
     <Compile Include="Mocks\AccessorMock_TwitterAPIAccessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

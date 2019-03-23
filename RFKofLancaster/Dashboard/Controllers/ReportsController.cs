@@ -1,4 +1,7 @@
 ﻿using Dashboard.Models;
+using RFKBackend.Managers;
+using RFKBackend.Shared;
+using RFKBackend.Shared.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +13,8 @@ namespace Dashboard.Controllers
     [Authorize]
     public class ReportsController : Controller
     {
+        IReportManager reportManager = new ReportManager();
+
         public ActionResult Index()
         {
             var reportModel = new ReportModel();
@@ -23,10 +28,11 @@ namespace Dashboard.Controllers
             return View(reportModel);
         }
 
-        public ActionResult StaffSheet(int year)
+        public ActionResult StaffSheet(int year = 2019)
         {
+            var data = reportManager.ExecuteReport(ReportType.StaffSheet, year);
 
-            return View();
+            return View(data);
         }
     }
 }

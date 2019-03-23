@@ -1,0 +1,67 @@
+﻿@model RFKBackend.Shared.DataContracts.ReportDataCollection
+
+@{
+    ViewBag.Title = "Staff Sheet";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Staff Sheet - @Model.Year</h2>
+<table>
+    <tr>
+        <td>
+            <table class="table" width="500">
+                @foreach (var items in Model.Data[0].Data)
+                {
+                    <tr>
+                        <td>
+                            @items.Values[2]  @*Role*@
+                        </td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(items.Values[1]))
+                            {
+                                @Html.ActionLink(items.Values[1], "Details", "Volunteer", new { id = items.Values[0] }, null)
+                            }
+                        </td>
+                    </tr>
+                }
+            </table>
+        </td>
+        <td valign="top" width="400" align="right">
+            <table class="table">
+                @foreach (var items in Model.Data[1].Data)
+                {
+                    <tr>
+                        <td align="right">
+                            @items.Values[2]  @*Role*@
+                        </td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(items.Values[1]))
+                            {
+                                @Html.ActionLink(items.Values[1], "Details", "Volunteer", new { id = items.Values[0] }, null)
+                            }
+                        </td>
+                    </tr>
+                }
+            </table>
+        </td>
+        <td valign="top" width="300" align="right">
+            <table class="table" style="margin:0,20px">
+                @foreach (var items in Model.Data[2].Data)
+                {
+                    <tr>
+                        <td align="right">
+                            @items.Values[2]  @*Role*@
+                        </td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(items.Values[1]))
+                            {
+                                @Html.ActionLink(items.Values[1], "Details", "Volunteer", new { id = items.Values[0] }, null)
+                            }
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </td>
+    </tr>
+</table>

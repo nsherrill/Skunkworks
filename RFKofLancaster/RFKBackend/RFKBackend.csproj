@@ -43,22 +43,28 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Accessors\BaseSqlAccessor.cs" />
+    <Compile Include="Accessors\ReportDataAccessor.cs" />
     <Compile Include="Accessors\CamperAccessor.cs" />
     <Compile Include="Accessors\CabinAccessor.cs" />
     <Compile Include="Accessors\VolunteerAccessor.cs" />
+    <Compile Include="Managers\ReportManager.cs" />
     <Compile Include="Managers\CamperManager.cs" />
     <Compile Include="Managers\CabinManager.cs" />
     <Compile Include="Managers\VolunteerManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Shared\Contracts\IReportManager.cs" />
     <Compile Include="Shared\DataContracts\Cabin.cs" />
     <Compile Include="Shared\DataContracts\Camper.cs" />
     <Compile Include="Shared\DataContracts\CamperSnapshot.cs" />
+    <Compile Include="Shared\DataContracts\ReportData.cs" />
+    <Compile Include="Shared\DataContracts\ReportDataCollection.cs" />
+    <Compile Include="Shared\DataContracts\ReportDataRow.cs" />
     <Compile Include="Shared\DataContracts\VolunteerSnapshot.cs" />
     <Compile Include="Shared\DataContracts\Volunteer.cs" />
+    <Compile Include="Shared\Enums\ReportType.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Engines\" />
-    <Folder Include="Shared\Contracts\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

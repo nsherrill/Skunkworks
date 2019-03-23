@@ -36,6 +36,30 @@ namespace RFKBackend.Accessors
             return result.ToArray();
         }
 
+        public string[] GetHeaders(SqlDataReader rdr)
+        {
+            List<string> result = new List<string>();
+            for (int i = 0; i < rdr.FieldCount; i++)
+            {
+                result.Add(rdr.GetName(i));
+            }
+
+            return result.ToArray();
+        }
+
+        public string[] GetValues(SqlDataReader rdr)
+        {
+            List<string> result = new List<string>();
+            for (int i = 0; i < rdr.FieldCount; i++)
+            {
+                var val = rdr.GetValue(i);
+                string myVal = (val ?? "").ToString();
+                result.Add(myVal);
+            }
+
+            return result.ToArray();
+        }
+
         #region generic readers
         internal int IntReader(SqlDataReader rdr)
         {

@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace RFKBackend.Shared
 {
-    public enum ReportType
+    public enum VolunteerToggleType
     {
-        [Description("Staff Sheet")]
-        StaffSheet,
+        HasVerbalCommit,
+        HasApplication,
     }
 }

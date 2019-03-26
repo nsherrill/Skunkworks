@@ -1,4 +1,5 @@
-﻿using RFKBackend.Shared.DataContracts;
+﻿using RFKBackend.Shared;
+using RFKBackend.Shared.DataContracts;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -8,12 +9,21 @@ using System.Threading.Tasks;
 
 namespace RFKBackend.Accessors
 {
-    public class VolunteerAccessor : BaseSqlAccessor
+    public interface IVolunteerAccessor
     {
+        Volunteer[] FindAllVolunteers();
+        VolunteerSnapshot FindVolunteer(int volunteerId);
+        void ToggleBool(VolunteerToggleType hasApplication, int id, bool shouldBeOn, int year);
+    }
+
+    public class VolunteerAccessor : BaseSqlAccessor, IVolunteerAccessor
+    {
+        internal override string PRIMARY_KEY_NAME => "[VolunteerId]";
+        internal override string TABLE_NAME => "[dbo].[Volunteers]";
+
         public Volunteer[] FindAllVolunteers()
         {
-            string sqlString = @"
-    select * from dbo.volunteers order by name";
+            string sqlString = base.GetBasicFindAllSql("Name");
             var result = base.ExecuteReader<Volunteer>(sqlString, VolunteerReader);
 
             return result;
@@ -21,7 +31,7 @@ namespace RFKBackend.Accessors
 
         public VolunteerSnapshot FindVolunteer(int volunteerId)
         {
-            string sqlString = @"select * from dbo.volunteers where volunteerid = @id";
+            string sqlString = base.GetBasicFindSql("@id");
             var vol = base.ExecuteReader<Volunteer>(sqlString, VolunteerReader
                 , new SqlParameter[] { new SqlParameter("@id", volunteerId) }).FirstOrDefault();
 
@@ -37,6 +47,30 @@ namespace RFKBackend.Accessors
             };
 
             return result;
+        }
+
+        public void ToggleBool(VolunteerToggleType toggleType, int id, bool shouldBeOn, int year)
+        {
+            if (toggleType == VolunteerToggleType.HasApplication || toggleType == VolunteerToggleType.HasVerbalCommit)
+            {
+                var paramList = new SqlParameter[]
+                {
+                    new SqlParameter("@VolunteerId", id)
+                    , new SqlParameter($"@{toggleType.ToString()}", shouldBeOn)
+                    , new SqlParameter("@Year", year)
+                };
+
+                string mergeText = base.GetBasicMergeText(paramList, "and target.year = source.year", "[dbo].[VolunteerYearStatus]");
+
+                base.ExecuteScalar(mergeText, paramList);
+
+
+                base.ToggleBool(toggleType.ToString(), id, shouldBeOn, $"and Year = {year}", "[dbo].[VolunteerYearStatus]");
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
         }
 
         #region privates

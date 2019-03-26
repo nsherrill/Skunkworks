@@ -1,4 +1,5 @@
 ﻿using RFKBackend.Accessors;
+using RFKBackend.Shared;
 using RFKBackend.Shared.DataContracts;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace RFKBackend.Managers
 {
     public class VolunteerManager
     {
-        VolunteerAccessor volAcc = new VolunteerAccessor();
+        IVolunteerAccessor volAcc = new VolunteerAccessor();
 
         public Volunteer[] FindAllVolunteers()
         {
@@ -30,6 +31,16 @@ namespace RFKBackend.Managers
             };
 
             return result;
+        }
+
+        public void ToggleVerbal(int id, bool shouldBeOn, int year)
+        {
+            volAcc.ToggleBool(VolunteerToggleType.HasVerbalCommit, id, shouldBeOn, year);
+        }
+
+        public void ToggleApplication(int id, bool shouldBeOn, int year)
+        {
+            volAcc.ToggleBool(VolunteerToggleType.HasApplication, id, shouldBeOn, year);
         }
     }
 }

@@ -17,6 +17,9 @@ namespace RFKBackend.Accessors
 
     public class ReportDataAccessor : BaseSqlAccessor, IReportDataAccessor
     {
+        internal override string PRIMARY_KEY_NAME => throw new NotImplementedException();
+        internal override string TABLE_NAME => throw new NotImplementedException();
+
         Dictionary<ReportType, string> cachedReportSprocs = new Dictionary<ReportType, string>();
         public ReportDataAccessor()
         {

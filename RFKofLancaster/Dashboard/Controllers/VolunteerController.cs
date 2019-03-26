@@ -1,5 +1,6 @@
 ﻿using Dashboard.Models;
 using RFKBackend.Managers;
+using RFKBackend.Shared.DataContracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +37,22 @@ namespace Dashboard.Controllers
                 return View(result);
 
             return Create();
+        }
+
+        [HttpPost]
+        public VolunteerSnapshot ToggleVerbal(int id, bool shouldBeOn, int year)
+        {
+            volMgr.ToggleVerbal(id, shouldBeOn, year);
+
+            return volMgr.FindVolunteer(id);
+        }
+
+        [HttpPost]
+        public VolunteerSnapshot ToggleApplication(int id, bool shouldBeOn, int year)
+        {
+            volMgr.ToggleApplication(id, shouldBeOn, year);
+
+            return volMgr.FindVolunteer(id);
         }
     }
 }

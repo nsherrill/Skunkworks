@@ -59,9 +59,13 @@
     <Compile Include="Shared\DataContracts\ReportData.cs" />
     <Compile Include="Shared\DataContracts\ReportDataCollection.cs" />
     <Compile Include="Shared\DataContracts\ReportDataRow.cs" />
+    <Compile Include="Shared\DataContracts\ReportModel.cs" />
     <Compile Include="Shared\DataContracts\VolunteerSnapshot.cs" />
     <Compile Include="Shared\DataContracts\Volunteer.cs" />
     <Compile Include="Shared\Enums\ReportType.cs" />
+    <Compile Include="Shared\Enums\VolunteerToggleType.cs" />
+    <Compile Include="Shared\Utilities\Extensions.cs" />
+    <Compile Include="Shared\Utilities\RFKUtilities.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Engines\" />

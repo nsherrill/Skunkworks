@@ -2,6 +2,7 @@
 using RFKBackend.Managers;
 using RFKBackend.Shared;
 using RFKBackend.Shared.Contracts;
+using RFKBackend.Shared.DataContracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,15 +18,21 @@ namespace Dashboard.Controllers
 
         public ActionResult Index()
         {
-            var reportModel = new ReportModel();
+            List<ReportModel> allModels = new List<ReportModel>();
             List<string> reports = new List<string>();
 
             var methods = typeof(ReportsController).GetMethods();
             var goodMethods = methods.Where(m => m.Name != "Index" && m.ReturnType.Name == "ActionResult");
             reports.AddRange(goodMethods.Select(m => m.Name));
-            reportModel.Reports = reports.ToArray();
+            foreach (var report in reports)
+                allModels.AddRange(reportManager.GenerateModels(report));
 
-            return View(reportModel);
+            ReportCollection result = new ReportCollection()
+            {
+                Reports = allModels.ToArray(),
+            };
+
+            return View(result);
         }
 
         public ActionResult StaffSheet(int year = 2019)

@@ -10,10 +10,12 @@ namespace RFKBackend.Accessors
 {
     public class CabinAccessor : BaseSqlAccessor
     {
+        internal override string PRIMARY_KEY_NAME => "CabinId";
+        internal override string TABLE_NAME => "[dbo].Cabins";
+
         public Cabin[] FindAllCabins()
         {
-            string sqlString = @"
-    select * from dbo.Cabins order by name";
+            string sqlString = base.GetBasicFindAllSql("Name");
             var result = base.ExecuteReader<Cabin>(sqlString, CabinReader);
 
             return result;
@@ -21,7 +23,7 @@ namespace RFKBackend.Accessors
 
         public Cabin FindCabin(int cabinId)
         {
-            string sqlString = @"select * from dbo.Cabins where Cabinid = @id";
+            string sqlString = base.GetBasicFindSql("@id");
             var result = base.ExecuteReader<Cabin>(sqlString, CabinReader
                 , new SqlParameter[] { new SqlParameter("@id", cabinId) }).FirstOrDefault();
 

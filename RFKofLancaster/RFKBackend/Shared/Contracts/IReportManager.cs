@@ -10,5 +10,6 @@ namespace RFKBackend.Shared.Contracts
     public interface IReportManager
     {
         ReportDataCollection ExecuteReport(ReportType reportType, int year, string optionalParams = null);
+        ReportModel[] GenerateModels(string report);
     }
 }

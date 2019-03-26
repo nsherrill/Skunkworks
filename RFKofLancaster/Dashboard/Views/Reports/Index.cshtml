@@ -1,4 +1,4 @@
-﻿@model Dashboard.Models.ReportModel
+﻿@model RFKBackend.Shared.DataContracts.ReportCollection
 
 @{
     ViewBag.Title = "Index";
@@ -18,7 +18,7 @@
     {
         <tr>
             <td>
-                @Html.ActionLink(item, item, new { year = DateTime.Now.Month < 8 ? DateTime.Now.Year : DateTime.Now.Year + 1 })
+                @Html.ActionLink($"{item.ReportName} - {item.Year}", item.ReportType.ToString(), new { year = item.Year })
             </td>
         </tr>
     }

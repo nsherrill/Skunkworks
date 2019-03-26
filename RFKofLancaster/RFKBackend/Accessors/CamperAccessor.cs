@@ -10,10 +10,12 @@ namespace RFKBackend.Accessors
 {
     public class CamperAccessor : BaseSqlAccessor
     {
+        internal override string PRIMARY_KEY_NAME => "CamperId";
+        internal override string TABLE_NAME => "[dbo].Campers";
+
         public Camper[] FindAllCampers()
         {
-            string sqlString = @"
-    select * from dbo.Campers order by name";
+            string sqlString = base.GetBasicFindAllSql("name");
             var result = base.ExecuteReader<Camper>(sqlString, CamperReader);
 
             return result;
@@ -21,7 +23,7 @@ namespace RFKBackend.Accessors
 
         public CamperSnapshot FindCamper(int camperId)
         {
-            string sqlString = @"select * from dbo.Campers where Camperid = @id";
+            string sqlString = base.GetBasicFindSql("@id");
             var result = base.ExecuteReader<Camper>(sqlString, CamperReader
                 , new SqlParameter[] { new SqlParameter("@id", camperId) }).FirstOrDefault();
 

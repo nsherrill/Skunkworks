@@ -28,7 +28,6 @@ namespace RFKBackend.Shared.DataContracts
         [Display(Name = "Gender")]
         public string Gender { get; set; }
 
-        [Required]
         [Display(Name = "Notes")]
         public string Notes { get; set; }
     }

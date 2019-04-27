@@ -14,6 +14,12 @@ namespace RFKBackend.Accessors
         Volunteer[] FindAllVolunteers();
         VolunteerSnapshot FindVolunteer(int volunteerId);
         void ToggleBool(VolunteerToggleType hasApplication, int id, bool shouldBeOn, int year);
+        void UpdateVolunteer(Volunteer volunteerToSave);
+
+        RoleCountModel[] GetRoleCounts(int year);
+        void AdjustRoleCount(int year, int roleId, int delta);
+        RoleModel[] GetAllRoles();
+        void AddRoleToUser(int volunteerId, int roleId, int year);
     }
 
     public class VolunteerAccessor : BaseSqlAccessor, IVolunteerAccessor
@@ -64,13 +70,105 @@ namespace RFKBackend.Accessors
 
                 base.ExecuteScalar(mergeText, paramList);
 
-
                 base.ToggleBool(toggleType.ToString(), id, shouldBeOn, $"and Year = {year}", "[dbo].[VolunteerYearStatus]");
             }
             else
             {
                 throw new NotImplementedException();
             }
+        }
+
+        public void UpdateVolunteer(Volunteer volunteerToSave)
+        {
+            var paramList = new SqlParameter[]
+            {
+                new SqlParameter("@VolunteerId", volunteerToSave.VolunteerId)
+                , new SqlParameter("@Name", volunteerToSave.Name)
+                , new SqlParameter("@NickName", volunteerToSave.NickName)
+                , new SqlParameter("@Gender", volunteerToSave.Gender)
+                , new SqlParameter("@Notes", volunteerToSave.Notes?? "")
+            };
+
+            string mergeText = base.GetBasicMergeText(paramList);
+
+            base.ExecuteScalar(mergeText, paramList);
+        }
+
+        public RoleCountModel[] GetRoleCounts(int year)
+        {
+            string sqlString = $@"
+                select r.RoleId, r.name as DisplayName, count(vry.roleid) as [Count]
+                    from dbo.Roles r
+                        left join dbo.VolunteerRoleYear vry on vry.RoleId = r.RoleId and vry.year = {year}
+                    group by r.roleid, r.name, r.[index]
+                    order by r.[index]";
+
+            var result = base.ExecuteReader<RoleCountModel>(sqlString, (rdr) =>
+            {
+                return new RoleCountModel((int)rdr["RoleId"], (string)rdr["DisplayName"], (int)rdr["Count"]);
+            });
+
+            return result.ToArray();
+        }
+
+        public void AdjustRoleCount(int year, int roleId, int delta)
+        {
+            if (delta > 0)
+            {
+                string sqlText = $@"
+                    insert into dbo.VolunteerRoleYear(VolunteerId, RoleId, [Year])
+                        values(null, {roleId}, {year})";
+
+                for (int i = 0; i < delta; i++)
+                {
+                    base.ExecuteScalar(sqlText);
+                }
+            }
+            else
+            {
+                string sqlText = $@" select count(*) from dbo.VolunteerRoleYear where RoleId = {roleId} and [Year] = {year} and VolunteerId is null ";
+                int originalCount = (int)base.ExecuteScalar(sqlText);
+
+                if (originalCount > 0)
+                {
+                    sqlText = $@"delete from dbo.volunteerroleyear where roleid = {roleId} and [year] = {year} and volunteerid is null";
+                    base.ExecuteScalar(sqlText);
+
+                    if (originalCount > 1)
+                        AdjustRoleCount(year, roleId, originalCount - 1);
+                }
+            }
+        }
+
+        public RoleModel[] GetAllRoles()
+        {
+            string sqlString = $@"
+                select r.RoleId, r.name as DisplayName
+                    from dbo.Roles r
+                    order by r.[name]";
+
+            var result = base.ExecuteReader<RoleModel>(sqlString, (rdr) =>
+            {
+                return new RoleModel((int)rdr["RoleId"], (string)rdr["DisplayName"]);
+            });
+
+            return result.ToArray();
+        }
+
+        public void AddRoleToUser(int volunteerId, int roleId, int year)
+        {
+            string sqlString = $@"if not exists 
+                (select * 
+                    from [dbo].[VolunteerRoleYear] 
+                    where volunteerId = {volunteerId}
+                        and roleId = {roleId}
+                        and year = {year})
+                begin
+                    insert into [dbo].[VolunteerRoleYear] (volunteerid, roleid, year)
+                        select {volunteerId}, {roleId}, {year}
+                end";
+
+            base.ExecuteScalar(sqlString);
         }
 
         #region privates

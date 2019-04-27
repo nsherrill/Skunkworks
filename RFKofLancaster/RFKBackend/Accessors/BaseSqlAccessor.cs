@@ -96,8 +96,8 @@ namespace RFKBackend.Accessors
                         update set 
                             {string.Join(", ", paramList.Where(p => !p.GetParameterNameWithoutAt().Equals(GetBracketlessPrimaryKey(), StringComparison.InvariantCultureIgnoreCase)).Select(p => $"{p.GetParameterNameWithoutAt()} = source.{p.GetParameterNameWithoutAt()}"))}
                     when not matched then 
-                        insert ({string.Join(", ", paramList.Select(p => p.GetParameterNameWithoutAt()))} )
-                        values ({string.Join(", ", paramList.Select(p => $" source.{p.GetParameterNameWithoutAt()}"))} );";
+                        insert ({string.Join(", ", paramList.Select(p => p.GetParameterNameWithoutAt()).Where(p => !p.Equals(GetBracketlessPrimaryKey(), StringComparison.InvariantCultureIgnoreCase)))} )
+                        values ({string.Join(", ", paramList.Select(p => p.GetParameterNameWithoutAt()).Where(p => !p.Equals(GetBracketlessPrimaryKey(), StringComparison.InvariantCultureIgnoreCase)).Select(p => $" source.{p}"))} );";
 
             return mergeText;
         }

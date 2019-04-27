@@ -15,6 +15,7 @@ namespace Dashboard.Controllers
     public class ReportsController : Controller
     {
         IReportManager reportManager = new ReportManager();
+        IVolunteerManager volunteerManager = new VolunteerManager();
 
         public ActionResult Index()
         {
@@ -39,6 +40,15 @@ namespace Dashboard.Controllers
         {
             var data = reportManager.ExecuteReport(ReportType.StaffSheet, year);
 
+            List<SelectListItem> roleList = new List<SelectListItem>();
+            var allRoles = volunteerManager.GetAllRoles();
+            roleList.Add(new SelectListItem() { Value = "", Text = "", Selected = true });
+            allRoles.ToList().ForEach(r => roleList.Add(new SelectListItem()
+            {
+                Text = r.DisplayName,
+                Value = r.RoleId.ToString(),
+            }));
+            ViewData.Add("RoleList", roleList);
             return View(data);
         }
     }

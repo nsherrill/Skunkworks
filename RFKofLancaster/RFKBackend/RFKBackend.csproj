@@ -47,28 +47,39 @@
     <Compile Include="Accessors\CamperAccessor.cs" />
     <Compile Include="Accessors\CabinAccessor.cs" />
     <Compile Include="Accessors\VolunteerAccessor.cs" />
+    <Compile Include="Engines\ValidationEngine.cs" />
+    <Compile Include="Engines\Validators\CabinValidationEngine.cs" />
+    <Compile Include="Engines\Validators\CamperValidationEngine.cs" />
+    <Compile Include="Engines\Validators\VolunteerValidationEngine.cs" />
     <Compile Include="Managers\ReportManager.cs" />
     <Compile Include="Managers\CamperManager.cs" />
     <Compile Include="Managers\CabinManager.cs" />
     <Compile Include="Managers\VolunteerManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shared\Contracts\IReportManager.cs" />
-    <Compile Include="Shared\DataContracts\Cabin.cs" />
-    <Compile Include="Shared\DataContracts\Camper.cs" />
-    <Compile Include="Shared\DataContracts\CamperSnapshot.cs" />
+    <Compile Include="Shared\Contracts\IValidationEngine.cs" />
+    <Compile Include="Shared\Contracts\IVolunteerManager.cs" />
+    <Compile Include="Shared\DataContracts\Cabin\Cabin.cs" />
+    <Compile Include="Shared\DataContracts\Cabin\CabinResult.cs" />
+    <Compile Include="Shared\DataContracts\Camper\CamperResult.cs" />
+    <Compile Include="Shared\DataContracts\Camper\Camper.cs" />
+    <Compile Include="Shared\DataContracts\Camper\CamperSnapshot.cs" />
+    <Compile Include="Shared\DataContracts\DataResult.cs" />
     <Compile Include="Shared\DataContracts\ReportData.cs" />
     <Compile Include="Shared\DataContracts\ReportDataCollection.cs" />
     <Compile Include="Shared\DataContracts\ReportDataRow.cs" />
     <Compile Include="Shared\DataContracts\ReportModel.cs" />
-    <Compile Include="Shared\DataContracts\VolunteerSnapshot.cs" />
-    <Compile Include="Shared\DataContracts\Volunteer.cs" />
+    <Compile Include="Shared\DataContracts\ValidationResult.cs" />
+    <Compile Include="Shared\DataContracts\Volunteer\RoleModel.cs" />
+    <Compile Include="Shared\DataContracts\Volunteer\VolunteerResult.cs" />
+    <Compile Include="Shared\DataContracts\Volunteer\VolunteerSnapshot.cs" />
+    <Compile Include="Shared\DataContracts\Volunteer\Volunteer.cs" />
     <Compile Include="Shared\Enums\ReportType.cs" />
     <Compile Include="Shared\Enums\VolunteerToggleType.cs" />
     <Compile Include="Shared\Utilities\Extensions.cs" />
+    <Compile Include="Shared\Utilities\Messages.cs" />
     <Compile Include="Shared\Utilities\RFKUtilities.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Engines\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

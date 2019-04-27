@@ -1,5 +1,7 @@
 ﻿using Dashboard.Models;
+using RFKBackend;
 using RFKBackend.Managers;
+using RFKBackend.Shared.Contracts;
 using RFKBackend.Shared.DataContracts;
 using System;
 using System.Collections.Generic;
@@ -12,9 +14,9 @@ namespace Dashboard.Controllers
     [Authorize]
     public class VolunteerController : Controller
     {
-        VolunteerManager volMgr = new VolunteerManager();
+        IVolunteerManager volMgr = new VolunteerManager();
 
-        public ActionResult Index()
+        public ActionResult Index(string userMessage = null)
         {
             var result = volMgr.FindAllVolunteers();
 
@@ -24,10 +26,26 @@ namespace Dashboard.Controllers
             return View(models.ToArray());
         }
 
+        [HttpPost]
+        public ActionResult Create(VolunteerModel createModel)
+        {
+            ViewBag.UserMessage = string.Empty;
+
+            var saveResult = volMgr.SaveVolunteer(createModel);
+            if (saveResult?.IsSuccess ?? false)
+            {
+                ViewBag.UserMessage = Messages.CreateVolunteer_Success(saveResult.Data.Name);
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.UserMessage = saveResult?.ErrorMessage ?? Messages.CreateVolunteer_Fail();
+            return View(createModel);
+        }
+
         public ActionResult Create()
         {
             var result = volMgr.CreateNewVolunteer();
-            return View(result);
+            return View(new VolunteerModel(result));
         }
 
         public ActionResult Details(int id)
@@ -37,6 +55,24 @@ namespace Dashboard.Controllers
                 return View(result);
 
             return Create();
+        }
+
+        [HttpPost]
+        public ActionResult Details(VolunteerModel volunteerModelToSave)
+        {
+            throw new NotImplementedException();
+
+            ViewBag.UserMessage = string.Empty;
+
+            var saveResult = volMgr.SaveVolunteer(volunteerModelToSave);
+            if (saveResult?.IsSuccess ?? false)
+            {
+                ViewBag.UserMessage = Messages.CreateVolunteer_Success(saveResult.Data.Name);
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.UserMessage = saveResult?.ErrorMessage ?? Messages.CreateVolunteer_Fail();
+            return View(volunteerModelToSave);
         }
 
         [HttpPost]
@@ -54,5 +90,15 @@ namespace Dashboard.Controllers
 
             return volMgr.FindVolunteer(id);
         }
+
+        [HttpPost]
+        public VolunteerSnapshot AddRoleToUser(int id, int roleId, int year)
+        {
+            volMgr.AddRoleToUser(id, roleId, year);
+
+            return volMgr.FindVolunteer(id);
+        }
+
+
     }
 }

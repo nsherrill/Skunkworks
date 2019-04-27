@@ -8,8 +8,9 @@ using System.Web;
 
 namespace Dashboard.Models
 {
-    public class VolunteerModel : RFKBackend.Shared.DataContracts.Volunteer
+    public class VolunteerModel : Volunteer
     {
+        public VolunteerModel() { }
         public VolunteerModel(Volunteer source)
         {
             this.VolunteerId = source.VolunteerId;
@@ -21,6 +22,7 @@ namespace Dashboard.Models
     }
     public class CounselorModel : VolunteerModel
     {
+        public CounselorModel() { }
         public CounselorModel(Volunteer source)
             : base(source)
         {

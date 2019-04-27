@@ -26,16 +26,20 @@
                     <li>@Html.ActionLink("Cabins", "Index", "Cabin")</li>
                     <li>@Html.ActionLink("Campers", "Index", "Camper")</li>
                     <li>@Html.ActionLink("Volunteers", "Index", "Volunteer")</li>
+                    <li>@Html.ActionLink("Year Config", "Index", "YearConfig")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
         </div>
     </div>
     <div class="container body-content">
+        <header>
+            <p>@ViewBag.UserMessage</p>
+        </header>
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>@*&copy; @DateTime.Now.Year - My ASP.NET Application*@</p>
         </footer>
     </div>
 

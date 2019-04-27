@@ -27,6 +27,18 @@
             },
         });
     }
+    function AddRoleToUser(volunteerId, roleId) {
+        $.ajax({
+            type: "POST",
+            url: "/Volunteer/AddRoleToUser?id=" + volunteerId + "&roleId=" + roleId + "&year=" + @Model.Year,
+            data: null,
+            success: () => {
+                window.location.reload(false);
+            },
+        });
+    }
+
+    
 </script>
 <table>
     <tr>
@@ -42,7 +54,14 @@
                 {
                     <tr>
                         <td>
-                            @items.Values[2]  @*Role*@
+                            @if (string.IsNullOrEmpty(@items.Values[2]))
+                            {@*Role*@
+                            @Html.DropDownList("addRole" + items.Values[0], (IEnumerable<SelectListItem>)ViewBag.RoleList, new { onchange= $"AddRoleToUser({items.Values[0]}, this.value)" });
+                        }
+                        else
+                        {
+                            @items.Values[2]
+                        }
                         </td>
 
                         @if (items.Values[0] != null && items.Values[0] != "")

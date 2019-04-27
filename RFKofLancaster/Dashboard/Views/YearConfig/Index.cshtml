@@ -1,0 +1,59 @@
+﻿@model Dashboard.Models.YearConfigModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.Year</h2>
+<script>
+    function AdjustRoleCount(id, countDelta) {
+        $.ajax({
+            type: "POST",
+            url: "/YearConfig/AdjustRoleCount?year=" + @Model.Year + "&roleId=" + id + "&delta=" + countDelta,
+            data: null,
+            success: () => {
+                window.location.reload(false);
+            },
+        });
+    }
+</script>
+
+@for (int i = DateTime.Now.Year - 3; i <= DateTime.Now.Year + 1; i++)
+{
+    <p>@Html.ActionLink(i.ToString(), "Index", new { thisYear = i })</p>
+}
+
+<table class="table">
+    <tr>
+        <th>
+            Role Name
+        </th>
+        <th>
+            Count
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.RoleCounts)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DisplayName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Count)
+            </td>
+            <td>
+                <img height="20"
+                     src="https://www.logolynx.com/images/logolynx/82/821d3e7b5a4ad32caa60d99285768185.png"
+                     onclick="AdjustRoleCount(@item.RoleId, 1)" />
+
+                <img height="20"
+                     src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7_fep8_q5Bw3y5du0AiK3BDvovUX2FSqdyUJ9S5fZfl53acWT"
+                     onclick="AdjustRoleCount(@item.RoleId, -1)" />
+            </td>
+        </tr>
+    }
+
+</table>

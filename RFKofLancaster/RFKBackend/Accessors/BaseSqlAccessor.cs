@@ -65,9 +65,12 @@ namespace RFKBackend.Accessors
         }
 
         #region getbasic
-        internal string GetBasicFindSql(string idParam)
+        internal string GetBasicFindSql(string idParam, string overrideTableName = null, string overrideKeyName = null)
         {
-            string sqlString = $"SELECT * FROM {TABLE_NAME} WHERE {PRIMARY_KEY_NAME} = {idParam}";
+            var tableToUse = string.IsNullOrEmpty(overrideTableName) ? this.TABLE_NAME : overrideTableName;
+            var keyToUse = string.IsNullOrEmpty(overrideKeyName) ? this.PRIMARY_KEY_NAME : overrideKeyName;
+
+            string sqlString = $"SELECT * FROM {tableToUse} WHERE {keyToUse} = {idParam}";
             return sqlString;
         }
 

@@ -12,13 +12,17 @@ using System.Web.Mvc;
 namespace Dashboard.Controllers
 {
     [Authorize]
-    public class ReportsController : Controller
+    public class ReportsController : RFKController
     {
         IReportManager reportManager = new ReportManager();
         IVolunteerManager volunteerManager = new VolunteerManager();
 
         public ActionResult Index()
         {
+            base.SetMyUser();
+            if (!base.MyUser.CanRead)
+                return RedirectToAction("Index", "Home", null);
+
             List<ReportModel> allModels = new List<ReportModel>();
             List<string> reports = new List<string>();
 
@@ -38,6 +42,10 @@ namespace Dashboard.Controllers
 
         public ActionResult StaffSheet(int year = 2019)
         {
+            base.SetMyUser();
+            if (!base.MyUser.CanRead)
+                return RedirectToAction("Index", "Home", null);
+
             var data = reportManager.ExecuteReport(ReportType.StaffSheet, year);
 
             List<SelectListItem> roleList = new List<SelectListItem>();

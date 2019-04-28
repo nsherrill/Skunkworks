@@ -6,8 +6,9 @@ using System.Web.Mvc;
 
 namespace Dashboard.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : RFKController
     {
+        [AllowAnonymous]
         public ActionResult Index()
         {
             return View();

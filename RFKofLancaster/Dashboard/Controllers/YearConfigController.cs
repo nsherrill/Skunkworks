@@ -12,13 +12,17 @@ using System.Web.Mvc;
 namespace Dashboard.Controllers
 {
     [Authorize]
-    public class YearConfigController : Controller
+    public class YearConfigController : RFKController
     {
         IVolunteerManager volMgr = new VolunteerManager();
         CamperManager camperMgr = new CamperManager();
 
         public ActionResult Index(int thisYear = 2019)
         {
+            base.SetMyUser();
+            if (!base.MyUser.CanRead)
+                return RedirectToAction("Index", "Home", null);
+
             var result = new YearConfigModel(thisYear);
 
             result.RoleCounts = volMgr.GetRoleCounts(thisYear);
@@ -29,6 +33,10 @@ namespace Dashboard.Controllers
         [HttpPost]
         public bool AdjustRoleCount(int year, int roleId, int delta)
         {
+            base.SetMyUser();
+            if (!base.MyUser.CanWrite)
+                return false;
+
             try
             {
                 volMgr.AdjustRoleCount(year, roleId, delta);

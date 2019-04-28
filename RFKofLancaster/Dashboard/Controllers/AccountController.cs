@@ -9,20 +9,26 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Dashboard.Models;
+using RFKBackend.Managers;
+using RFKBackend.Shared.Contracts;
+using RFKBackend.Shared.Enums;
+using RFKBackend.Shared.DataContracts.Account;
 
 namespace Dashboard.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : RFKController
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private IAccountManager accountManager { get; set; }
 
         public AccountController()
         {
+            this.accountManager = new AccountManager();
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager) : this()
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -34,9 +40,9 @@ namespace Dashboard.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -76,6 +82,16 @@ namespace Dashboard.Controllers
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var userValid = accountManager.ValidateUser(model.Email, AccessType.Login);
+            if (!userValid)
+            {
+                if (result == SignInStatus.Success)
+                    AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+                result = SignInStatus.Failure;
+            }
+            else
+                base.MyUser = accountManager.GetUser(model.Email);
+
             switch (result)
             {
                 case SignInStatus.Success:
@@ -86,8 +102,11 @@ namespace Dashboard.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
-                    return View(model);
+                    if (userValid)
+                        ModelState.AddModelError("", "Invalid login attempt.");
+                    else
+                        ModelState.AddModelError("", "User has not been approved for access.");
+                    return View("Lockout");
             }
         }
 
@@ -120,7 +139,7 @@ namespace Dashboard.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -155,8 +174,10 @@ namespace Dashboard.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+                    accountManager.CreateUser(new UserModel(model.Email));
+
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);

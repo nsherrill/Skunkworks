@@ -9,12 +9,16 @@ using System.Web.Mvc;
 namespace Dashboard.Controllers
 {
     [Authorize]
-    public class CabinController : Controller
+    public class CabinController : RFKController
     {
         CabinManager cabMgr = new CabinManager();
 
         public ActionResult Index()
         {
+            base.SetMyUser();
+            if (!base.MyUser.CanRead)
+                return RedirectToAction("Index", "Home", null);
+
             ViewBag.UserMessage = null;
             var result = cabMgr.FindAllCabins();
 
@@ -23,6 +27,10 @@ namespace Dashboard.Controllers
 
         public ActionResult Create(Cabin createdCabin = null)
         {
+            base.SetMyUser();
+            if (!base.MyUser.CanWrite)
+                return RedirectToAction("Index", "Home", null);
+
             ViewBag.UserMessage = null;
             if (createdCabin != null
                 && !string.IsNullOrEmpty(createdCabin.Name))
@@ -41,6 +49,10 @@ namespace Dashboard.Controllers
 
         public ActionResult Details(int id)
         {
+            base.SetMyUser();
+            if (!base.MyUser.CanRead)
+                return RedirectToAction("Index", "Home", null);
+
             ViewBag.UserMessage = null;
             var result = cabMgr.FindCabin(id);
             if (result != null)

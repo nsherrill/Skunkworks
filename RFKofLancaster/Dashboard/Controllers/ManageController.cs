@@ -11,7 +11,7 @@ using Dashboard.Models;
 namespace Dashboard.Controllers
 {
     [Authorize]
-    public class ManageController : Controller
+    public class ManageController : RFKController
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;

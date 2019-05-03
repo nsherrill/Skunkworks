@@ -30,5 +30,7 @@ namespace RFKBackend.Shared.DataContracts
 
         [Display(Name = "Notes")]
         public string Notes { get; set; }
+
+        public bool HasThisYear { get; set; }
     }
 }

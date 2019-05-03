@@ -74,9 +74,10 @@ namespace RFKBackend.Accessors
             return sqlString;
         }
 
-        public string GetBasicFindAllSql(string orderByClause = null)
+        public string GetBasicFindAllSql(string orderByClause = null, string additionalColumn = null)
         {
-            string sqlString = $@"select * from {TABLE_NAME}";
+            additionalColumn = string.IsNullOrEmpty(additionalColumn) ? "" : (", " + additionalColumn);
+            string sqlString = $@"select *{additionalColumn} from {TABLE_NAME}";
             if (!string.IsNullOrEmpty(orderByClause))
             {
                 orderByClause = orderByClause.ToLower().Replace("order by", "");

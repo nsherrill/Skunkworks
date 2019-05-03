@@ -21,6 +21,6 @@ namespace RFKBackend.Shared.Contracts
         RoleCountModel[] GetRoleCounts(int thisYear);
         void AdjustRoleCount(int year, int roleId, int delta);
         RoleModel[] GetAllRoles();
-        void AddRoleToUser(int volunteerId, int roleId, int year);
+        void AddRoleToUser(int volunteerId, int? roleId, int year);
     }
 }

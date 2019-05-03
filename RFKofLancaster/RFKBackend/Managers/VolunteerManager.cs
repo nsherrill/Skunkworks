@@ -85,10 +85,11 @@ namespace RFKBackend.Managers
             return volAcc.GetAllRoles();
         }
 
-        public void AddRoleToUser(int volunteerId, int roleId, int year)
+        public void AddRoleToUser(int volunteerId, int? roleId, int year)
         {
             volAcc.AddRoleToUser(volunteerId, roleId, year);
-            AdjustRoleCount(year, roleId, -1);
+            if (roleId.HasValue)
+                AdjustRoleCount(year, roleId.Value, -1);
         }
     }
 }

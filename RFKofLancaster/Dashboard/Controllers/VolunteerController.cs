@@ -126,7 +126,7 @@ namespace Dashboard.Controllers
         }
 
         [HttpPost]
-        public VolunteerSnapshot AddRoleToUser(int id, int roleId, int year)
+        public VolunteerSnapshot AddRoleToUser(int id, int? roleId, int year)
         {
             base.SetMyUser();
             if (!base.MyUser.CanWrite)
@@ -136,7 +136,5 @@ namespace Dashboard.Controllers
 
             return volMgr.FindVolunteer(id);
         }
-
-
     }
 }

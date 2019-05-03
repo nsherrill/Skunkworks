@@ -18,6 +18,7 @@ namespace Dashboard.Models
             this.NickName = source.NickName;
             this.Gender = source.Gender;
             this.Notes = source.Notes;
+            this.HasThisYear = source.HasThisYear;
         }
     }
     public class CounselorModel : VolunteerModel

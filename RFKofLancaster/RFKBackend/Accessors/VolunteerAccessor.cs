@@ -11,7 +11,7 @@ namespace RFKBackend.Accessors
 {
     public interface IVolunteerAccessor
     {
-        Volunteer[] FindAllVolunteers();
+        Volunteer[] FindAllVolunteers(int year = 2019);
         VolunteerSnapshot FindVolunteer(int volunteerId);
         void ToggleBool(VolunteerToggleType hasApplication, int id, bool shouldBeOn, int year);
         void UpdateVolunteer(Volunteer volunteerToSave);
@@ -19,7 +19,7 @@ namespace RFKBackend.Accessors
         RoleCountModel[] GetRoleCounts(int year);
         void AdjustRoleCount(int year, int roleId, int delta);
         RoleModel[] GetAllRoles();
-        void AddRoleToUser(int volunteerId, int roleId, int year);
+        void AddRoleToUser(int volunteerId, int? roleId, int year);
     }
 
     public class VolunteerAccessor : BaseSqlAccessor, IVolunteerAccessor
@@ -27,9 +27,9 @@ namespace RFKBackend.Accessors
         internal override string PRIMARY_KEY_NAME => "[VolunteerId]";
         internal override string TABLE_NAME => "[dbo].[Volunteers]";
 
-        public Volunteer[] FindAllVolunteers()
+        public Volunteer[] FindAllVolunteers(int year = 2019)
         {
-            string sqlString = base.GetBasicFindAllSql("Name");
+            string sqlString = base.GetBasicFindAllSql("Name", $"dbo.GetVolunteerHasRoleForYear(VolunteerId, {year}) as HasThisYear");
             var result = base.ExecuteReader<Volunteer>(sqlString, VolunteerReader);
 
             return result;
@@ -37,7 +37,7 @@ namespace RFKBackend.Accessors
 
         public VolunteerSnapshot FindVolunteer(int volunteerId)
         {
-            string sqlString = base.GetBasicFindSql("@id");
+            string sqlString = base.GetBasicFindSql("@id", null, null);
             var vol = base.ExecuteReader<Volunteer>(sqlString, VolunteerReader
                 , new SqlParameter[] { new SqlParameter("@id", volunteerId) }).FirstOrDefault();
 
@@ -155,9 +155,9 @@ namespace RFKBackend.Accessors
             return result.ToArray();
         }
 
-        public void AddRoleToUser(int volunteerId, int roleId, int year)
+        public void AddRoleToUser(int volunteerId, int? roleId, int year)
         {
-            string sqlString = $@"if not exists 
+            var sqlString = $@"if not exists 
                 (select * 
                     from [dbo].[VolunteerRoleYear] 
                     where volunteerId = {volunteerId}
@@ -168,12 +168,33 @@ namespace RFKBackend.Accessors
                         select {volunteerId}, {roleId}, {year}
                 end";
 
+            if (!roleId.HasValue)
+            {
+                sqlString = $@"if not exists 
+                (select * 
+                    from [dbo].[VolunteerYearStatus] 
+                    where volunteerId = {volunteerId}
+                        and year = {year})
+                begin
+                    insert into [dbo].[VolunteerYearStatus] (volunteerid, year)
+                        select {volunteerId}, {year}
+                end";
+            }
+
             base.ExecuteScalar(sqlString);
         }
 
         #region privates
         private Volunteer VolunteerReader(SqlDataReader rdr)
         {
+            bool hasThisYear = false;
+            for (int i = 0; i < rdr.FieldCount; i++)
+                if (rdr.GetName(i).Equals("HasThisYear"))
+                {
+                    hasThisYear = (bool)rdr[i];
+                    break;
+                }
+
             Volunteer result = new Volunteer()
             {
                 VolunteerId = Convert.ToInt32(rdr["VolunteerId"]),
@@ -181,6 +202,7 @@ namespace RFKBackend.Accessors
                 NickName = rdr["NickName"].ToString(),
                 Gender = rdr["Gender"].ToString(),
                 Notes = rdr["Notes"] as string,
+                HasThisYear = hasThisYear,
             };
             return result;
         }

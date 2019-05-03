@@ -5,6 +5,20 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<script>
+
+    function AddRoleToUser(volunteerId) {
+        $.ajax({
+            type: "POST",
+            url: "/Volunteer/AddRoleToUser?id=" + volunteerId + "&year=2019",
+            data: null,
+            success: () => {
+                window.location.reload(false);
+            },
+        });
+    }
+</script>
+
 <h2>Index</h2>
 
 <p>
@@ -22,23 +36,37 @@
             @Html.DisplayNameFor(model => model.Gender)
         </th>
         <th></th>
+        <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.ActionLink(item.Name, "Details", new { id = item.VolunteerId })
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NickName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Gender)
-        </td>
-        <td>
-            @Html.ActionLink("Delete", "Delete", new { id = item.VolunteerId })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(item.Name, "Details", new { id = item.VolunteerId })
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NickName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Gender)
+            </td>
+            <td>
+                @if (item.HasThisYear)
+                {
+
+                }
+                else
+                {
+                    <img height="20"
+                         src="http://downloadicons.net/sites/default/files/plus-button-icon-83004.png"
+                         onclick="AddRoleToUser(@item.VolunteerId)" />
+                }
+            </td>
+            <td>
+                @Html.ActionLink("Delete", "Delete", new { id = item.VolunteerId })
+            </td>
+        </tr>
+    }
 
 </table>

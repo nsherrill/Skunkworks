@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoPenguin", "CryptoPenguin\CryptoPenguin.csproj", "{A829904A-4461-4F1D-8F17-8CAE8A1C1B78}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PenguinTests", "PenguinTests\PenguinTests.csproj", "{EA3AA235-B5D3-4477-82C3-14C339FA5520}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A829904A-4461-4F1D-8F17-8CAE8A1C1B78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A829904A-4461-4F1D-8F17-8CAE8A1C1B78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A829904A-4461-4F1D-8F17-8CAE8A1C1B78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A829904A-4461-4F1D-8F17-8CAE8A1C1B78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA3AA235-B5D3-4477-82C3-14C339FA5520}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA3AA235-B5D3-4477-82C3-14C339FA5520}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA3AA235-B5D3-4477-82C3-14C339FA5520}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA3AA235-B5D3-4477-82C3-14C339FA5520}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {423643D3-1981-48A4-99D9-59F0A69C68F1}
+	EndGlobalSection
+EndGlobal

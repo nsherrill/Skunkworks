@@ -1,0 +1,5 @@
+﻿{
+  "webJobName": "CryptoPenguin",
+  "schedule": "0 */15 * * * *",
+  "runMode": "Scheduled"
+}
